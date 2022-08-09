@@ -29,10 +29,10 @@ public class Gun : MonoBehaviour
     [SerializeField] int maxAmmo;
 
     [Header("Automatic Rifle")]
-    [SerializeField] bool automaticRifle = true;
+    [SerializeField] bool automaticRifle;
 
     [Header("Shotgun")]
-    [SerializeField] bool shotgun = false;
+    [SerializeField] bool shotgun;
     [SerializeField] int bulletsPerShot = 6;
 
     [Header("Laser")]
@@ -56,16 +56,18 @@ public class Gun : MonoBehaviour
     public void Shoot()
     {
         //remove from current ammo here
-        currentAmmo--; 
+        currentAmmo--;
 
-
-        if(shotgun)
+        for (int bullets = 0; bullets < bulletsPerShot; bullets++)
         {
-            ShotGun();
-        }
-        else if(automaticRifle)
-        {
-            AutomaticRifle();
+            if (shotgun)
+            {
+                ShotGun();
+            }
+            else
+            {
+                AutomaticRifle();
+            }
         }
     }
 
@@ -194,26 +196,21 @@ public class Gun : MonoBehaviour
 
     private void ShotGun()
     {
-        for (int i = 0; i < bulletsPerShot; i++)
-        {
-            RaycastHit hit;
-            Vector3 shootingDir = GetShootingDirection();
-            if (Physics.Raycast(cam.position, shootingDir, out hit, range))
-            {
-                if (hit.collider.GetComponent<Damageable>() != null)
-                {
-                    hit.collider.GetComponent<Damageable>().TakeDamage(damage, hit.point, hit.normal);
-                }
-                CreateLaser(hit.point);
-            }
-            else
-            {
-                CreateLaser(cam.position + shootingDir * range);
-            }
-        }
+        shotgun = !shotgun;
+        automaticRifle = !automaticRifle;
+        bulletsPerShot = 6;
+        ShootRayCast();
     }
 
     private void AutomaticRifle()
+    {
+        shotgun = !shotgun;
+        automaticRifle = !automaticRifle;
+        bulletsPerShot = 1;
+        ShootRayCast();
+    }
+
+    private void ShootRayCast()
     {
         RaycastHit hit;
         Vector3 shootingDir = GetShootingDirection();
