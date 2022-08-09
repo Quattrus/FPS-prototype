@@ -53,24 +53,6 @@ public class Gun : MonoBehaviour
         Aiming();
     }
 
-    public void Shoot()
-    {
-        //remove from current ammo here
-        currentAmmo--;
-
-        for (int bullets = 0; bullets < bulletsPerShot; bullets++)
-        {
-            if (shotgun)
-            {
-                ShotGun();
-            }
-            else
-            {
-                AutomaticRifle();
-            }
-        }
-    }
-
     public IEnumerator RapidFire()
     {
         if(CanShoot() && !isReloading)
@@ -136,6 +118,21 @@ public class Gun : MonoBehaviour
         }
     }
 
+    public void Shoot()
+    {
+        //remove from current ammo here
+        currentAmmo--;
+        if (shotgun)
+        {
+            ShotGun();
+        }
+        else
+        {
+            AutomaticRifle();
+        }
+
+    }
+
     private Vector3 GetShootingDirection()
     { 
         Vector3 targetPos = cam.position + cam.forward * range;
@@ -196,35 +193,34 @@ public class Gun : MonoBehaviour
 
     private void ShotGun()
     {
-        shotgun = !shotgun;
-        automaticRifle = !automaticRifle;
         bulletsPerShot = 6;
         ShootRayCast();
     }
 
     private void AutomaticRifle()
     {
-        shotgun = !shotgun;
-        automaticRifle = !automaticRifle;
         bulletsPerShot = 1;
         ShootRayCast();
     }
 
     private void ShootRayCast()
     {
-        RaycastHit hit;
-        Vector3 shootingDir = GetShootingDirection();
-        if (Physics.Raycast(cam.position, shootingDir, out hit, range))
+        for (int bullets = 0; bullets < bulletsPerShot; bullets++)
         {
-            if (hit.collider.GetComponent<Damageable>() != null)
+            RaycastHit hit;
+            Vector3 shootingDir = GetShootingDirection();
+            if (Physics.Raycast(cam.position, shootingDir, out hit, range))
             {
-                hit.collider.GetComponent<Damageable>().TakeDamage(damage, hit.point, hit.normal);
+                if (hit.collider.GetComponent<Damageable>() != null)
+                {
+                    hit.collider.GetComponent<Damageable>().TakeDamage(damage, hit.point, hit.normal);
+                }
+                CreateLaser(hit.point);
             }
-            CreateLaser(hit.point);
-        }
-        else
-        {
-            CreateLaser(cam.position + shootingDir * range);
+            else
+            {
+                CreateLaser(cam.position + shootingDir * range);
+            }
         }
     }
 }

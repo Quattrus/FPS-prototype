@@ -8,11 +8,13 @@ public class DayAndNightCycle : MonoBehaviour
     [Header("Initialization Variables")]
     [Range(0.0f, 1.0f)]
     [SerializeField] float time;
-    [SerializeField] float fullDayLength;
+    [SerializeField] float fullDayLength = 1000f;
     [SerializeField] float startTime = 0.4f;
     [SerializeField] Vector3 noon;
     private float timeRate;
     [SerializeField] bool nightTime; //just to set night or day
+    [SerializeField] Material daySkyBox;
+    [SerializeField] Material nightSkyBox;
 
 
 
@@ -40,6 +42,7 @@ public class DayAndNightCycle : MonoBehaviour
     {
         timeRate = 1.0f / fullDayLength;
         time = startTime;
+        
     }
 
     // Update is called once per frame
@@ -81,25 +84,28 @@ public class DayAndNightCycle : MonoBehaviour
         sun.color = sunColor.Evaluate(time);
         moon.color = moonColor.Evaluate(time);
 
+
         //enable/disable the sun
-        if (sun.intensity == 0 && sun.gameObject.activeInHierarchy)
+        if (sun.intensity <= 0 && sun.gameObject.activeInHierarchy)
         {
             sun.gameObject.SetActive(false);
         }
         else if (sun.intensity > 0 && !sun.gameObject.activeInHierarchy)
         {
             sun.gameObject.SetActive(true);
+            RenderSettings.skybox = daySkyBox;
 
         }
 
         //enable/disable the moon
-        if (moon.intensity == 0 && moon.gameObject.activeInHierarchy)
+        if (moon.intensity <= 0 && moon.gameObject.activeInHierarchy)
         {
             moon.gameObject.SetActive(false);
         }
         else if (moon.intensity > 0 && !moon.gameObject.activeInHierarchy)
         {
             moon.gameObject.SetActive(true);
+            RenderSettings.skybox = nightSkyBox;
         }
         //lighting and reflections intensity
         RenderSettings.ambientIntensity = lightingIntensityMultiplier.Evaluate(time);
