@@ -5,9 +5,11 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    [Header("Player Inputs")]
     private PlayerInput playerInput;
     private PlayerInput.OnFootActions onFoot;
 
+    [Header("Player Movements")]
     private PlayerMotor playerMotor;
     private PlayerLook playerLook;
 

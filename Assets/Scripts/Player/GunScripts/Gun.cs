@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+
+    [Header("Initialization Variables")]
+    [SerializeField] private GameObject Player;
+    private Transform cam;
+
     [Header("General Stats")]
     [SerializeField] float range = 50f;
     [SerializeField] float damage = 10f;
     [SerializeField] float fireRate = 5f;
     [SerializeField] float reloadTime;
     private WaitForSeconds reloadWait;
+    [SerializeField] float inaccuracyDistance = 5f;
 
     [Header("Rapid Fire")]
     [SerializeField] bool rapidFire = false;
@@ -20,7 +26,10 @@ public class Gun : MonoBehaviour
     public int currentAmmo;
     private bool manualReload = false;
     public bool isReloading = false;
+    [SerializeField] int maxAmmo;
 
+    [Header("Automatic Rifle")]
+    [SerializeField] bool automaticRifle = true;
 
     [Header("Shotgun")]
     [SerializeField] bool shotgun = false;
@@ -30,12 +39,6 @@ public class Gun : MonoBehaviour
     [SerializeField] private GameObject laser;
     [SerializeField] Transform muzzle;
     [SerializeField] float fadeDuration = 0.1f;
-
-
-    [SerializeField] private GameObject Player;
-    private Transform cam;
-    [SerializeField] int maxAmmo;
-    [SerializeField] float inaccuracyDistance = 5f;
 
 
     private void Awake()
@@ -52,45 +55,17 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
-        currentAmmo--; //removes 1 from currentAmmo.
+        //remove from current ammo here
+        currentAmmo--; 
 
 
         if(shotgun)
         {
-            for (int i = 0; i < bulletsPerShot; i++)
-            {
-                RaycastHit hit;
-                Vector3 shootingDir = GetShootingDirection();
-                if (Physics.Raycast(cam.position, shootingDir, out hit, range))
-                {
-                    if (hit.collider.GetComponent<Damageable>() != null)
-                    {
-                        hit.collider.GetComponent<Damageable>().TakeDamage(damage, hit.point, hit.normal);
-                    }
-                    CreateLaser(hit.point);
-                }
-                else 
-                {
-                    CreateLaser(cam.position + shootingDir * range);
-                }
-            }
+            ShotGun();
         }
-        else
+        else if(automaticRifle)
         {
-            RaycastHit hit;
-            Vector3 shootingDir = GetShootingDirection();
-            if (Physics.Raycast(cam.position, shootingDir, out hit, range))
-            {
-                if (hit.collider.GetComponent<Damageable>() != null)
-                {
-                    hit.collider.GetComponent<Damageable>().TakeDamage(damage, hit.point, hit.normal);
-                }
-                CreateLaser(hit.point);
-            }
-            else
-            {
-                CreateLaser(cam.position + shootingDir * range);
-            }
+            AutomaticRifle();
         }
     }
 
@@ -122,6 +97,9 @@ public class Gun : MonoBehaviour
         }
 
     }
+
+
+
     public void ReloadGun()
     {
         if(currentAmmo != maxAmmo && !isReloading)
@@ -130,6 +108,8 @@ public class Gun : MonoBehaviour
             StartCoroutine(Reload());
         }
     }
+
+
 
     private bool CanShoot()
     {
@@ -211,4 +191,45 @@ public class Gun : MonoBehaviour
             availableClips -= 1;
         }
     }
+
+    private void ShotGun()
+    {
+        for (int i = 0; i < bulletsPerShot; i++)
+        {
+            RaycastHit hit;
+            Vector3 shootingDir = GetShootingDirection();
+            if (Physics.Raycast(cam.position, shootingDir, out hit, range))
+            {
+                if (hit.collider.GetComponent<Damageable>() != null)
+                {
+                    hit.collider.GetComponent<Damageable>().TakeDamage(damage, hit.point, hit.normal);
+                }
+                CreateLaser(hit.point);
+            }
+            else
+            {
+                CreateLaser(cam.position + shootingDir * range);
+            }
+        }
+    }
+
+    private void AutomaticRifle()
+    {
+        RaycastHit hit;
+        Vector3 shootingDir = GetShootingDirection();
+        if (Physics.Raycast(cam.position, shootingDir, out hit, range))
+        {
+            if (hit.collider.GetComponent<Damageable>() != null)
+            {
+                hit.collider.GetComponent<Damageable>().TakeDamage(damage, hit.point, hit.normal);
+            }
+            CreateLaser(hit.point);
+        }
+        else
+        {
+            CreateLaser(cam.position + shootingDir * range);
+        }
+    }
 }
+
+

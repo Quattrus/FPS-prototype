@@ -14,7 +14,7 @@ public class PlayerInteract : MonoBehaviour
 
 
 
-    // Start is called before the first frame update
+ 
     void Start()
     {
         cam = GetComponent<PlayerLook>().Cam;
@@ -22,29 +22,34 @@ public class PlayerInteract : MonoBehaviour
         inputManager = GetComponent<InputManager>();
     }
 
-    // Update is called once per frame
+
     void Update()
+    {
+        PlayerInteraction();
+
+    }
+
+    private void PlayerInteraction()
     {
         playerUI.UpdateText(string.Empty);
         //create a ray at the center of the camera, shooting outwards.
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
         Debug.DrawRay(ray.origin, ray.direction * distance);
         RaycastHit hitInfo; //variable that stores our collision information.
-        if(Physics.Raycast(ray, out hitInfo, distance, rayCastMask))
+        if (Physics.Raycast(ray, out hitInfo, distance, rayCastMask))
         {
 
             //checks if the object has an interactable component
-            if(hitInfo.collider.GetComponent<Interactable>() != null)
+            if (hitInfo.collider.GetComponent<Interactable>() != null)
             {
                 //if it has then the UI will update the text to the prompt message.
                 Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
                 playerUI.UpdateText(interactable.promptMessage);
-                if(inputManager.OnFoot.Interact.triggered)
+                if (inputManager.OnFoot.Interact.triggered)
                 {
                     interactable.BaseInteract();
                 }
             }
         }
-
     }
 }

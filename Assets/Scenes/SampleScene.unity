@@ -5007,6 +5007,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1241115233}
     - target: {fileID: 696542128, guid: d00f49ffb10c5044c90e4ae5fd562170, type: 3}
+      propertyPath: ammoClipsText
+      value: 
+      objectReference: {fileID: 1874931495}
+    - target: {fileID: 696542128, guid: d00f49ffb10c5044c90e4ae5fd562170, type: 3}
       propertyPath: remainingBulletsText
       value: 
       objectReference: {fileID: 825983442}

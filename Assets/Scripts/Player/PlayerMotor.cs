@@ -5,15 +5,20 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviour
 {
 
+    [Header("Initialization")]
     private CharacterController characterController;
     private Vector3 playerVelocity;
-    private bool isGrounded;
-    private bool isCrouching = false;
-    private bool lerpCrouch = false;
+
+
+    [Header("Player Movement Checks")]
     [SerializeField] private bool isSprinting;
     [SerializeField] private bool canSprint;
     [SerializeField] private bool isSprinted;
+    private bool isGrounded;
+    private bool isCrouching = false;
+    private bool lerpCrouch = false;
 
+    [Header("Player Movement Variables")]
     [SerializeField] float gravity = -30f; //default is -9.8f;
     [SerializeField] float speed = 5f;
     [SerializeField] float jumpHeight = 3f;
@@ -37,14 +42,12 @@ public class PlayerMotor : MonoBehaviour
 
     void Update()
     {
-
         ///<summary>
         ///These are all movement related
         /// </summary>
-        isGrounded = characterController.isGrounded;
+        GroundCheck();
         CrouchFunctionality();
         CrouchSprintCheck();
-
     }
 
 
@@ -89,6 +92,11 @@ public class PlayerMotor : MonoBehaviour
         }
     }
 
+    private void GroundCheck()
+    {
+        isGrounded = characterController.isGrounded;
+    }
+
     private void CrouchSprintCheck()
     {
         if(isCrouching)
@@ -116,20 +124,21 @@ public class PlayerMotor : MonoBehaviour
 
     private void CrouchFunctionality()
     {
+        //slows down crouch speed to make it more realistic
         if (lerpCrouch)
         {
             crouchTimer += Time.deltaTime;
-            float p = crouchTimer / 1;
-            p *= p;
+            float crouchLerpValue = crouchTimer / 1;
+            crouchLerpValue *= crouchLerpValue;
             if (isCrouching)
             {
-                characterController.height = Mathf.Lerp(characterController.height, 1, p);
+                characterController.height = Mathf.Lerp(characterController.height, 1, crouchLerpValue);
             }
             else
             {
-                characterController.height = Mathf.Lerp(characterController.height, 2, p);
+                characterController.height = Mathf.Lerp(characterController.height, 2, crouchLerpValue);
             }
-            if (p > 1)
+            if (crouchLerpValue > 1)
             {
                 lerpCrouch = false;
                 crouchTimer = 0f;
@@ -138,8 +147,7 @@ public class PlayerMotor : MonoBehaviour
     }
 
     public void SprintStart()
-    {
-       
+    {    
         if (!isCrouching && canSprint && !isCrouching)
         {
             isSprinting = !isSprinting;
