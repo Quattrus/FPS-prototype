@@ -6,6 +6,8 @@ public class PlayerLook : MonoBehaviour
 {
     [Header("Player look")]
     private float xRotation = 0f;
+    private float yRotation = 0f;
+    [SerializeField] Transform orientation;
     [SerializeField] float xSensitivity = 30f;
     [SerializeField] float ySensitivity = 30f;
     [SerializeField] Camera cam;   
@@ -49,12 +51,14 @@ public class PlayerLook : MonoBehaviour
         float mouseX = input.x;
         float mouseY = input.y;
         //calculate the camera rotation for looking up and down
-        xRotation -= (mouseY * Time.deltaTime) * ySensitivity;
+        xRotation -= (mouseY * Time.fixedDeltaTime) * ySensitivity;
         xRotation = Mathf.Clamp(xRotation, -80f, 80f);
-        //apply it to the camera rotatoion.
-        cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        yRotation += mouseX;
+        //apply it to the camera rotation.
+        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+
         //rotates the player to look left and right
-        transform.Rotate(Vector3.up * (mouseX * Time.fixedDeltaTime) * xSensitivity);
+        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
     }
 /// <summary>
 /// End of basic look codes
