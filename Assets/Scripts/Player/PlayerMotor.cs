@@ -60,13 +60,13 @@ public class PlayerMotor : MonoBehaviour
         Vector3 moveDirection = Vector3.zero;
         moveDirection.x = input.x;
         moveDirection.z = input.y;
-        characterController.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
+        characterController.Move(transform.TransformDirection(moveDirection) * speed * Time.fixedDeltaTime);
         if(isGrounded && playerVelocity.y < 0)
         {
             playerVelocity.y = -2f;
         }
-        playerVelocity.y += gravity * Time.deltaTime;
-        characterController.Move(playerVelocity * Time.deltaTime);
+        playerVelocity.y += gravity * Time.fixedDeltaTime;
+        characterController.Move(playerVelocity * Time.fixedDeltaTime);
     }
 
     public void Jump()

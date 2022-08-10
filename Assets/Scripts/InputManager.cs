@@ -33,13 +33,14 @@ public class InputManager : MonoBehaviour
         playerMotor = GetComponent<PlayerMotor>();
         playerLook = GetComponent<PlayerLook>();
         onFoot.Jump.performed += ctx => playerMotor.Jump();
-        onFoot.Crouch.performed += ctx => playerMotor.Crouch();
-        onFoot.SprintStart.performed += ctx => playerMotor.SprintStart();
-        onFoot.SprintFinish.performed += ctx => playerMotor.SprintFinish();
+        onFoot.CrouchStart.started += ctx => playerMotor.Crouch();
+        onFoot.CrouchEnd.canceled += ctx => playerMotor.Crouch();
+        onFoot.SprintStart.started += ctx => playerMotor.SprintStart();
+        onFoot.SprintFinish.canceled += ctx => playerMotor.SprintFinish();
         onFoot.Shoot.started += _ => StartFiring();
         onFoot.Shoot.canceled += _ => StopFiring();
-        onFoot.AimStart.performed += ctx => playerLook.PlayerAimStart();
-        onFoot.AimFinish.performed += ctx => playerLook.PlayerAimFinished();
+        onFoot.AimStart.started += ctx => playerLook.PlayerAimStart();
+        onFoot.AimFinish.canceled += ctx => playerLook.PlayerAimFinished();
         onFoot.Reload.performed += ctx => gun.ReloadGun();
 
     }
@@ -48,10 +49,6 @@ public class InputManager : MonoBehaviour
     void FixedUpdate()
     {
         playerMotor.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
-    }
-
-    private void LateUpdate()
-    {
         playerLook.ProcessLook(onFoot.Look.ReadValue<Vector2>());
     }
 

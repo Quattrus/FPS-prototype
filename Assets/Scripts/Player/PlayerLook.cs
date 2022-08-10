@@ -51,10 +51,10 @@ public class PlayerLook : MonoBehaviour
         //calculate the camera rotation for looking up and down
         xRotation -= (mouseY * Time.deltaTime) * ySensitivity;
         xRotation = Mathf.Clamp(xRotation, -80f, 80f);
-        //apply it to the camera transform.
+        //apply it to the camera rotatoion.
         cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
         //rotates the player to look left and right
-        transform.Rotate(Vector3.up * (mouseX * Time.deltaTime) * xSensitivity);
+        transform.Rotate(Vector3.up * (mouseX * Time.fixedDeltaTime) * xSensitivity);
     }
 /// <summary>
 /// End of basic look codes
@@ -65,14 +65,14 @@ public class PlayerLook : MonoBehaviour
  /// </summary>
     public void PlayerAimStart()
     {
-        cam.fieldOfView = aimFOV += fovSpeed * Time.deltaTime;
+        cam.fieldOfView = aimFOV += fovSpeed * Time.fixedDeltaTime;
         xSensitivity = 10f;
         ySensitivity = 10f;
         isAiming = !isAiming;
     }
     public void PlayerAimFinished()
     {
-        cam.fieldOfView = initialFOV += fovSpeed * Time.deltaTime;
+        cam.fieldOfView = initialFOV += fovSpeed * Time.fixedDeltaTime;
         xSensitivity = 30f;
         ySensitivity = 30f;
         isAiming = !isAiming;
