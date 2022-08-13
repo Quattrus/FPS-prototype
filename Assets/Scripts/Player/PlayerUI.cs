@@ -11,7 +11,13 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ammoClipsText;
     [SerializeField] private TextMeshProUGUI remainingBulletsText;
 
+    private Inventory inventory;
     [SerializeField] GameObject gun;
+
+    private void Awake()
+    {
+        inventory = GetComponent<Inventory>();
+    }
 
     public void FixedUpdate()
     {
@@ -27,20 +33,24 @@ public class PlayerUI : MonoBehaviour
 
     public void AmmoClipsCheck()
     {
-        int ammoRemaining = gun.gameObject.GetComponent<Gun>().availableClips;
-        ammoClipsText.text = ("Ammo Clips: " + ammoRemaining);
+       int ammoRemaining = inventory.AvailableClips;
+       ammoClipsText.text = ("Ammo Clips: " + ammoRemaining);
     }
 
     public void RemainingBulletsCheck()
     {
-        if (gun.gameObject.GetComponent<Gun>().isReloading)
+        if(gun.gameObject != null)
         {
-            remainingBulletsText.text = ("Reloading");
+            if (gun.gameObject.GetComponent<Gun>().isReloading)
+            {
+                remainingBulletsText.text = ("Reloading");
+            }
+            else
+            {
+                int bulletsRemaining = inventory.CurrentAmmo;
+                remainingBulletsText.text = ("Bullets: " + bulletsRemaining);
+            }
         }
-        else
-        {
-            int bulletsRemaining = gun.gameObject.GetComponent<Gun>().currentAmmo;
-            remainingBulletsText.text = ("Bullets: " + bulletsRemaining);
-        }
+
     }
 }

@@ -37,11 +37,11 @@ public class InputManager : MonoBehaviour
         onFoot.CrouchEnd.canceled += ctx => playerMotor.Crouch();
         onFoot.SprintStart.started += ctx => playerMotor.SprintStart();
         onFoot.SprintFinish.canceled += ctx => playerMotor.SprintFinish();
-        onFoot.Shoot.started += _ => StartFiring();
-        onFoot.Shoot.canceled += _ => StopFiring();
         onFoot.AimStart.started += ctx => playerLook.PlayerAimStart();
         onFoot.AimFinish.canceled += ctx => playerLook.PlayerAimFinished();
         onFoot.Reload.performed += ctx => gun.ReloadGun();
+        onFoot.Shoot.started += _ => StartFiring();
+        onFoot.Shoot.canceled += _ => StopFiring();
 
     }
 
@@ -51,10 +51,17 @@ public class InputManager : MonoBehaviour
         playerMotor.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
         playerLook.ProcessLook(onFoot.Look.ReadValue<Vector2>());
     }
+    private void Update()
+    {
+    }
 
     private void StartFiring()
     {
-        fireCoroutine = StartCoroutine(gun.RapidFire());
+        if(gun.gameObject != null)
+        {
+            fireCoroutine = StartCoroutine(gun.RapidFire());
+        }
+        
     }
     private void StopFiring()
     {

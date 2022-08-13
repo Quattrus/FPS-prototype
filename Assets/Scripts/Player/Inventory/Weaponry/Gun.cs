@@ -8,6 +8,7 @@ public class Gun : MonoBehaviour
     [Header("Initialization Variables")]
     [SerializeField] private GameObject Player;
     private Transform cam;
+    private Inventory inventory;
 
     [Header("General Stats")]
     [SerializeField] float range = 50f;
@@ -21,13 +22,6 @@ public class Gun : MonoBehaviour
     [SerializeField] bool rapidFire = false;
     private WaitForSeconds rapidFireWait;
 
-    [Header("Ammo")]
-    public int availableClips = 5;
-    public int currentAmmo;
-    private bool manualReload = false;
-    public bool isReloading = false;
-    [SerializeField] int maxAmmo;
-
     [Header("Automatic Rifle")]
     [SerializeField] bool automaticRifle;
 
@@ -40,13 +34,19 @@ public class Gun : MonoBehaviour
     [SerializeField] Transform muzzle;
     [SerializeField] float fadeDuration = 0.1f;
 
+    [Header("Reloading")]
+    private bool manualReload = false;
+    public bool isReloading = false;
+    
+
 
     private void Awake()
     {
         cam = Camera.main.transform;
         rapidFireWait = new WaitForSeconds(1 / fireRate);
         reloadWait = new WaitForSeconds(reloadTime);
-        currentAmmo = maxAmmo;
+        inventory = GetComponent<Inventory>();
+        inventory.CurrentAmmo = inventory.MaxAmmo;
     }
     private void Update()
     {
@@ -65,13 +65,13 @@ public class Gun : MonoBehaviour
                     yield return rapidFireWait;
                     Shoot();
                 }
-                if (availableClips >= 0)
+                if (inventory.AvailableClips >= 0)
                 {
                     StartCoroutine(Reload());
                 }
             }
         }
-        else if(CanShoot() && availableClips >= 0)
+        else if(CanShoot() && inventory.AvailableClips >= 0)
         {
             StartCoroutine(Reload());
         }
@@ -86,7 +86,7 @@ public class Gun : MonoBehaviour
 
     public void ReloadGun()
     {
-        if(currentAmmo != maxAmmo && !isReloading)
+        if(inventory.CurrentAmmo != inventory.MaxAmmo && !isReloading)
         {
             manualReload = true;
             StartCoroutine(Reload());
@@ -97,22 +97,22 @@ public class Gun : MonoBehaviour
 
     private bool CanShoot()
     {
-        bool enoughAmmo = currentAmmo > 0;
+        bool enoughAmmo = inventory.CurrentAmmo > 0;
         return enoughAmmo;
     }
 
     private IEnumerator Reload()
     {
-        if (currentAmmo > 0 && !manualReload)
+        if (inventory.CurrentAmmo > 0 && !manualReload)
         {
             yield return null;
         }
-        else if(currentAmmo == 0 && !isReloading || manualReload)
+        else if(inventory.CurrentAmmo == 0 && !isReloading || manualReload)
         {
             isReloading = true;
             yield return reloadWait;
-            currentAmmo = maxAmmo;
-            AmmoRemoved();
+            inventory.CurrentAmmo = inventory.MaxAmmo;
+            inventory.AmmoRemoved();
             manualReload = false;
             isReloading = false;
         }
@@ -121,7 +121,7 @@ public class Gun : MonoBehaviour
     public void Shoot()
     {
         //remove from current ammo here
-        currentAmmo--;
+        inventory.CurrentAmmo--;
         if (shotgun)
         {
             ShotGun();
@@ -175,19 +175,6 @@ public class Gun : MonoBehaviour
         else
         {
             inaccuracyDistance = 5f;
-        }
-    }
-
-    public void AmmoAdded()
-    {
-        availableClips += 1;
-    }
-
-    public void AmmoRemoved()
-    {
-        if (availableClips > 0)
-        {
-            availableClips -= 1;
         }
     }
 

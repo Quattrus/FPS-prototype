@@ -8,16 +8,10 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] float xSensitivity = 30f;
     [SerializeField] float ySensitivity = 30f;
     [SerializeField] Transform playerCameraRoot;
-    
-
-    [Header("Cinemachine Controls")]
-    [SerializeField] int aimCamPriority = 10;
-    [SerializeField] CinemachineVirtualCamera aimCamera;
 
     [Header("Aim Functionality")]
-    [SerializeField] float fovSpeed = 1f;
-    [SerializeField] float aimFOV = 60f;
-    private float initialFOV;
+    [SerializeField] int aimCamPriority = 10;
+    [SerializeField] CinemachineVirtualCamera aimCamera;
     [SerializeField] bool isAiming;
     public bool IsAiming
     {

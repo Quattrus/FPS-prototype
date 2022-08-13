@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class AmmoBox : Interactable
 {
-    [SerializeField] GameObject gun;
+    [SerializeField] GameObject player;
 
     protected override void Interact()
     {
-        gun.gameObject.GetComponent<Gun>().AmmoAdded();
+        player.gameObject.GetComponent<Inventory>().AmmoAdded();
         Destroy(gameObject);
     }
 }
