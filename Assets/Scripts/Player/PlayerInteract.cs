@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
-    private Camera cam;
+    [SerializeField] Camera cam;
     private PlayerUI playerUI;
     private InputManager inputManager;
 
@@ -17,7 +15,6 @@ public class PlayerInteract : MonoBehaviour
  
     void Start()
     {
-        cam = GetComponent<PlayerLook>().Cam;
         playerUI = GetComponent<PlayerUI>();
         inputManager = GetComponent<InputManager>();
     }

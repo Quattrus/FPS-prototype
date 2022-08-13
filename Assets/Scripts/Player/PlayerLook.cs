@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerLook : MonoBehaviour
 {
@@ -8,15 +7,12 @@ public class PlayerLook : MonoBehaviour
     private float xRotation = 0f;
     [SerializeField] float xSensitivity = 30f;
     [SerializeField] float ySensitivity = 30f;
-    [SerializeField] Camera cam;   
-    public Camera Cam
-    {
-        get
-        {
-            return cam;
-        }
-    }
+    [SerializeField] Transform playerCameraRoot;
+    
 
+    [Header("Cinemachine Controls")]
+    [SerializeField] int aimCamPriority = 10;
+    [SerializeField] CinemachineVirtualCamera aimCamera;
 
     [Header("Aim Functionality")]
     [SerializeField] float fovSpeed = 1f;
@@ -39,7 +35,6 @@ public class PlayerLook : MonoBehaviour
 ///<summary>
 ///Player aim related
 /// </summary>
-        initialFOV = cam.fieldOfView;
     }
 /// <summary>
 /// basic look related
@@ -50,10 +45,10 @@ public class PlayerLook : MonoBehaviour
         float mouseY = input.y;
         //calculate the camera rotation for looking up and down
         xRotation -= (mouseY * Time.deltaTime) * ySensitivity;
-        xRotation = Mathf.Clamp(xRotation, -80f, 80f);
-        //apply it to the camera rotatoion.
-        cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
-        //rotates the player to look left and right
+        xRotation = Mathf.Clamp(xRotation, -75f, 75f);
+        //apply it to the camera rotation.
+        playerCameraRoot.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        //rotates the player to look left and right according to the face movement.
         transform.Rotate(Vector3.up * (mouseX * Time.fixedDeltaTime) * xSensitivity);
     }
 /// <summary>
@@ -65,14 +60,14 @@ public class PlayerLook : MonoBehaviour
  /// </summary>
     public void PlayerAimStart()
     {
-        cam.fieldOfView = aimFOV += fovSpeed * Time.fixedDeltaTime;
+        aimCamera.Priority += aimCamPriority;
         xSensitivity = 10f;
         ySensitivity = 10f;
         isAiming = !isAiming;
     }
     public void PlayerAimFinished()
     {
-        cam.fieldOfView = initialFOV += fovSpeed * Time.fixedDeltaTime;
+        aimCamera.Priority -= aimCamPriority;
         xSensitivity = 30f;
         ySensitivity = 30f;
         isAiming = !isAiming;
