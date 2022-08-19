@@ -48,11 +48,12 @@ public class InputManager : MonoBehaviour
     //Tell the PlayerMotor.cs to move using the value given from our movement action.
     void FixedUpdate()
     {
-        playerMotor.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
-        playerLook.ProcessLook(onFoot.Look.ReadValue<Vector2>());
+
     }
     private void Update()
     {
+        playerMotor.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
+        playerLook.ProcessLook(onFoot.Look.ReadValue<Vector2>());
     }
 
     private void StartFiring()
