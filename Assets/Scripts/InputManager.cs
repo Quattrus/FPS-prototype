@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour
     [Header("Player Movements")]
     private PlayerMotor playerMotor;
     private PlayerLook playerLook;
+    private PlayerStateMachine playerStateMachine;
 
     [SerializeField] Gun gun;
 
@@ -32,11 +33,12 @@ public class InputManager : MonoBehaviour
         onFoot = new PlayerInput().OnFoot;
         playerMotor = GetComponent<PlayerMotor>();
         playerLook = GetComponent<PlayerLook>();
-        onFoot.Jump.performed += ctx => playerMotor.Jump();
+        playerStateMachine = GetComponent<PlayerStateMachine>();
+        onFoot.Jump.performed += ctx => playerStateMachine.Jump();
         onFoot.CrouchStart.started += ctx => playerMotor.Crouch();
         onFoot.CrouchEnd.canceled += ctx => playerMotor.Crouch();
-        onFoot.SprintStart.started += ctx => playerMotor.SprintStart();
-        onFoot.SprintFinish.canceled += ctx => playerMotor.SprintFinish();
+        onFoot.SprintStart.started += ctx => playerStateMachine.SprintStart();
+        onFoot.SprintFinish.canceled += ctx => playerStateMachine.SprintFinish();
         onFoot.AimStart.started += ctx => playerLook.PlayerAimStart();
         onFoot.AimFinish.canceled += ctx => playerLook.PlayerAimFinished();
         onFoot.Reload.performed += ctx => gun.ReloadGun();
@@ -52,8 +54,9 @@ public class InputManager : MonoBehaviour
     }
     private void Update()
     {
-        playerMotor.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
+        playerStateMachine.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
         playerLook.ProcessLook(onFoot.Look.ReadValue<Vector2>());
+        playerStateMachine.IdleCheck(onFoot.Movement.ReadValue<Vector2>());
     }
 
     private void StartFiring()

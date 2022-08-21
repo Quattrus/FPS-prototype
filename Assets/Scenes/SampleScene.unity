@@ -4049,7 +4049,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: de4a32a7256b6db4e943e9fc0d6d52c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7705,26 +7705,26 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132243583723749238}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f26d8ff160537d4fa2934c587692c69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationPlayTransition: 0
-  animationSmoothTime: 0.1
-  isSprinting: 0
-  canSprint: 0
-  isSprinted: 0
-  isGrounded: 0
-  jumped: 0
-  distanceToGround: 1.41
-  gravity: -3
-  speed: 0
-  jumpHeight: 1.5
-  crouchTimer: 5
-  sprintSpeed: 1
-  walkSpeed: 0.5
-  crouchSpeed: 0.3
+  _animationPlayTransition: 0.15
+  _animationSmoothTime: 0.1
+  _isSprinting: 0
+  _canSprint: 0
+  _isSprinted: 0
+  _isGrounded: 0
+  _jumped: 0
+  _distanceToGround: 0
+  _gravity: -9.85
+  _speed: 5
+  _jumpHeight: 3
+  _crouchTimer: 5
+  _sprintSpeed: 8
+  _walkSpeed: 5
+  _crouchSpeed: 2
 --- !u!114 &3539200262398362183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9013,6 +9013,7 @@ GameObject:
   - component: {fileID: 8466151299645921205}
   - component: {fileID: 8466151299645921207}
   - component: {fileID: 8466151299645921206}
+  - component: {fileID: 8466151299645921208}
   m_Layer: 0
   m_Name: PlayerWithNoGun
   m_TagString: Player
@@ -9457,6 +9458,34 @@ MonoBehaviour:
   - m_Rig: {fileID: 1239075303}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &8466151299645921208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132243583723749238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 652ac8577d30be249b20efa956e9c5f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animationPlayTransition: 0.15
+  _animationSmoothTime: 0.3
+  _isSprinting: 0
+  _isIdle: 0
+  _canSprint: 0
+  _isGrounded: 0
+  _jumped: 0
+  _distanceToGround: 0
+  _isFalling: 0
+  _gravity: -30
+  _speed: 0
+  _jumpHeight: 1
+  _crouchTimer: 5
+  _sprintSpeed: 5
+  _walkSpeed: 1.5
+  _crouchSpeed: 0.5
 --- !u!4 &8518817371077933271
 Transform:
   m_ObjectHideFlags: 0

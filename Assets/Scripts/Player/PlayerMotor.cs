@@ -6,62 +6,62 @@ public class PlayerMotor : MonoBehaviour
 {
 
     [Header("Initialization")]
-    private CharacterController characterController;
-    private Vector3 playerVelocity;
+    private CharacterController _characterController;
+    private Vector3 _playerVelocity;
     //animations
-    private Animator animator;
-    private int moveXAnimationParameterID;
-    private int moveZAnimationParameterID;
-    private int jumpAnimationIdle;
-    private int jumpAnimationSprint;
-    [SerializeField] float animationPlayTransition = 0.15f;
-    Vector3 moveDirection = Vector3.zero;
+    private Animator _animator;
+    private int _moveXAnimationParameterID;
+    private int _moveZAnimationParameterID;
+    private int _jumpAnimationIdle;
+    private int _jumpAnimationSprint;
+    [SerializeField] float _animationPlayTransition = 0.15f;
+    Vector3 _moveDirection = Vector3.zero;
 
     //SmoothDamp
-    private Vector2 currentAnimationBlendVector;
-    Vector2 animationVelocity;
-    [SerializeField] float animationSmoothTime = 0.1f;
+    private Vector2 _currentAnimationBlendVector;
+    Vector2 _animationVelocity;
+    [SerializeField] float _animationSmoothTime = 0.1f;
 
 
     [Header("Player Movement Checks")]
-    [SerializeField] private bool isSprinting;
-    [SerializeField] private bool canSprint;
-    [SerializeField] private bool isSprinted;
-    [SerializeField] bool isGrounded;
-    [SerializeField] bool jumped;
-    private bool isCrouching = false;
-    private bool lerpCrouch = false;
-    [SerializeField] float distanceToGround;
+    [SerializeField] private bool _isSprinting;
+    [SerializeField] private bool _canSprint;
+    [SerializeField] private bool _isSprinted;
+    [SerializeField] bool _isGrounded;
+    [SerializeField] bool _jumped;
+    private bool _isCrouching = false;
+    private bool _lerpCrouch = false;
+    [SerializeField] float _distanceToGround;
     
 
     [Header("Player Movement Variables")]
-    [SerializeField] float gravity = -9.8f;
-    [SerializeField] float speed = 5f;
-    [SerializeField] float jumpHeight = 3f;
-    [SerializeField] float crouchTimer = 5f;
+    [SerializeField] float _gravity = -9.8f;
+    [SerializeField] float _speed = 5f;
+    [SerializeField] float _jumpHeight = 3f;
+    [SerializeField] float _crouchTimer = 5f;
 
     [Header("Movement Speed")]
-    [SerializeField] float sprintSpeed = 8f;
-    [SerializeField] float walkSpeed = 5f;
-    [SerializeField] float crouchSpeed = 2f;
+    [SerializeField] float _sprintSpeed = 8f;
+    [SerializeField] float _walkSpeed = 5f;
+    [SerializeField] float _crouchSpeed = 2f;
 
     void Awake()
     {
         ///<summary>
         ///These are all movement related.
         /// </summary>
-        characterController = GetComponent<CharacterController>();
-        distanceToGround = GetComponent<CharacterController>().bounds.extents.y;
-        canSprint = true;
-        speed = walkSpeed;
+        _characterController = GetComponent<CharacterController>();
+        _distanceToGround = GetComponent<CharacterController>().bounds.extents.y;
+        _canSprint = true;
+        _speed = _walkSpeed;
 
 
         //animations
-        animator = GetComponent<Animator>();
-        moveXAnimationParameterID = Animator.StringToHash("MoveX");
-        moveZAnimationParameterID = Animator.StringToHash("MoveY");
-        jumpAnimationIdle = Animator.StringToHash("JumpIdle");
-        jumpAnimationSprint = Animator.StringToHash("JumpSprint");
+        _animator = GetComponent<Animator>();
+        _moveXAnimationParameterID = Animator.StringToHash("MoveX");
+        _moveZAnimationParameterID = Animator.StringToHash("MoveY");
+        _jumpAnimationIdle = Animator.StringToHash("JumpIdle");
+        _jumpAnimationSprint = Animator.StringToHash("JumpSprint");
 
         //animator.SetFloat(moveXAnimationParameterID, 1f);
 
@@ -90,26 +90,26 @@ public class PlayerMotor : MonoBehaviour
     public void ProcessMove(Vector2 input)
     {
        
-        if (isSprinting)
+        if (_isSprinting)
         {
             input.x += Mathf.Lerp(input.x, 1,  1 * Time.deltaTime);
             input.y += Mathf.Lerp(input.y, 1, 1 * Time.deltaTime);
         }
-        if (isGrounded && playerVelocity.y < 0)
+        if (_isGrounded && _playerVelocity.y < 0)
         {
-            playerVelocity.y = -2f;
+            _playerVelocity.y = -2f;
         }
-        playerVelocity.y += gravity * Time.fixedDeltaTime;
-        characterController.Move(playerVelocity * Time.fixedDeltaTime);
+        _playerVelocity.y += _gravity * Time.fixedDeltaTime;
+        _characterController.Move(_playerVelocity * Time.fixedDeltaTime);
 
         
             //smoothdamp
-        currentAnimationBlendVector = Vector2.SmoothDamp(currentAnimationBlendVector, input, ref animationVelocity, animationSmoothTime);
-        moveDirection.x = currentAnimationBlendVector.x;
-        moveDirection.z = currentAnimationBlendVector.y;
-        characterController.Move(transform.TransformDirection(moveDirection) * speed * Time.fixedDeltaTime);
-        animator.SetFloat(moveXAnimationParameterID, currentAnimationBlendVector.x);
-        animator.SetFloat(moveZAnimationParameterID, currentAnimationBlendVector.y);
+        _currentAnimationBlendVector = Vector2.SmoothDamp(_currentAnimationBlendVector, input, ref _animationVelocity, _animationSmoothTime);
+        _moveDirection.x = _currentAnimationBlendVector.x;
+        _moveDirection.z = _currentAnimationBlendVector.y;
+        _characterController.Move(transform.TransformDirection(_moveDirection) * _speed * Time.fixedDeltaTime);
+        _animator.SetFloat(_moveXAnimationParameterID, _currentAnimationBlendVector.x);
+        _animator.SetFloat(_moveZAnimationParameterID, _currentAnimationBlendVector.y);
 
     }
 
@@ -117,87 +117,87 @@ public class PlayerMotor : MonoBehaviour
 
     public void Jump()
     {
-        if(isGrounded && !isCrouching)
+        if(_isGrounded && !_isCrouching)
         {
-            if(isSprinting)
+            if(_isSprinting)
             {
-                animator.CrossFade(jumpAnimationSprint, animationPlayTransition);
+                _animator.CrossFade(_jumpAnimationSprint, _animationPlayTransition);
             }
-            else if(!isSprinting)
+            else if(!_isSprinting)
             {
-                animator.CrossFade(jumpAnimationIdle, animationPlayTransition);
+                _animator.CrossFade(_jumpAnimationIdle, _animationPlayTransition);
             }
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
+            _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
         }
     }
 
     public void Crouch()
     {
-        isCrouching = !isCrouching;
-        crouchTimer = 0;
-        lerpCrouch = true;
-        if (isCrouching)
+        _isCrouching = !_isCrouching;
+        _crouchTimer = 0;
+        _lerpCrouch = true;
+        if (_isCrouching)
         {
-            speed = crouchSpeed;
+            _speed = _crouchSpeed;
         }
         else
         {
-            speed = walkSpeed;
+            _speed = _walkSpeed;
         }
     }
 
     private bool GroundCheck()
     {
-         //isGrounded = characterController.isGrounded;
-      isGrounded = Physics.Raycast(transform.position, Vector3.down, distanceToGround + 0.46f);
-        return isGrounded;
+        //isGrounded = characterController.isGrounded;
+        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _distanceToGround + 0.46f);
+        return _isGrounded;
     }
 
     private void CrouchSprintCheck()
     {
-        if(isCrouching)
+        if(_isCrouching)
         {
-            isSprinting = false;
-            canSprint = false;
+            _isSprinting = false;
+            _canSprint = false;
         }
-        else if(!isCrouching && !isSprinted)
+        else if(!_isCrouching && !_isSprinted)
         {
-            canSprint = true;
+            _canSprint = true;
         }
         else
         {
-            canSprint = false;
+            _canSprint = false;
         }
     }
 
     private void CrouchCheck()
     {
-        if (!isCrouching)
+        if (!_isCrouching)
         {
-            speed = walkSpeed;
+            _speed = _walkSpeed;
         }
     }
 
     private void CrouchFunctionality()
     {
         //slows down crouch speed to make it more realistic
-        if (lerpCrouch)
+        if (_lerpCrouch)
         {
-            crouchTimer += Time.deltaTime;
-            float crouchLerpValue = crouchTimer / 1;
+            _crouchTimer += Time.deltaTime;
+            float crouchLerpValue = _crouchTimer / 1;
             crouchLerpValue *= crouchLerpValue;
-            if (isCrouching)
+            if (_isCrouching)
             {
-                characterController.height = Mathf.Lerp(characterController.height, 1, crouchLerpValue);
+                _characterController.height = Mathf.Lerp(_characterController.height, 1, crouchLerpValue);
             }
             else
             {
-                characterController.height = Mathf.Lerp(characterController.height, 2, crouchLerpValue);
+                _characterController.height = Mathf.Lerp(_characterController.height, 2, crouchLerpValue);
             }
             if (crouchLerpValue > 1)
             {
-                lerpCrouch = false;
-                crouchTimer = 0f;
+                _lerpCrouch = false;
+                _crouchTimer = 0f;
             }
         }
     }
@@ -205,24 +205,24 @@ public class PlayerMotor : MonoBehaviour
     public void SprintStart()
     {
         
-        if (!isCrouching && canSprint && !isCrouching)
+        if (!_isCrouching && _canSprint && !_isCrouching)
         {
-            
-            isSprinting = true;
-            speed = sprintSpeed;
+
+            _isSprinting = true;
+            _speed = _sprintSpeed;
             StartCoroutine(SprintDuration());
-            isSprinted = true;
-            canSprint = false;
+            _isSprinted = true;
+            _canSprint = false;
             
         }
 
     }
     public void SprintFinish()
     {
-        isSprinting = false;
-        if (!isCrouching)
-        {     
-            speed = walkSpeed;
+        _isSprinting = false;
+        if (!_isCrouching)
+        {
+            _speed = _walkSpeed;
         }
     }
 
@@ -230,10 +230,10 @@ public class PlayerMotor : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         CrouchCheck();
-        isSprinting = false;
+        _isSprinting = false;
         yield return new WaitForSeconds(3);
-        isSprinted = false;
-        canSprint = true;
+        _isSprinted = false;
+        _canSprint = true;
     }
 ///<summary>
 ///end of movement codes.
