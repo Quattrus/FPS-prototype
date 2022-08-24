@@ -1176,6 +1176,7 @@ MonoBehaviour:
     type: 3}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!114 &377871710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1451,7 +1452,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28680
+  m_Name: pb_Mesh36832
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -9014,6 +9015,7 @@ GameObject:
   - component: {fileID: 8466151299645921207}
   - component: {fileID: 8466151299645921206}
   - component: {fileID: 8466151299645921208}
+  - component: {fileID: 8466151299645921209}
   m_Layer: 0
   m_Name: PlayerWithNoGun
   m_TagString: Player
@@ -9492,6 +9494,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   ground: {fileID: 0}
+--- !u!114 &8466151299645921209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132243583723749238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5cc8414b6db8214e8f19d9802b109da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grassSteps: []
+  waterSteps: []
+  caveSteps: []
+  cementSteps: []
 --- !u!4 &8518817371077933271
 Transform:
   m_ObjectHideFlags: 0

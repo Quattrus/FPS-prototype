@@ -490,14 +490,14 @@ ModelImporter:
         functionName: PlayStep
         data: 
         objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
+        floatParameter: 2
         intParameter: 0
         messageOptions: 0
       - time: 0.02542373
         functionName: PlayStep
         data: 
         objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
+        floatParameter: 2
         intParameter: 0
         messageOptions: 0
       transformMask: []
