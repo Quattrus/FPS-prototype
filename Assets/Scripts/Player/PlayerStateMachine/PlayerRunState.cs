@@ -34,5 +34,9 @@ public class PlayerRunState : PlayerBaseState
         {
             SwitchState(Factory.Walk());
         }
+        else if(Ctx.IsSprinting && Ctx.PlayerVelocityY < -10f)
+        {
+            SwitchState(Factory.Falling());
+        }
     }
 }

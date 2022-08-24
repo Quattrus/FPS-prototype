@@ -29,11 +29,11 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private bool _isIdle; //done
     [SerializeField] private bool _canSprint; //done
     [SerializeField] bool _isGrounded;//done
-    [SerializeField] bool _jumped;//Done
-    [SerializeField] bool _isInAir; //Done
+    [SerializeField] bool _jumped = false;//Done
+    [SerializeField] bool _isInAir = false; //Done
     private bool _isCrouching = false;
     private bool _lerpCrouch = false;
-    [SerializeField] bool _isFalling;//done
+    [SerializeField] bool _isFalling = false;//done
 
 
     [Header("Player Movement Variables")]
@@ -111,14 +111,16 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void FixedUpdate()
     {
-        TerminalVelocity();
+        
     }
 
     private void Update()
     {
+        TerminalVelocity();
         _currentState.UpdateStates();
         GroundCheck();
         FallCheck();
+        Debug.Log(_playerVelocity.y);
     }
 
     private void OnDrawGizmosSelected()
@@ -229,7 +231,7 @@ public class PlayerStateMachine : MonoBehaviour
         }
         else
         {
-            _isFalling = _playerVelocity.y <= 3f;
+            _isFalling = _playerVelocity.y < -2f;
         }
           
         return _isFalling;

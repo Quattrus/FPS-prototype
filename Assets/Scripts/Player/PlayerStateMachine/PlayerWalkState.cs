@@ -34,7 +34,7 @@ public class PlayerWalkState : PlayerBaseState
         {
             SwitchState(Factory.Run());
         }
-        else if(!Ctx.IsIdle && !Ctx.IsSprinting && !Ctx.Jumped && Ctx.PlayerVelocityY < -3f)
+        else if(!Ctx.IsIdle && !Ctx.IsSprinting && !Ctx.Jumped && Ctx.PlayerVelocityY < -10f)
         {
             SwitchState(Factory.Falling());
         }
