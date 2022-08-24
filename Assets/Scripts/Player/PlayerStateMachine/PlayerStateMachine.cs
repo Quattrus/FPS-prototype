@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerStateMachine : MonoBehaviour
 {
+    #region Variables
     [Header("Initialization")]
     private CharacterController _characterController;
     private Vector3 _playerVelocity;
@@ -58,9 +59,10 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField]  LayerMask sphereCastMask;
     private Vector3 sphereCastOrigin;
     [SerializeField] GameObject ground;
-    
+    #endregion
 
 
+    #region Getters and Setters
     //Getters and Setters
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
     public bool Jumped { get { return _jumped; } set { _jumped = value; } }
@@ -85,6 +87,7 @@ public class PlayerStateMachine : MonoBehaviour
     public float WalkSpeed { get { return _walkSpeed; } set { _walkSpeed = value; } }
     public bool CanSprint { get { return _canSprint; } set { _canSprint = value; } }
     public bool IsInAir { get { return _isInAir; } set { _isInAir = value; } }
+    #endregion
     void Awake()
     {
         ///<summary>
@@ -120,16 +123,10 @@ public class PlayerStateMachine : MonoBehaviour
         _currentState.UpdateStates();
         GroundCheck();
         FallCheck();
-        Debug.Log(_playerVelocity.y);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Debug.DrawLine(sphereCastOrigin, sphereCastOrigin + Vector3.down * groundDistance);
-        Gizmos.DrawWireSphere(sphereCastOrigin + Vector3.down * groundDistance, sphereRadius);
-    }
 
+    #region Player Movement
     public void Jump()
     {
         _jumped = true;
@@ -160,7 +157,9 @@ public class PlayerStateMachine : MonoBehaviour
         _animator.SetFloat(_moveZAnimationParameterID, _currentAnimationBlendVector.y);
 
     }
+    #endregion
 
+    #region PlayerMovementChecks
     public void SprintStart()
     {
         if(_canSprint)
@@ -244,6 +243,14 @@ public class PlayerStateMachine : MonoBehaviour
             _playerVelocity.y = -200f;
         }
     }
+    #endregion
 
-
+    #region Debugging
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Debug.DrawLine(sphereCastOrigin, sphereCastOrigin + Vector3.down * groundDistance);
+        Gizmos.DrawWireSphere(sphereCastOrigin + Vector3.down * groundDistance, sphereRadius);
+    }
+    #endregion
 }
