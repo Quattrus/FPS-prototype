@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class PlayerFallState : PlayerBaseState
 {
-    private float fallSpeed = 10f;
     public PlayerFallState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base (currentContext, playerStateFactory)
     {
         InitializeSubstate();
         IsRootState = true;
-        Ctx.Animator.SetBool("DefaultFall", true);
     }
     public override void EnterState()
     {
-        Ctx.PlayerVelocityY = Ctx.PlayerVelocityY * fallSpeed * Time.deltaTime;
+        Ctx.PlayerVelocityY = Ctx.PlayerVelocityY * Time.deltaTime;
+        Ctx.Animator.SetTrigger("DefaultAir");
+        Ctx.IsInAir = true;
     }
     public override void UpdateState()
     {
@@ -22,6 +22,7 @@ public class PlayerFallState : PlayerBaseState
     public override void ExitState()
     {
         Ctx.IsGrounded = true;
+        Ctx.IsFalling = false;
     }
     public override void InitializeSubstate()
     {

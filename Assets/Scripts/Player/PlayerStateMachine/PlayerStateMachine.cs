@@ -11,8 +11,10 @@ public class PlayerStateMachine : MonoBehaviour
     private Animator _animator; //done
     private int _moveXAnimationParameterID;
     private int _moveZAnimationParameterID;
-    private int _jumpAnimationIdle; //done
+    private int _jumpAnimationDefault; //done
     private int _jumpAnimationSprint; //done
+    private int _defaultAirAnimation; //done
+    private int _landAnimation; // done
     [SerializeField] float _animationPlayTransition = 0.15f; //done
     Vector3 _moveDirection = Vector3.zero;
 
@@ -28,6 +30,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private bool _canSprint; //done
     [SerializeField] bool _isGrounded;//done
     [SerializeField] bool _jumped;//Done
+    [SerializeField] bool _isInAir; //Done
     private bool _isCrouching = false;
     private bool _lerpCrouch = false;
     [SerializeField] float _distanceToGround; //done
@@ -55,8 +58,10 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsSprinting { get { return _isSprinting; } set { _isSprinting = value; } }
     public Animator Animator { get { return _animator;} set { _animator = value; } }
     public int JumpAnimationSprint { get { return _jumpAnimationSprint; } set { _jumpAnimationSprint = value; } }
+    public int DefaultAirAnimation { get { return _defaultAirAnimation;} set { _defaultAirAnimation = value; } }
+    public int LandAnimation { get { return _landAnimation; } set { _landAnimation = value; } }
     public float AnimationPlayTransition { get { return _animationPlayTransition; } set { _animationPlayTransition = value; } }
-    public int JumpAnimationIdle { get { return _jumpAnimationIdle; } set { _jumpAnimationIdle = value; } }
+    public int JumpAnimationDefault { get { return _jumpAnimationDefault; } set { _jumpAnimationDefault = value; } }
     public Vector3 PlayerVelocity { get { return _playerVelocity; } set { _playerVelocity = value; } }
     public float PlayerVelocityX { get { return _playerVelocity.x; } set { _playerVelocity.x = value; } }
     public float PlayerVelocityY { get{ return _playerVelocity.y; } set { _playerVelocity.y = value; } }
@@ -71,6 +76,7 @@ public class PlayerStateMachine : MonoBehaviour
     public float Speed { get { return _speed; } set { _speed = value; } }
     public float WalkSpeed { get { return _walkSpeed; } set { _walkSpeed = value; } }
     public bool CanSprint { get { return _canSprint; } set { _canSprint = value; } }
+    public bool IsInAir { get { return _isInAir; } set { _isInAir = value; } }
     void Awake()
     {
         ///<summary>
@@ -90,7 +96,7 @@ public class PlayerStateMachine : MonoBehaviour
         _animator = GetComponent<Animator>();
         _moveXAnimationParameterID = Animator.StringToHash("MoveX");
         _moveZAnimationParameterID = Animator.StringToHash("MoveY");
-        _jumpAnimationIdle = Animator.StringToHash("JumpIdle");
+        _jumpAnimationDefault = Animator.StringToHash("DefaultJump");
         _jumpAnimationSprint = Animator.StringToHash("JumpSprint");
         //animator.SetFloat(moveXAnimationParameterID, 1f);
 
@@ -98,7 +104,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        TerminalVelocity();
     }
 
     private void Update()
@@ -106,6 +112,7 @@ public class PlayerStateMachine : MonoBehaviour
         _currentState.UpdateStates();
         GroundCheck();
         FallCheck();
+        Debug.Log(PlayerVelocityY);
     }
 
     public void Jump()
@@ -119,6 +126,11 @@ public class PlayerStateMachine : MonoBehaviour
         {
             input.x += Mathf.Lerp(input.x, 1, 1 * Time.deltaTime);
             input.y += Mathf.Lerp(input.y, 1, 1 * Time.deltaTime);
+        }
+
+        if (!_isFalling && _playerVelocity.y < -2f)
+        {
+            _playerVelocity.y = -2f;
         }
 
         _playerVelocity.y += _gravity * Time.deltaTime;
@@ -191,7 +203,13 @@ public class PlayerStateMachine : MonoBehaviour
         return _isFalling;
     }
 
-
+    private void TerminalVelocity()
+    {
+        if(_playerVelocity.y <= -200f)
+        {
+            _playerVelocity.y = -200f;
+        }
+    }
 
 
 }

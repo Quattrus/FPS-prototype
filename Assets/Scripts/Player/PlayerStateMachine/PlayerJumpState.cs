@@ -9,10 +9,11 @@ public class PlayerJumpState : PlayerBaseState
     {
         InitializeSubstate();
         IsRootState = true;
-        Ctx.Animator.SetBool("DefaultJump", true);
+       
     }
     public override void EnterState()
     {
+        Ctx.Animator.SetTrigger("DefaultJump");
         Jump();
     }
     public override void UpdateState()
@@ -42,7 +43,7 @@ public class PlayerJumpState : PlayerBaseState
         }
         else if (!Ctx.IsSprinting)
         {
-            Ctx.Animator.CrossFade(Ctx.JumpAnimationIdle, Ctx.AnimationPlayTransition);
+            Ctx.Animator.CrossFade(Ctx.JumpAnimationDefault, Ctx.AnimationPlayTransition);
         }
         Ctx.PlayerVelocityY = Mathf.Sqrt(Ctx.JumpHeight * -3.0f * Ctx.Gravity);
     }

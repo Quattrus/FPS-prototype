@@ -13,10 +13,12 @@ public class PlayerGroundedState : PlayerBaseState
     {
         Ctx.Jumped = false;
         Ctx.IsFalling = false;
-        if (Ctx.PlayerVelocityY < 0)
+        if(Ctx.IsInAir)
         {
-            Ctx.PlayerVelocityY = -2f;
+            Ctx.Animator.SetTrigger("Land");
+            Ctx.IsInAir = false;
         }
+
     }
     public override void UpdateState()
     {
