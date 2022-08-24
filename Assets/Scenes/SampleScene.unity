@@ -595,7 +595,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192264478}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.10100013}
+  m_LocalPosition: {x: 0, y: 0, z: -0.10100017}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1451,7 +1451,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-3553414
+  m_Name: pb_Mesh28680
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -1827,7 +1827,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727279835}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.495, z: 0.24399996}
+  m_LocalPosition: {x: 0, y: 0.495, z: 0.089999914}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2930,7 +2930,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037306708}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.495, z: 0.254}
+  m_LocalPosition: {x: 0, y: 0.495, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4694,7 +4694,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598179527}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.495, z: 0.24399996}
+  m_LocalPosition: {x: 0, y: 0.495, z: 0.089999914}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7046,7 +7046,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.7
-  m_Radius: 0.3
+  m_Radius: 0.15
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -9477,7 +9477,7 @@ MonoBehaviour:
   _canSprint: 0
   _isGrounded: 0
   _jumped: 0
-  _distanceToGround: 0
+  _isInAir: 0
   _isFalling: 0
   _gravity: -30
   _speed: 0
@@ -9486,6 +9486,12 @@ MonoBehaviour:
   _sprintSpeed: 5
   _walkSpeed: 1.5
   _crouchSpeed: 0.5
+  sphereRadius: 0.15
+  maxDistanceToGround: 1
+  sphereCastMask:
+    serializedVersion: 2
+    m_Bits: 65
+  ground: {fileID: 0}
 --- !u!4 &8518817371077933271
 Transform:
   m_ObjectHideFlags: 0

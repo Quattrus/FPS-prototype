@@ -34,5 +34,9 @@ public class PlayerIdleState : PlayerBaseState
         {
             SwitchState(Factory.Run());
         }
+        else if(Ctx.IsIdle && Ctx.PlayerVelocityY < -2.9f)
+        {
+            SwitchState(Factory.Falling());
+        }
     }
 }

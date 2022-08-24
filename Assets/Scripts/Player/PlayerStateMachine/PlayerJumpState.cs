@@ -13,7 +13,15 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void EnterState()
     {
-        Ctx.Animator.SetTrigger("DefaultJump");
+        if(!Ctx.IsSprinting)
+        {
+            Ctx.Animator.SetTrigger("DefaultJump");
+        }
+        else if(Ctx.IsSprinting)
+        {
+            Ctx.Animator.SetTrigger("SprintJump");
+        }
+        
         Jump();
     }
     public override void UpdateState()

@@ -33,7 +33,6 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] bool _isInAir; //Done
     private bool _isCrouching = false;
     private bool _lerpCrouch = false;
-    [SerializeField] float _distanceToGround; //done
     [SerializeField] bool _isFalling;//done
 
 
@@ -51,6 +50,16 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("State Variables")]
     PlayerBaseState _currentState;//Done
     PlayerStateFactory _states;
+
+    [Header("GroundCheck")]
+    [SerializeField] float sphereRadius;
+    [SerializeField] float maxDistanceToGround;
+    private float groundDistance;
+    [SerializeField]  LayerMask sphereCastMask;
+    private Vector3 sphereCastOrigin;
+    [SerializeField] GameObject ground;
+    
+
 
     //Getters and Setters
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
@@ -70,7 +79,6 @@ public class PlayerStateMachine : MonoBehaviour
     public float Gravity { get { return _gravity; } set { _gravity = value; } }
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
     public bool IsFalling { get { return _isFalling; } set { _isFalling = value; } }
-    public float DistanceToGround { get { return _distanceToGround; } set { _distanceToGround = value; } }
     public bool IsIdle { get { return _isIdle; } set { _isIdle = value; } }
     public float SprintSpeed { get { return _sprintSpeed; } set { _sprintSpeed = value; } }
     public float Speed { get { return _speed; } set { _speed = value; } }
@@ -83,7 +91,6 @@ public class PlayerStateMachine : MonoBehaviour
         ///These are all movement related.
         /// </summary>
         _characterController = GetComponent<CharacterController>();
-        _distanceToGround = GetComponent<CharacterController>().bounds.extents.y;
         _canSprint = true;
         _speed = _walkSpeed;
 
@@ -112,7 +119,13 @@ public class PlayerStateMachine : MonoBehaviour
         _currentState.UpdateStates();
         GroundCheck();
         FallCheck();
-        Debug.Log(PlayerVelocityY);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Debug.DrawLine(sphereCastOrigin, sphereCastOrigin + Vector3.down * groundDistance);
+        Gizmos.DrawWireSphere(sphereCastOrigin + Vector3.down * groundDistance, sphereRadius);
     }
 
     public void Jump()
@@ -184,8 +197,27 @@ public class PlayerStateMachine : MonoBehaviour
 
     private bool GroundCheck()
     {
-        //isGrounded = characterController.isGrounded;
-        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _distanceToGround + 0.46f);
+        sphereCastOrigin = transform.position;
+        RaycastHit hit;
+        if (Physics.SphereCast(sphereCastOrigin, sphereRadius, Vector3.down, out hit, maxDistanceToGround, sphereCastMask, QueryTriggerInteraction.UseGlobal))
+        {
+            ground = hit.transform.gameObject;
+            groundDistance = hit.distance;
+        }
+        else
+        {
+            groundDistance = maxDistanceToGround;
+            ground = null;
+
+        }
+        if(ground != null)
+        {
+          _isGrounded = true;
+        }
+        else if(ground == null)
+        {
+            _isGrounded = false;
+        }
         return _isGrounded;
     }
 
