@@ -9506,10 +9506,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5cc8414b6db8214e8f19d9802b109da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grassSteps: []
-  waterSteps: []
-  caveSteps: []
-  cementSteps: []
+  grassSteps:
+  - {fileID: 8300000, guid: f53a57c13143c25479af4f0504e79807, type: 3}
+  - {fileID: 8300000, guid: aab5a7f9170637a47b0cd393caba5c5d, type: 3}
+  - {fileID: 8300000, guid: 3d8635ac9661e0445b7ba1fc5ec6c168, type: 3}
+  - {fileID: 8300000, guid: 968976cc90154ff48b867a51dc03e3ab, type: 3}
+  - {fileID: 8300000, guid: 1b1d7dcb3a987dd4e8a4c56ded26a3f6, type: 3}
+  waterSteps:
+  - {fileID: 8300000, guid: 8207cfe60cd7cd0489765eaebf712ba6, type: 3}
+  - {fileID: 8300000, guid: ce85c273c412d5e42b0c8b2485c3d903, type: 3}
+  - {fileID: 8300000, guid: 25d3ac18d7d1d3549875f29da453334e, type: 3}
+  - {fileID: 8300000, guid: feb015a12ff4c0745a6d690ccf1bd2ea, type: 3}
+  - {fileID: 8300000, guid: c23ff8d3d3b44844d86f6fa7d7f9d68a, type: 3}
+  caveSteps:
+  - {fileID: 8300000, guid: 16bdfe78598647544b351f75362ef148, type: 3}
+  - {fileID: 8300000, guid: 7f55ce1b6e478f84b959a5868c378f48, type: 3}
+  - {fileID: 8300000, guid: cfe395b9ac54d5744857b42f68f3eec8, type: 3}
+  - {fileID: 8300000, guid: 246b13ffe6a86164084a7f981a0424ee, type: 3}
+  - {fileID: 8300000, guid: fcd609f323d9d8d4a82fafb551f9a457, type: 3}
+  cementSteps:
+  - {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  - {fileID: 8300000, guid: 85016e0f2b01da248b9663dd49a161b0, type: 3}
+  - {fileID: 8300000, guid: 186de84b3207156479abe98f4958fed0, type: 3}
+  - {fileID: 8300000, guid: 1a91fcd19acf1e54bba0945d9f390849, type: 3}
+  - {fileID: 8300000, guid: 14e8a8d2158bec840b56c54f5266e692, type: 3}
+  - {fileID: 8300000, guid: 29841e7d5bbfb5b419c9ad16ca8bc4c1, type: 3}
+  - {fileID: 8300000, guid: dd1af302b8902684d9381de1f2d3a5af, type: 3}
+  - {fileID: 8300000, guid: 67c8b33e424ccdc4486edf538ab91c5a, type: 3}
+  - {fileID: 8300000, guid: 274649b0e221539409070ebf6c18918b, type: 3}
+  - {fileID: 8300000, guid: a3194b8bbc96ef84fab1f98f4b7dae3e, type: 3}
 --- !u!4 &8518817371077933271
 Transform:
   m_ObjectHideFlags: 0
