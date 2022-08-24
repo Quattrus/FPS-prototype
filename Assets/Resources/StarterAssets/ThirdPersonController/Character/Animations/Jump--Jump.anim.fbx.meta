@@ -96,7 +96,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.1615599
-        functionName: OnLand
+        functionName: PlayStep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

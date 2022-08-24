@@ -45,14 +45,6 @@ public class PlayerJumpState : PlayerBaseState
     }
     private void Jump()
     {
-        if (Ctx.IsSprinting)
-        {
-            Ctx.Animator.CrossFade(Ctx.JumpAnimationSprint, Ctx.AnimationPlayTransition);
-        }
-        else if (!Ctx.IsSprinting)
-        {
-            Ctx.Animator.CrossFade(Ctx.JumpAnimationDefault, Ctx.AnimationPlayTransition);
-        }
-        Ctx.PlayerVelocityY = Mathf.Sqrt(Ctx.JumpHeight * -3.0f * Ctx.Gravity);
+      Ctx.PlayerVelocityY = Mathf.Sqrt(Ctx.JumpHeight * -3.0f * Ctx.Gravity);
     }
 }
