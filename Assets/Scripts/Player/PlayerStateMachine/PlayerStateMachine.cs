@@ -12,17 +12,17 @@ public class PlayerStateMachine : MonoBehaviour
     private Animator _animator; //done
     private int _moveXAnimationParameterID;
     private int _moveZAnimationParameterID;
-    private int _jumpAnimationDefault; //done
-    private int _jumpAnimationSprint; //done
+    private int _moveXCrouchAnimationParameterID;//done
+    private int _moveZCrouchAnimationParameterID;//done
     private int _defaultAirAnimation; //done
     private int _landAnimation; // done
     [SerializeField] float _animationPlayTransition = 0.15f; //done
     Vector3 _moveDirection = Vector3.zero;
 
     [Header("Animation Smoothing")]
-    private Vector2 _currentAnimationBlendVector;
+    private Vector2 _currentAnimationBlendVector; //done
     Vector2 _animationVelocity;
-    [SerializeField] float _animationSmoothTime = 0.1f;
+    [SerializeField] float _animationSmoothTime = 0.1f; //done
 
 
     [Header("Player Movement Checks")]
@@ -32,7 +32,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] bool _isGrounded;//done
     [SerializeField] bool _jumped = false;//Done
     [SerializeField] bool _isInAir = false; //Done
-    private bool _isCrouching = false;
+    private bool _isCrouching = false;//done
     private bool _lerpCrouch = false;
     [SerializeField] bool _isFalling = false;//done
 
@@ -46,7 +46,7 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("Movement Speed")]
     [SerializeField] float _sprintSpeed = 8f; //done
     [SerializeField] float _walkSpeed = 5f; //done
-    [SerializeField] float _crouchSpeed = 2f;
+    [SerializeField] float _crouchSpeed = 2f; //done
 
     [Header("State Variables")]
     PlayerBaseState _currentState;//Done
@@ -68,11 +68,9 @@ public class PlayerStateMachine : MonoBehaviour
     public bool Jumped { get { return _jumped; } set { _jumped = value; } }
     public bool IsSprinting { get { return _isSprinting; } set { _isSprinting = value; } }
     public Animator Animator { get { return _animator;} set { _animator = value; } }
-    public int JumpAnimationSprint { get { return _jumpAnimationSprint; } set { _jumpAnimationSprint = value; } }
     public int DefaultAirAnimation { get { return _defaultAirAnimation;} set { _defaultAirAnimation = value; } }
     public int LandAnimation { get { return _landAnimation; } set { _landAnimation = value; } }
     public float AnimationPlayTransition { get { return _animationPlayTransition; } set { _animationPlayTransition = value; } }
-    public int JumpAnimationDefault { get { return _jumpAnimationDefault; } set { _jumpAnimationDefault = value; } }
     public Vector3 PlayerVelocity { get { return _playerVelocity; } set { _playerVelocity = value; } }
     public float PlayerVelocityX { get { return _playerVelocity.x; } set { _playerVelocity.x = value; } }
     public float PlayerVelocityY { get{ return _playerVelocity.y; } set { _playerVelocity.y = value; } }
@@ -87,6 +85,12 @@ public class PlayerStateMachine : MonoBehaviour
     public float WalkSpeed { get { return _walkSpeed; } set { _walkSpeed = value; } }
     public bool CanSprint { get { return _canSprint; } set { _canSprint = value; } }
     public bool IsInAir { get { return _isInAir; } set { _isInAir = value; } }
+    public float CrouchSpeed { get { return _crouchSpeed; } set { _crouchSpeed = value; } }
+    public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
+    public int MoveXCrouchAnimationParameterID { get { return _moveXCrouchAnimationParameterID; } set { _moveXCrouchAnimationParameterID = value; } }
+    public int MoveZCrouchAnimationParameterID { get { return _moveZCrouchAnimationParameterID; } set { _moveZCrouchAnimationParameterID = value; } }
+    public Vector2 CurrentAnimationBlendVector { get { return _currentAnimationBlendVector; } set { _currentAnimationBlendVector = value; } }
+    public float AnimationSmoothTime { get { return _animationSmoothTime; } set { _animationSmoothTime = value; } }
     #endregion
     void Awake()
     {
@@ -106,8 +110,8 @@ public class PlayerStateMachine : MonoBehaviour
         _animator = GetComponent<Animator>();
         _moveXAnimationParameterID = Animator.StringToHash("MoveX");
         _moveZAnimationParameterID = Animator.StringToHash("MoveY");
-        _jumpAnimationDefault = Animator.StringToHash("DefaultJump");
-        _jumpAnimationSprint = Animator.StringToHash("JumpSprint");
+        _moveXCrouchAnimationParameterID = Animator.StringToHash("MoveXCrouch");
+        _moveZCrouchAnimationParameterID = Animator.StringToHash("MoveZCrouch");
         //animator.SetFloat(moveXAnimationParameterID, 1f);
 
     }
@@ -123,6 +127,7 @@ public class PlayerStateMachine : MonoBehaviour
         _currentState.UpdateStates();
         GroundCheck();
         FallCheck();
+        CrouchFunctionality();
     }
 
 
@@ -157,6 +162,31 @@ public class PlayerStateMachine : MonoBehaviour
         _animator.SetFloat(_moveZAnimationParameterID, _currentAnimationBlendVector.y);
 
     }
+
+    private void CrouchFunctionality()
+    {
+        //slows down crouch speed to make it more realistic
+        if (_lerpCrouch)
+        {
+            _crouchTimer += Time.deltaTime;
+            float crouchLerpValue = _crouchTimer / 1;
+            crouchLerpValue *= crouchLerpValue;
+            if (_isCrouching)
+            {
+                _characterController.height = Mathf.Lerp(_characterController.height, 1.31f, crouchLerpValue);
+                _animator.SetLayerWeight(1, 1f);
+            }
+            else
+            {
+                _characterController.height = Mathf.Lerp(_characterController.height, 1.7f, crouchLerpValue);
+            }
+            if (crouchLerpValue > 1)
+            {
+                _lerpCrouch = false;
+                _crouchTimer = 0f;
+            }
+        }
+    }
     #endregion
 
     #region PlayerMovementChecks
@@ -169,6 +199,13 @@ public class PlayerStateMachine : MonoBehaviour
            StartCoroutine(SprintDuration());
         }
 
+    }
+
+    public void Crouch()
+    {
+        _isCrouching = !_isCrouching;
+        _crouchTimer = 0;
+        _lerpCrouch = true;
     }
     public void SprintFinish()
     {

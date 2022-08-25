@@ -10,7 +10,6 @@ public class InputManager : MonoBehaviour
     private PlayerInput.OnFootActions onFoot;
 
     [Header("Player Movements")]
-    private PlayerMotor playerMotor;
     private PlayerLook playerLook;
     private PlayerStateMachine playerStateMachine;
 
@@ -31,12 +30,11 @@ public class InputManager : MonoBehaviour
     {
         playerInput = new PlayerInput();
         onFoot = new PlayerInput().OnFoot;
-        playerMotor = GetComponent<PlayerMotor>();
         playerLook = GetComponent<PlayerLook>();
         playerStateMachine = GetComponent<PlayerStateMachine>();
         onFoot.Jump.performed += ctx => playerStateMachine.Jump();
-        onFoot.CrouchStart.started += ctx => playerMotor.Crouch();
-        onFoot.CrouchEnd.canceled += ctx => playerMotor.Crouch();
+        onFoot.CrouchStart.started += ctx => playerStateMachine.Crouch();
+        onFoot.CrouchEnd.canceled += ctx => playerStateMachine.Crouch();
         onFoot.SprintStart.started += ctx => playerStateMachine.SprintStart();
         onFoot.SprintFinish.canceled += ctx => playerStateMachine.SprintFinish();
         onFoot.AimStart.started += ctx => playerLook.PlayerAimStart();

@@ -10,7 +10,7 @@ public class PlayerIdleState : PlayerBaseState
     }
     public override void EnterState()
     {
-
+        
     }
     public override void UpdateState()
     {
@@ -37,6 +37,10 @@ public class PlayerIdleState : PlayerBaseState
         else if(Ctx.IsIdle && Ctx.PlayerVelocityY < -10f)
         {
             SwitchState(Factory.Falling());
+        }
+        else if (Ctx.IsCrouching)
+        {
+            SwitchState(Factory.Crouching());
         }
     }
 }

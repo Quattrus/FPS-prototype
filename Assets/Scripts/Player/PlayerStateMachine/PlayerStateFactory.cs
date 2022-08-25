@@ -31,4 +31,8 @@ public class PlayerStateFactory
     {
         return new PlayerFallState(_context, this);
     }
+    public PlayerBaseState Crouching()
+    {
+        return new PlayerCrouchState(_context, this);
+    }
 }
