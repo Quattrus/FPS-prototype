@@ -10,7 +10,7 @@ public class FootIKBehaviour : MonoBehaviour
 
     [Header("Feet Grounder")]
     [SerializeField] bool enableFeetIK = true;
-    [Range(0, 2)][SerializeField] float heightFromGroundRaycast = 1.14f;
+    [Range(-1, 2)][SerializeField] float heightFromGroundRaycast = 1.14f;
     [Range(0, 2)][SerializeField] float rayCastDownDistance = 1.5f;
     [SerializeField] LayerMask environmentLayer;
     [SerializeField] float pelvisOffset = 0f;
@@ -36,7 +36,7 @@ public class FootIKBehaviour : MonoBehaviour
     /// <summary>
     /// Updating the AdjustFeetTarget method and also finding the position of each foot inside the SolverPosition.
     /// </summary>
-    private void FixedUpdate()
+    private void Update()
     {
         if(enableFeetIK == false)
         {

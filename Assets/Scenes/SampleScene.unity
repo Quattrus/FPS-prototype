@@ -9579,8 +9579,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableFeetIK: 1
-  heightFromGroundRaycast: 0.5
-  rayCastDownDistance: 1.5
+  heightFromGroundRaycast: -0.27
+  rayCastDownDistance: 1
   environmentLayer:
     serializedVersion: 2
     m_Bits: 1
