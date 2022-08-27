@@ -43,7 +43,7 @@ public class PlayerLook : MonoBehaviour
         /// </summary>
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         HeadAndBodyAnimation();
     }
@@ -60,7 +60,7 @@ public class PlayerLook : MonoBehaviour
         //apply it to the camera rotation.
         playerCameraRoot.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
         //rotates the player to look left and right according to the face movement.
-        Vector3 rotationValue = (Vector3.up * (mouseX * Time.fixedDeltaTime) * xSensitivity);
+        Vector3 rotationValue = (Vector3.up * (mouseX * Time.deltaTime) * xSensitivity);
         transform.Rotate(rotationValue);
     }
 

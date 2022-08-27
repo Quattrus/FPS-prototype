@@ -16,12 +16,7 @@ public class FootIKBehaviour : MonoBehaviour
     [SerializeField] float pelvisOffset = 0f;
     [Range(0, 1)][SerializeField] float pelvisUpAndDownSpeed = 0.28f;
     [Range(0, 1)][SerializeField] float feetToIKPositionSpeed = 0.5f;
-    [Range(0, 2)]
-    [SerializeField] float sphereRadius;
     private Animator anim;
-
-    public string leftFootAnimVariableName = "LeftFootCurve";
-    public string rightFootAnimVariableName = "RightFootCurve";
 
     public bool useProIKFeature = false;
     public bool showSolverDebug = true;
@@ -52,6 +47,7 @@ public class FootIKBehaviour : MonoBehaviour
         //find and raycast to the ground to find positions
         FeetPositionSolver(rightFootPosition, ref rightFootIKPosition, ref rightFootIKRotation); //handles the solver for the right foot
         FeetPositionSolver(leftFootPosition, ref leftFootIKPosition, ref leftFootIKRotation); // handles the solver for the left foot
+
     }
 
     private void OnAnimatorIK(int layerIndex)
@@ -70,7 +66,7 @@ public class FootIKBehaviour : MonoBehaviour
         anim.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1);
         if(useProIKFeature)
         {
-            anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, anim.GetFloat(rightFootAnimVariableName));
+            anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, anim.GetFloat("LeftFootCurve"));
         }
 
         MoveFeetToIKPoint(AvatarIKGoal.RightFoot, rightFootIKPosition, rightFootIKRotation, ref lastRightFootPositionY);
@@ -79,7 +75,7 @@ public class FootIKBehaviour : MonoBehaviour
         anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
         if (useProIKFeature)
         {
-            anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, anim.GetFloat(leftFootAnimVariableName));
+            anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, anim.GetFloat("RightFootCurve"));
         }
 
         MoveFeetToIKPoint(AvatarIKGoal.LeftFoot, leftFootIKPosition, leftFootIKRotation, ref lastLeftFootPositionY);
@@ -129,8 +125,9 @@ public class FootIKBehaviour : MonoBehaviour
         {
             Debug.DrawLine(fromSkyPosition, fromSkyPosition + Vector3.down * (rayCastDownDistance + heightFromGroundRaycast), Color.yellow);
         }
-        //if(Physics.Raycast(fromSkyPosition, Vector3.down, out feetOutHit, rayCastDownDistance + heightFromGroundRaycast, environmentLayer))
-        if(Physics.SphereCast(fromSkyPosition, sphereRadius, Vector3.down, out feetOutHit, rayCastDownDistance + heightFromGroundRaycast, environmentLayer))
+        if(Physics.Raycast(fromSkyPosition, Vector3.down, out feetOutHit, rayCastDownDistance + heightFromGroundRaycast, environmentLayer))
+       //if(Plane.Raycast(fromSkyPosition, Vector3.down, out feetOutHit, rayCastDownDistance + heightFromGroundRaycast, environmentLayer))
+       // if(Physics.SphereCast(fromSkyPosition, sphereRadius, Vector3.down, out feetOutHit, rayCastDownDistance + heightFromGroundRaycast, environmentLayer))
         {
             //finds the feet IK position from the sky
             feetIKPositions = fromSkyPosition;

@@ -443,8 +443,8 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    removeConstantScaleCurves: 0
-    motionNodeName: <Root Transform>
+    removeConstantScaleCurves: 1
+    motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
@@ -477,17 +477,207 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
-      keepOriginalOrientation: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
+      curves:
+      - name: LeftFootCurve
+        curve:
+          serializedVersion: 2
+          curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          preInfinity: 2
+          postInfinity: 2
+          rotationOrder: 4
+      - name: RightFootCurve
+        curve:
+          serializedVersion: 2
+          curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          preInfinity: 2
+          postInfinity: 2
+          rotationOrder: 4
       events: []
-      transformMask: []
-      maskType: 3
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Root
+        weight: 1
+      - path: Root/Hips
+        weight: 1
+      - path: Root/Hips/LeftUpperLeg
+        weight: 1
+      - path: Root/Hips/LeftUpperLeg/LeftLowerLeg
+        weight: 1
+      - path: Root/Hips/LeftUpperLeg/LeftLowerLeg/LeftFoot
+        weight: 1
+      - path: Root/Hips/LeftUpperLeg/LeftLowerLeg/LeftFoot/LeftToes
+        weight: 1
+      - path: Root/Hips/LeftUpperLeg/LeftLowerLeg/LeftFoot/LeftToes/LeftToesEnd
+        weight: 0
+      - path: Root/Hips/RightUpperLeg
+        weight: 1
+      - path: Root/Hips/RightUpperLeg/RightLowerLeg
+        weight: 1
+      - path: Root/Hips/RightUpperLeg/RightLowerLeg/RightFoot
+        weight: 1
+      - path: Root/Hips/RightUpperLeg/RightLowerLeg/RightFoot/RightToes
+        weight: 1
+      - path: Root/Hips/RightUpperLeg/RightLowerLeg/RightFoot/RightToes/RightToesEnd
+        weight: 0
+      - path: Root/Hips/Spine
+        weight: 1
+      - path: Root/Hips/Spine/Chest
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftIndexProximal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftIndexProximal/LeftIndexIntermediate
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftIndexProximal/LeftIndexIntermediate/LeftIndexDistal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftIndexProximal/LeftIndexIntermediate/LeftIndexDistal/LeftIndexDistalEnd
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftMiddleProximal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftMiddleProximal/LeftMiddleIntermediate
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftMiddleProximal/LeftMiddleIntermediate/LeftMiddleDistal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftMiddleProximal/LeftMiddleIntermediate/LeftMiddleDistal/LeftMiddleDistalEnd
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftPinkyProximal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftPinkyProximal/LeftPinkyIntermediate
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftPinkyProximal/LeftPinkyIntermediate/LeftPinkyDistal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftPinkyProximal/LeftPinkyIntermediate/LeftPinkyDistal/LeftPinkyDistalEnd
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftRingProximal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftRingProximal/LeftRingIntermediate
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftRingProximal/LeftRingIntermediate/LeftRingDistal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftRingProximal/LeftRingIntermediate/LeftRingDistal/LeftRingDistalEnd
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftThumbProximal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftThumbProximal/LeftThumbIntermediate
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftThumbProximal/LeftThumbIntermediate/LeftThumbDistal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/LeftShoulder/LeftUpperArm/LeftLowerArm/LeftHand/LeftThumbProximal/LeftThumbIntermediate/LeftThumbDistal/LeftThumbDistalEnd
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/Neck
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/Neck/Head
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/Neck/Head/Jaw
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/Neck/Head/Jaw/JawEnd
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/Neck/Head/LeftEye
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/Neck/Head/RightEye
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightIndexProximal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightIndexProximal/RightIndexIntermediate
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightIndexProximal/RightIndexIntermediate/RightIndexDistal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightIndexProximal/RightIndexIntermediate/RightIndexDistal/RightIndexDistalEnd
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightMiddleProximal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightMiddleProximal/RightMiddleIntermediate
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightMiddleProximal/RightMiddleIntermediate/RightMiddleDistal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightMiddleProximal/RightMiddleIntermediate/RightMiddleDistal/RightMiddleDistalEnd
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightPinkyProximal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightPinkyProximal/RightPinkyIntermediate
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightPinkyProximal/RightPinkyIntermediate/RightPinkyDistal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightPinkyProximal/RightPinkyIntermediate/RightPinkyDistal/RightPinkyDistalEnd
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightRingProximal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightRingProximal/RightRingIntermediate
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightRingProximal/RightRingIntermediate/RightRingDistal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightRingProximal/RightRingIntermediate/RightRingDistal/RightRingDistalEnd
+        weight: 0
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightThumbProximal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightThumbProximal/RightThumbIntermediate
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightThumbProximal/RightThumbIntermediate/RightThumbDistal
+        weight: 1
+      - path: Root/Hips/Spine/Chest/UpperChest/RightShoulder/RightUpperArm/RightLowerArm/RightHand/RightThumbProximal/RightThumbIntermediate/RightThumbDistal/RightThumbDistalEnd
+        weight: 0
+      maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0.9
     isReadable: 1

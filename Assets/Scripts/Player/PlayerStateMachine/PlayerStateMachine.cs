@@ -241,6 +241,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             ground = hit.transform.gameObject;
             groundDistance = hit.distance;
+            
         }
         else
         {

@@ -5,8 +5,9 @@ using UnityEngine;
 public class CameraRootStabilizer : MonoBehaviour
 {
     [SerializeField] Transform playerArmatureNeck;
+    [SerializeField] float snapSpeed;
 
-    void FixedUpdate()
+    void Update()
     {
         transform.position = playerArmatureNeck.position;
     }

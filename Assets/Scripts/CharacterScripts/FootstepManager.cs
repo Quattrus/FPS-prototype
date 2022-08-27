@@ -9,24 +9,24 @@ public class FootstepManager : MonoBehaviour
     [SerializeField] List<AudioClip> caveSteps = new List<AudioClip>();
     [SerializeField] List<AudioClip> cementSteps = new List<AudioClip>();
 
+
     private enum Surface { grass, water, cave, cement};
     private Surface surface;
 
     private List<AudioClip> currentList;
 
     private AudioSource source;
-    private PlayerStateMachine playerStateMachine;
 
     private void Start()
     {
         source = GetComponent<AudioSource>();
-        playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
     public void PlayStep()
     {
         AudioClip clip = currentList[Random.Range(0, currentList.Count)];
         source.PlayOneShot(clip);
+        
     }
 
     private void SelectStepList()
