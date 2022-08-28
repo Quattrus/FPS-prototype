@@ -13,7 +13,8 @@ public class PlayerGroundedState : PlayerBaseState
     {
         Ctx.Jumped = false;
         Ctx.IsFalling = false;
-        if(Ctx.IsInAir)
+        Ctx.EnableFootIK = true;
+        if (Ctx.IsInAir)
         {
             Ctx.Animator.SetTrigger("Land");
             Ctx.IsInAir = false;

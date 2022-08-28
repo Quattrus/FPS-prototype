@@ -8,6 +8,8 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("Initialization")]
     private CharacterController _characterController;
     private Vector3 _playerVelocity;
+    private FootIKBehaviour footIKBehaviour;
+
     //animations
     private Animator _animator; //done
     private int _moveXAnimationParameterID;
@@ -35,6 +37,7 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _isCrouching = false;//done
     private bool _lerpCrouch = false;
     [SerializeField] bool _isFalling = false;//done
+    [SerializeField] bool _enableFootIK = true;
 
 
     [Header("Player Movement Variables")]
@@ -91,6 +94,7 @@ public class PlayerStateMachine : MonoBehaviour
     public int MoveZCrouchAnimationParameterID { get { return _moveZCrouchAnimationParameterID; } set { _moveZCrouchAnimationParameterID = value; } }
     public Vector2 CurrentAnimationBlendVector { get { return _currentAnimationBlendVector; } set { _currentAnimationBlendVector = value; } }
     public float AnimationSmoothTime { get { return _animationSmoothTime; } set { _animationSmoothTime = value; } }
+    public bool EnableFootIK { get { return _enableFootIK; } set { _enableFootIK = value; } }
     #endregion
     void Awake()
     {
@@ -100,6 +104,8 @@ public class PlayerStateMachine : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _canSprint = true;
         _speed = _walkSpeed;
+        footIKBehaviour = GetComponent<FootIKBehaviour>();
+        
 
         //state machine
         _states = new PlayerStateFactory(this);
@@ -128,6 +134,8 @@ public class PlayerStateMachine : MonoBehaviour
         GroundCheck();
         FallCheck();
         CrouchFunctionality();
+        FootIKCheck();
+        
     }
 
 
@@ -135,6 +143,7 @@ public class PlayerStateMachine : MonoBehaviour
     public void Jump()
     {
         _jumped = true;
+        footIKBehaviour.EnableFeetIK = false;
     }
 
     public void ProcessMove(Vector2 input)
@@ -280,6 +289,11 @@ public class PlayerStateMachine : MonoBehaviour
         {
             _playerVelocity.y = -200f;
         }
+    }
+
+    private void FootIKCheck()
+    {
+        footIKBehaviour.EnableFeetIK = _enableFootIK;
     }
     #endregion
 

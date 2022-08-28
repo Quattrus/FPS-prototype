@@ -21,6 +21,10 @@ public class FootIKBehaviour : MonoBehaviour
     public bool useProIKFeature = false;
     public bool showSolverDebug = true;
 
+    #region Getters and Setters
+    public bool EnableFeetIK { get { return enableFeetIK; } set { enableFeetIK = value; } }
+    #endregion
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -126,8 +130,6 @@ public class FootIKBehaviour : MonoBehaviour
             Debug.DrawLine(fromSkyPosition, fromSkyPosition + Vector3.down * (rayCastDownDistance + heightFromGroundRaycast), Color.yellow);
         }
         if(Physics.Raycast(fromSkyPosition, Vector3.down, out feetOutHit, rayCastDownDistance + heightFromGroundRaycast, environmentLayer))
-       //if(Plane.Raycast(fromSkyPosition, Vector3.down, out feetOutHit, rayCastDownDistance + heightFromGroundRaycast, environmentLayer))
-       // if(Physics.SphereCast(fromSkyPosition, sphereRadius, Vector3.down, out feetOutHit, rayCastDownDistance + heightFromGroundRaycast, environmentLayer))
         {
             //finds the feet IK position from the sky
             feetIKPositions = fromSkyPosition;

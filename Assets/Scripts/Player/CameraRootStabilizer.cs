@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class CameraRootStabilizer : MonoBehaviour
 {
-    [SerializeField] Transform playerArmatureNeck;
-    [SerializeField] float snapSpeed;
+    [SerializeField] Transform cameraRootFollow;
 
-    void Update()
+    void LateUpdate()
     {
-        transform.position = playerArmatureNeck.position;
+        transform.position = cameraRootFollow.position;
     }
 }
