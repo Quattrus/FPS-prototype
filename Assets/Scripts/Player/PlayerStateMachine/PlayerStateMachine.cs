@@ -183,11 +183,12 @@ public class PlayerStateMachine : MonoBehaviour
             if (_isCrouching)
             {
                 _characterController.height = Mathf.Lerp(_characterController.height, 1.31f, crouchLerpValue);
-                _animator.SetLayerWeight(1, 1f);
+                _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(1), 1f, crouchLerpValue));
             }
             else
             {
                 _characterController.height = Mathf.Lerp(_characterController.height, 1.7f, crouchLerpValue);
+                _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(1), 0f, crouchLerpValue));
             }
             if (crouchLerpValue > 1)
             {
