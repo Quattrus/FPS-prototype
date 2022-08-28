@@ -16,6 +16,7 @@ public class FootIKBehaviour : MonoBehaviour
     [SerializeField] float pelvisOffset = 0f;
     [Range(0, 1)][SerializeField] float pelvisUpAndDownSpeed = 0.28f;
     [Range(0, 1)][SerializeField] float feetToIKPositionSpeed = 0.5f;
+    private FootstepManager footstepManager;
     private Animator anim;
 
     public bool useProIKFeature = false;
@@ -28,6 +29,7 @@ public class FootIKBehaviour : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        footstepManager = GetComponent<FootstepManager>();
     }
 
     #region FeetGrounding

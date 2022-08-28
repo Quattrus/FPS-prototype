@@ -8,6 +8,7 @@ public class FootstepManager : MonoBehaviour
     [SerializeField] List<AudioClip> waterSteps = new List<AudioClip>();
     [SerializeField] List<AudioClip> caveSteps = new List<AudioClip>();
     [SerializeField] List<AudioClip> cementSteps = new List<AudioClip>();
+    private Animator animator;
 
 
     private enum Surface { grass, water, cave, cement};
@@ -20,13 +21,48 @@ public class FootstepManager : MonoBehaviour
     private void Start()
     {
         source = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
     }
 
-    public void PlayStep()
+    public void PlayStep(int stepType)
     {
         AudioClip clip = currentList[Random.Range(0, currentList.Count)];
-        source.PlayOneShot(clip);
-        
+        if(stepType > 1)
+        {
+            if(animator.GetFloat("MoveY") == 2)
+            {
+                source.PlayOneShot(clip);
+            }
+            
+        }
+        else if(stepType == 1)
+        {
+            if(animator.GetFloat("MoveY") > 0.6f)
+            {
+                source.PlayOneShot(clip);
+            }
+            else if(animator.GetFloat("MoveY") < -0.6f)
+            {
+                source.PlayOneShot(clip);
+            }
+            
+
+        }
+        else if(stepType < 1)
+        {
+            if(animator.GetFloat("MoveX") < -0.8f)
+            {
+                source.PlayOneShot(clip);
+            }
+            else if(animator.GetFloat("MoveX") > 0.8f)
+            {
+                source.PlayOneShot(clip);
+            }
+            
+        }
+        Debug.Log(stepType);
+
+
     }
 
     private void SelectStepList()

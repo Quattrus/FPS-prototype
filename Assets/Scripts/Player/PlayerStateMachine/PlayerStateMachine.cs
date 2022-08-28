@@ -150,7 +150,6 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (_isSprinting)
         {
-            input.x += Mathf.Lerp(input.x, 1, 1 * Time.deltaTime);
             input.y += Mathf.Lerp(input.y, 1, 1 * Time.deltaTime);
         }
 

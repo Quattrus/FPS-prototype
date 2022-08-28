@@ -55,6 +55,8 @@ public class InputManager : MonoBehaviour
         playerStateMachine.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
         playerLook.ProcessLook(onFoot.Look.ReadValue<Vector2>());
         playerStateMachine.IdleCheck(onFoot.Movement.ReadValue<Vector2>());
+
+        
     }
 
     private void StartFiring()

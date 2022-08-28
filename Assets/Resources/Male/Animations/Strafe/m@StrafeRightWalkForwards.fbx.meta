@@ -572,18 +572,18 @@ ModelImporter:
           postInfinity: 3
           rotationOrder: 4
       events:
-      - time: 0.35504887
+      - time: 0.29493266
         functionName: PlayStep
         data: 
         objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0.7
+        floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.89250815
+      - time: 0.8931632
         functionName: PlayStep
         data: 
         objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0.7
+        floatParameter: 0
         intParameter: 0
         messageOptions: 0
       transformMask: []
