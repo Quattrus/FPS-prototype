@@ -60,8 +60,6 @@ public class FootstepManager : MonoBehaviour
             }
             
         }
-        Debug.Log(stepType);
-
 
     }
 

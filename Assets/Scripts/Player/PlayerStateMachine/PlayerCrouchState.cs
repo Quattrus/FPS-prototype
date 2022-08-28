@@ -16,7 +16,7 @@ public class PlayerCrouchState : PlayerBaseState
     public override void UpdateState()
     {
         CheckSwitchStates();
-       // CrouchAnim();
+        CrouchAnim();
     }
     public override void ExitState()
     {
