@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FootIKBehaviour : MonoBehaviour
+public class IKBehaviour : MonoBehaviour
 {
     private Vector3 rightFootPosition, leftFootPosition, leftFootIKPosition, rightFootIKPosition;
     private Quaternion leftFootIKRotation, rightFootIKRotation;
@@ -19,7 +19,7 @@ public class FootIKBehaviour : MonoBehaviour
     private FootstepManager footstepManager;
     private Animator anim;
 
-    public bool useProIKFeature = false;
+    public bool IKRotationEnable = false;
     public bool showSolverDebug = true;
 
     #region Getters and Setters
@@ -68,18 +68,18 @@ public class FootIKBehaviour : MonoBehaviour
         }
 
         MovePelvisHeight();
-        //right foot ik position and rotation --> utilize pro features
+        //IK Rotation for right foot
         anim.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1);
-        if(useProIKFeature)
+        if(IKRotationEnable)
         {
             anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, anim.GetFloat("LeftFootCurve"));
         }
 
         MoveFeetToIKPoint(AvatarIKGoal.RightFoot, rightFootIKPosition, rightFootIKRotation, ref lastRightFootPositionY);
 
-        //left foot ik position and rotation --> utilize pro features
+        //IKRotation for left foot
         anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
-        if (useProIKFeature)
+        if (IKRotationEnable)
         {
             anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, anim.GetFloat("RightFootCurve"));
         }

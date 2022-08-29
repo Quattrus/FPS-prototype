@@ -8,7 +8,7 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("Initialization")]
     private CharacterController _characterController;
     private Vector3 _playerVelocity;
-    private FootIKBehaviour footIKBehaviour;
+    private IKBehaviour footIKBehaviour;
 
     //animations
     private Animator _animator; //done
@@ -104,7 +104,7 @@ public class PlayerStateMachine : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _canSprint = true;
         _speed = _walkSpeed;
-        footIKBehaviour = GetComponent<FootIKBehaviour>();
+        footIKBehaviour = GetComponent<IKBehaviour>();
         
 
         //state machine
