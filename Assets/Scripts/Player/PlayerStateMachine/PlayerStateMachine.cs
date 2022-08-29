@@ -63,8 +63,25 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField]  LayerMask sphereCastMask;
     private Vector3 sphereCastOrigin;
     [SerializeField] GameObject ground;
-    #endregion
 
+    [Header("Wall Check")]
+    [SerializeField] float targetWallDistance;
+    private Vector3 lowWallTargetOrigin;
+    private Vector3 highWallTargetOrigin;
+    [Range(0, 5)]
+    [SerializeField] float heightOffset = 0.5f;
+    private Vector3 lowWallDirection;
+    private Vector3 highWallDirection;
+    [SerializeField] LayerMask wallCastMaskLayer;
+    [SerializeField] bool _canVault;
+    [SerializeField] bool _isVaulting = false;
+    [SerializeField] float wallCastRadius;
+    [SerializeField] bool _gotLowWall = false;
+    [SerializeField] bool _gotHighWall = false;
+
+
+    #endregion
+ 
 
     #region Getters and Setters
     //Getters and Setters
@@ -97,6 +114,8 @@ public class PlayerStateMachine : MonoBehaviour
     public float AnimationSmoothTime { get { return _animationSmoothTime; } set { _animationSmoothTime = value; } }
     public bool EnableFootIK { get { return _enableFootIK; } set { _enableFootIK = value; } }
     public StaminaController StaminaController { get { return _staminaController; } set { _staminaController = value; } }
+    public bool GotHighWall { get { return _gotHighWall; } set { _gotHighWall = value; } }
+    public bool GotLowWall { get { return _gotLowWall; } set { _gotLowWall = value; } }
     #endregion
     void Awake()
     {
@@ -138,7 +157,9 @@ public class PlayerStateMachine : MonoBehaviour
         FallCheck();
         CrouchFunctionality();
         FootIKCheck();
-        
+        LowWallCheck();
+        HighWallCheck();
+
     }
 
 
@@ -290,6 +311,54 @@ public class PlayerStateMachine : MonoBehaviour
     {
         footIKBehaviour.EnableFeetIK = _enableFootIK;
     }
+
+    private void LowWallCheck()
+    {
+        RaycastHit lowWallHit = new RaycastHit();
+        //int numberOfHits = 0;
+        //for(int i = -1; i < 2; i++)
+        //{
+        lowWallTargetOrigin = transform.position;
+        //wallTargetOrigin += transform.right * (i*0.35f);
+
+        lowWallDirection = transform.TransformDirection(Vector3.forward);
+        Debug.DrawRay(lowWallTargetOrigin, lowWallDirection * targetWallDistance, Color.magenta);
+        if (Physics.SphereCast(lowWallTargetOrigin, wallCastRadius, lowWallDirection, out lowWallHit, targetWallDistance, wallCastMaskLayer))
+        {
+            _gotLowWall = true;
+            //numberOfHits++;
+        }
+        else
+        {
+            _gotLowWall = false;
+        }
+
+        //}
+        //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.magenta);
+
+        //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out wallHit))
+        //{
+
+        //    targetWallDistance = wallHit.distance;
+        //}
+    }
+    private void HighWallCheck()
+    {
+        RaycastHit highWallHit = new RaycastHit();
+        highWallTargetOrigin = new Vector3(transform.position.x, transform.position.y + heightOffset, transform.position.z);
+        highWallDirection = transform.TransformDirection(Vector3.forward);
+        Debug.DrawRay(highWallTargetOrigin, highWallDirection * targetWallDistance, Color.blue);
+        if(Physics.SphereCast(highWallTargetOrigin, wallCastRadius, highWallDirection, out highWallHit, targetWallDistance, wallCastMaskLayer))
+        {
+            _gotHighWall = true;
+        }
+        else
+        {
+            _gotHighWall = false;
+        }
+    }
+
+
     #endregion
 
     #region Debugging

@@ -127,10 +127,9 @@ public class IKBehaviour : MonoBehaviour
     {
         //uses raycast to locate and solve the feet position
         RaycastHit feetOutHit;
-        if(showSolverDebug)
-        {
-            Debug.DrawLine(fromSkyPosition, fromSkyPosition + Vector3.down * (rayCastDownDistance + heightFromGroundRaycast), Color.yellow);
-        }
+
+        Debug.DrawLine(fromSkyPosition, fromSkyPosition + Vector3.down * (rayCastDownDistance + heightFromGroundRaycast), Color.yellow);
+
         if(Physics.Raycast(fromSkyPosition, Vector3.down, out feetOutHit, rayCastDownDistance + heightFromGroundRaycast, environmentLayer))
         {
             //finds the feet IK position from the sky

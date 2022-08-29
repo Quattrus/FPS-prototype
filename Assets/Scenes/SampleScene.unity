@@ -10081,7 +10081,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 1.65
   m_Radius: 0.17
-  m_SlopeLimit: 45
+  m_SlopeLimit: 90
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
@@ -12502,6 +12502,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   ground: {fileID: 0}
+  targetWallDistance: 0.3
+  heightOffset: 0.7
+  wallCastMaskLayer:
+    serializedVersion: 2
+    m_Bits: 65
+  _canVault: 0
+  _isVaulting: 0
+  wallCastRadius: 0.4
+  _gotLowWall: 0
+  _gotHighWall: 0
 --- !u!114 &8466151299645921209
 MonoBehaviour:
   m_ObjectHideFlags: 0
