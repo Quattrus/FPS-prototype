@@ -12341,26 +12341,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af72cf1470133104ab0021e95b970c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightFootPosition: {x: 0, y: 0, z: 0}
-  leftFootPosition: {x: 0, y: 0, z: 0}
-  leftFootIKPosition: {x: 0, y: 0, z: 0}
-  rightFootIKPosition: {x: 0, y: 0, z: 0}
-  leftFootIKRotation: {x: 0, y: 0, z: 0, w: 0}
-  rightFootIKRotation: {x: 0, y: 0, z: 0, w: 0}
-  lastPelvisPositionY: 0
-  lastRightFootPositionY: 0
-  lastLeftFootPositionY: 0
   enableFeetIK: 1
   heightFromGroundRaycast: -0.32
   rayCastDownDistance: 1.3
   environmentLayer:
+    serializedVersion: 2
     m_Bits: 1
   pelvisOffset: 0.83
   pelvisUpAndDownSpeed: 0.28
   feetToIKPositionSpeed: 0.3
-  footstepManager: {fileID: 0}
-  anim: {fileID: 0}
-  useProIKFeature: 1
+  IKRotationEnable: 1
   showSolverDebug: 1
 --- !u!4 &8518817371077933271
 Transform:

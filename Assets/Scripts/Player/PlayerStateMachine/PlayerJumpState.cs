@@ -20,7 +20,15 @@ public class PlayerJumpState : PlayerBaseState
         }
         else if(Ctx.IsSprinting)
         {
-            Ctx.Animator.SetTrigger("SprintJump");
+            if(Ctx.Animator.GetFloat("RightFootCurve") > Ctx.Animator.GetFloat("LeftFootCurve"))
+            {
+                Ctx.Animator.SetTrigger("SprintJump");
+            }
+            else if(Ctx.Animator.GetFloat("RightFootCurve") < Ctx.Animator.GetFloat("LeftFootCurve"))
+            {
+                Ctx.Animator.SetTrigger("SprintJumpMirrored");
+            }
+            
         }
         
         Jump();

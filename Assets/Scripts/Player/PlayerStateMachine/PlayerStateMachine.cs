@@ -9,6 +9,7 @@ public class PlayerStateMachine : MonoBehaviour
     private CharacterController _characterController;
     private Vector3 _playerVelocity;
     private IKBehaviour footIKBehaviour;
+    private StaminaController _staminaController; //done
 
     //animations
     private Animator _animator; //done
@@ -95,6 +96,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Vector2 CurrentAnimationBlendVector { get { return _currentAnimationBlendVector; } set { _currentAnimationBlendVector = value; } }
     public float AnimationSmoothTime { get { return _animationSmoothTime; } set { _animationSmoothTime = value; } }
     public bool EnableFootIK { get { return _enableFootIK; } set { _enableFootIK = value; } }
+    public StaminaController StaminaController { get { return _staminaController; } set { _staminaController = value; } }
     #endregion
     void Awake()
     {
@@ -105,6 +107,7 @@ public class PlayerStateMachine : MonoBehaviour
         _canSprint = true;
         _speed = _walkSpeed;
         footIKBehaviour = GetComponent<IKBehaviour>();
+        _staminaController = GetComponent<StaminaController>();
         
 
         //state machine
@@ -205,7 +208,6 @@ public class PlayerStateMachine : MonoBehaviour
         {
            _isSprinting = true;
            _canSprint = false;
-           StartCoroutine(SprintDuration());
         }
 
     }
@@ -219,13 +221,6 @@ public class PlayerStateMachine : MonoBehaviour
     public void SprintFinish()
     {
         _isSprinting = false;
-    }
-
-    IEnumerator SprintDuration()
-    {
-        yield return new WaitForSeconds(3);
-        _isSprinting = false;
-        yield return new WaitForSeconds(3);
         _canSprint = true;
     }
 
