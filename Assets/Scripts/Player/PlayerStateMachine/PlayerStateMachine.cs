@@ -87,6 +87,7 @@ public class PlayerStateMachine : MonoBehaviour
     private float groundFrontDistance;
     private float kneeWallDistance;
     private Vector3 targetVaultPosition;
+    private Vector3 vaultDirection;
 
 
     #endregion
@@ -172,20 +173,23 @@ public class PlayerStateMachine : MonoBehaviour
         FootIKCheck();
         LowWallCheck();
         HighWallCheck();
-        GroundFrontCheck();
-        KneeWallCheck();
-        MoveToward();
         
+        KneeWallCheck();
+        
+    }
 
+    private void LateUpdate() 
+    {
+        MoveToward();
     }
 
 
     #region Player Movement
     public void Jump()
     {
+        GroundFrontCheck();
         if(_canVault)
         {
-
             _characterController.enabled = false;
             _isVaulting = true;
             _canVault = false;
@@ -209,11 +213,13 @@ public class PlayerStateMachine : MonoBehaviour
     }
     private void MoveToward()
     {
+        vaultDirection = targetVaultPosition - this.transform.position;
+        // transform.Translate((groundFrontDebugTransform.transform.position - this.transform.position) * Time.deltaTime);
         if(_isVaulting)
         {
-            transform.Translate(Vector3.forward * Time.deltaTime);
+            transform.position += vaultDirection;
         }
-        
+       
     }
 
     public void ProcessMove(Vector2 input)
@@ -410,33 +416,35 @@ public class PlayerStateMachine : MonoBehaviour
             debugHighWallTransform.transform.position = highWallHit.point;
             highWallDistance = Vector3.Distance(highWallHit.point, highWallTargetOrigin);
             _gotHighWall = true;
+            return;
         }
         else
         {
             _gotHighWall = false;
+            return;
         }
     }
 
     private void GroundFrontCheck()
     {
+        RaycastHit groundFront = new RaycastHit();
+        groundFrontTargetOrigin = groundFrontCheck.transform.position;
+        Debug.DrawRay(groundFrontTargetOrigin, -transform.up, Color.green);
 
-            RaycastHit groundFront = new RaycastHit();
-            groundFrontTargetOrigin = groundFrontCheck.transform.position;
-            Debug.DrawRay(groundFrontTargetOrigin, -transform.up, Color.green);
             if (Physics.Raycast(groundFrontTargetOrigin, -transform.up, out groundFront, 5f, sphereCastMask))
             {
-
                 groundFrontDistance = Vector3.Distance(groundFront.point, groundFrontTargetOrigin);
                 groundFrontDebugTransform.transform.position = groundFront.point;
-                targetVaultPosition = groundFrontTargetOrigin;
+                targetVaultPosition.x = groundFront.point.x;
+                targetVaultPosition.y = groundFront.point.y + 1;
                 targetVaultPosition.z = groundFront.point.z;
-                targetVaultPosition.y = groundFront.point.y;
+                
             }
     }
 
     private void CanVaultCheck()
     {
-        if(lowWallDistance < 0.5 && !_gotHighWall || lowWallDistance < 0.5 && highWallDistance > 1)
+        if(lowWallDistance < 0.5 && _gotLowWall && !_gotHighWall || lowWallDistance < 0.5 && highWallDistance > 1 && _gotLowWall)
         {
              _canVault = true;
         }
