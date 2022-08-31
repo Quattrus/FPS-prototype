@@ -10,6 +10,14 @@ public class PlayerStateMachine : MonoBehaviour
     private Vector3 _playerVelocity;
     private IKBehaviour footIKBehaviour;
     private StaminaController _staminaController; //done
+    [SerializeField] LayerMask WallCheckLayerMask;
+    [SerializeField] Transform debugLowWallTransform;
+    [SerializeField] Transform debugHighWallTransform;
+    [SerializeField] Transform groundFrontDebugTransform;
+    [SerializeField] Transform debugNefootTransform;
+    private float lowWallDistance;
+    private float highWallDistance;
+    
 
     //animations
     private Animator _animator; //done
@@ -63,17 +71,21 @@ public class PlayerStateMachine : MonoBehaviour
     private Vector3 lowWallTargetOrigin;
     private Vector3 highWallTargetOrigin;
     private Vector3 groundFrontTargetOrigin;
-    [Range(0, 5)]
+    private Vector3 kneeWallTargetOrigin;
+    [Range(-5,5)]
+    [SerializeField] float kneeLevelOffset;
+    [Range(-5, 5)]
     [SerializeField] float heightOffset = 0.5f;
-    private Vector3 lowWallDirection;
-    private Vector3 highWallDirection;
     [SerializeField] LayerMask wallCastMaskLayer;
     [SerializeField] bool _canVault;
     [SerializeField] bool _isVaulting = false;
     [SerializeField] float wallCastRadius;
     [SerializeField] bool _gotLowWall = false;
     [SerializeField] bool _gotHighWall = false;
+    [SerializeField] bool _gotNeFoot = false;
     [SerializeField] GameObject groundFrontCheck;
+    private float groundFrontDistance;
+    private float kneeWallDistance;
     private Vector3 targetVaultPosition;
 
 
@@ -141,6 +153,8 @@ public class PlayerStateMachine : MonoBehaviour
         _moveZCrouchAnimationParameterID = Animator.StringToHash("MoveZCrouch");
         //animator.SetFloat(moveXAnimationParameterID, 1f);
 
+
+
     }
 
     private void FixedUpdate()
@@ -159,6 +173,7 @@ public class PlayerStateMachine : MonoBehaviour
         LowWallCheck();
         HighWallCheck();
         GroundFrontCheck();
+        KneeWallCheck();
         MoveToward();
         
 
@@ -170,7 +185,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if(_canVault)
         {
-            Debug.Log("Vault");
+
             _characterController.enabled = false;
             _isVaulting = true;
             _canVault = false;
@@ -354,26 +369,46 @@ public class PlayerStateMachine : MonoBehaviour
     {
         RaycastHit lowWallHit = new RaycastHit();
         lowWallTargetOrigin = transform.position;
-
-        lowWallDirection = transform.TransformDirection(Vector3.forward);
-        Debug.DrawRay(lowWallTargetOrigin, lowWallDirection * targetWallDistance, Color.magenta);
-        if (Physics.SphereCast(lowWallTargetOrigin, wallCastRadius, lowWallDirection, out lowWallHit, targetWallDistance, wallCastMaskLayer))
+        
+        
+        if (Physics.Raycast(lowWallTargetOrigin, transform.forward, out lowWallHit, 5f, WallCheckLayerMask))
         {
+            debugLowWallTransform.transform.position = lowWallHit.point;
+            lowWallDistance = Vector3.Distance(lowWallHit.point, lowWallTargetOrigin);
             _gotLowWall = true;
         }
         else
         {
             _gotLowWall = false;
         }
+        Debug.DrawRay(lowWallTargetOrigin, transform.forward, Color.magenta);
+        Debug.Log(lowWallDistance);
+    }
+    private void KneeWallCheck()
+    {
+        RaycastHit kneeWallHit = new RaycastHit();
+        kneeWallTargetOrigin = new Vector3(transform.position.x, transform.position.y + kneeLevelOffset, transform.position.z);
+        Debug.DrawRay(kneeWallTargetOrigin, transform.forward, Color.black);
+        if(Physics.Raycast(kneeWallTargetOrigin, transform.forward,out kneeWallHit, 5f, WallCheckLayerMask))
+        {
+            debugNefootTransform.transform.position = kneeWallHit.point;
+            kneeWallDistance = Vector3.Distance(kneeWallHit.point, kneeWallTargetOrigin);
+            _gotNeFoot = true;
+        }
+        else
+        {
+            _gotNeFoot = false;
+        }
     }
     private void HighWallCheck()
     {
         RaycastHit highWallHit = new RaycastHit();
         highWallTargetOrigin = new Vector3(transform.position.x, transform.position.y + heightOffset, transform.position.z);
-        highWallDirection = transform.TransformDirection(Vector3.forward);
-        Debug.DrawRay(highWallTargetOrigin, highWallDirection * targetWallDistance, Color.blue);
-        if(Physics.SphereCast(highWallTargetOrigin, wallCastRadius, highWallDirection, out highWallHit, targetWallDistance, wallCastMaskLayer))
+        Debug.DrawRay(highWallTargetOrigin, transform.forward, Color.blue);
+        if(Physics.Raycast(highWallTargetOrigin, transform.forward, out highWallHit, 5f, WallCheckLayerMask))
         {
+            debugHighWallTransform.transform.position = highWallHit.point;
+            highWallDistance = Vector3.Distance(highWallHit.point, highWallTargetOrigin);
             _gotHighWall = true;
         }
         else
@@ -384,19 +419,24 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void GroundFrontCheck()
     {
-        RaycastHit groundFront = new RaycastHit();
-        groundFrontTargetOrigin = groundFrontCheck.transform.position;
-        Debug.DrawRay(groundFrontTargetOrigin, Vector3.down, Color.green);
-        if(Physics.Raycast(groundFrontTargetOrigin, Vector3.down, out groundFront, 2, sphereCastMask))
-        {
-            targetVaultPosition = groundFrontTargetOrigin;
-            targetVaultPosition.z = groundFront.point.z;
-        }
+
+            RaycastHit groundFront = new RaycastHit();
+            groundFrontTargetOrigin = groundFrontCheck.transform.position;
+            Debug.DrawRay(groundFrontTargetOrigin, -transform.up, Color.green);
+            if (Physics.Raycast(groundFrontTargetOrigin, -transform.up, out groundFront, 5f, sphereCastMask))
+            {
+
+                groundFrontDistance = Vector3.Distance(groundFront.point, groundFrontTargetOrigin);
+                groundFrontDebugTransform.transform.position = groundFront.point;
+                targetVaultPosition = groundFrontTargetOrigin;
+                targetVaultPosition.z = groundFront.point.z;
+                targetVaultPosition.y = groundFront.point.y;
+            }
     }
 
     private void CanVaultCheck()
     {
-        if(_gotLowWall && !_gotHighWall)
+        if(lowWallDistance < 0.5 && !_gotHighWall || lowWallDistance < 0.5 && highWallDistance > 1)
         {
              _canVault = true;
         }
