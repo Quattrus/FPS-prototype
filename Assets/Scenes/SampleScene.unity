@@ -2427,7 +2427,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.012511716, y: 0.15100001}
   m_AnchorMax: {x: 0.1622676, y: 0.26553574}
-  m_AnchoredPosition: {x: -2, y: 0.7999878}
+  m_AnchoredPosition: {x: -2, y: 0.8000488}
   m_SizeDelta: {x: 2, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &825983442
@@ -3238,6 +3238,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e7505667dc50e54d97a808ef5d2745e, type: 3}
+--- !u!1 &1190767606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1190767607}
+  m_Layer: 3
+  m_Name: VaultTargetPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1190767607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190767606}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.019}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8466151299645921201}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1197859681 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2939590109386336785, guid: 1e7505667dc50e54d97a808ef5d2745e,
@@ -10080,7 +10111,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.65
-  m_Radius: 0.17
+  m_Radius: 0.25
   m_SlopeLimit: 90
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -12023,6 +12054,7 @@ GameObject:
   - component: {fileID: 8466151299645921209}
   - component: {fileID: 8466151299645921210}
   - component: {fileID: 8466151299645921211}
+  - component: {fileID: 8466151299645921212}
   m_Layer: 3
   m_Name: PlayerWithNoGun
   m_TagString: Player
@@ -12113,6 +12145,7 @@ Transform:
   - {fileID: 260642339}
   - {fileID: 501061776}
   - {fileID: 6928295171060575470}
+  - {fileID: 1190767607}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12512,6 +12545,7 @@ MonoBehaviour:
   wallCastRadius: 0.4
   _gotLowWall: 0
   _gotHighWall: 0
+  groundFrontCheck: {fileID: 1190767606}
 --- !u!114 &8466151299645921209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12596,6 +12630,20 @@ MonoBehaviour:
   staminaRegen: 10
   staminaProgressUI: {fileID: 463141159}
   sliderCanvasGroup: {fileID: 1403869402}
+--- !u!136 &8466151299645921212
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132243583723749238}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 1.65
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.12, z: -0.04}
 --- !u!4 &8518817371077933271
 Transform:
   m_ObjectHideFlags: 0

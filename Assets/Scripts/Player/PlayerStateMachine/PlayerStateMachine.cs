@@ -13,18 +13,12 @@ public class PlayerStateMachine : MonoBehaviour
 
     //animations
     private Animator _animator; //done
-    private int _moveXAnimationParameterID;
-    private int _moveZAnimationParameterID;
-    private int _moveXCrouchAnimationParameterID;//done
-    private int _moveZCrouchAnimationParameterID;//done
-    private int _defaultAirAnimation; //done
-    private int _landAnimation; // done
+    private int _moveXAnimationParameterID, _moveZAnimationParameterID, _moveXCrouchAnimationParameterID, _moveZCrouchAnimationParameterID, _defaultAirAnimation, _landAnimation;
     [SerializeField] float _animationPlayTransition = 0.15f; //done
     Vector3 _moveDirection = Vector3.zero;
 
     [Header("Animation Smoothing")]
-    private Vector2 _currentAnimationBlendVector; //done
-    Vector2 _animationVelocity;
+    private Vector2 _currentAnimationBlendVector, _animationVelocity;
     [SerializeField] float _animationSmoothTime = 0.1f; //done
 
 
@@ -68,6 +62,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] float targetWallDistance;
     private Vector3 lowWallTargetOrigin;
     private Vector3 highWallTargetOrigin;
+    private Vector3 groundFrontTargetOrigin;
     [Range(0, 5)]
     [SerializeField] float heightOffset = 0.5f;
     private Vector3 lowWallDirection;
@@ -78,6 +73,8 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] float wallCastRadius;
     [SerializeField] bool _gotLowWall = false;
     [SerializeField] bool _gotHighWall = false;
+    [SerializeField] GameObject groundFrontCheck;
+    private Vector3 targetVaultPosition;
 
 
     #endregion
@@ -116,6 +113,8 @@ public class PlayerStateMachine : MonoBehaviour
     public StaminaController StaminaController { get { return _staminaController; } set { _staminaController = value; } }
     public bool GotHighWall { get { return _gotHighWall; } set { _gotHighWall = value; } }
     public bool GotLowWall { get { return _gotLowWall; } set { _gotLowWall = value; } }
+    public bool CanVault { get { return _canVault; } set { _canVault = value; } }
+    public Vector3 TargetVaultPosition { get { return targetVaultPosition; } set { targetVaultPosition = value; } }
     #endregion
     void Awake()
     {
@@ -146,7 +145,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        CanVaultCheck();
     }
 
     private void Update()
@@ -159,6 +158,9 @@ public class PlayerStateMachine : MonoBehaviour
         FootIKCheck();
         LowWallCheck();
         HighWallCheck();
+        GroundFrontCheck();
+        MoveToward();
+        
 
     }
 
@@ -166,34 +168,70 @@ public class PlayerStateMachine : MonoBehaviour
     #region Player Movement
     public void Jump()
     {
-        _jumped = true;
-        footIKBehaviour.EnableFeetIK = false;
+        if(_canVault)
+        {
+            Debug.Log("Vault");
+            _characterController.enabled = false;
+            _isVaulting = true;
+            _canVault = false;
+            _animator.SetTrigger("VaultMove");
+            StartCoroutine(VaultMove());
+            
+        }
+        else
+        {
+            _jumped = true;
+            footIKBehaviour.EnableFeetIK = false;
+        }
+    }
+
+    IEnumerator VaultMove()
+    {
+        
+        yield return new WaitForSeconds(1);
+        _isVaulting = false;
+        _characterController.enabled = true;
+    }
+    private void MoveToward()
+    {
+        if(_isVaulting)
+        {
+            transform.Translate(Vector3.forward * Time.deltaTime);
+        }
+        
     }
 
     public void ProcessMove(Vector2 input)
     {
-        if (_isSprinting)
+        if(!_isVaulting)
         {
-            input.y += Mathf.Lerp(input.y, 1, 1 * Time.deltaTime);
+            if (_isSprinting)
+            {
+                input.y += Mathf.Lerp(input.y, 1, 1 * Time.deltaTime);
+            }
+
+            if (!_isFalling && _playerVelocity.y < -2f)
+            {
+                _playerVelocity.y = -2f;
+            }
+
+
+
+            _playerVelocity.y += _gravity * Time.deltaTime;
+            _characterController.Move(_playerVelocity * Time.deltaTime);
+
+            //smoothdamp
+            _currentAnimationBlendVector = Vector2.SmoothDamp(_currentAnimationBlendVector, input, ref _animationVelocity, _animationSmoothTime);
+            _moveDirection.x = _currentAnimationBlendVector.x;
+            _moveDirection.z = _currentAnimationBlendVector.y;
+            _characterController.Move(transform.TransformDirection(_moveDirection) * _speed * Time.deltaTime);
+            _animator.SetFloat(_moveXAnimationParameterID, _currentAnimationBlendVector.x);
+            _animator.SetFloat(_moveZAnimationParameterID, _currentAnimationBlendVector.y);
         }
 
-        if (!_isFalling && _playerVelocity.y < -2f)
-        {
-            _playerVelocity.y = -2f;
-        }
-
-        _playerVelocity.y += _gravity * Time.deltaTime;
-        _characterController.Move(_playerVelocity * Time.deltaTime);
-
-        //smoothdamp
-        _currentAnimationBlendVector = Vector2.SmoothDamp(_currentAnimationBlendVector, input, ref _animationVelocity, _animationSmoothTime);
-        _moveDirection.x = _currentAnimationBlendVector.x;
-        _moveDirection.z = _currentAnimationBlendVector.y;
-        _characterController.Move(transform.TransformDirection(_moveDirection) * _speed * Time.deltaTime);
-        _animator.SetFloat(_moveXAnimationParameterID, _currentAnimationBlendVector.x);
-        _animator.SetFloat(_moveZAnimationParameterID, _currentAnimationBlendVector.y);
 
     }
+
 
     private void CrouchFunctionality()
     {
@@ -315,32 +353,18 @@ public class PlayerStateMachine : MonoBehaviour
     private void LowWallCheck()
     {
         RaycastHit lowWallHit = new RaycastHit();
-        //int numberOfHits = 0;
-        //for(int i = -1; i < 2; i++)
-        //{
         lowWallTargetOrigin = transform.position;
-        //wallTargetOrigin += transform.right * (i*0.35f);
 
         lowWallDirection = transform.TransformDirection(Vector3.forward);
         Debug.DrawRay(lowWallTargetOrigin, lowWallDirection * targetWallDistance, Color.magenta);
         if (Physics.SphereCast(lowWallTargetOrigin, wallCastRadius, lowWallDirection, out lowWallHit, targetWallDistance, wallCastMaskLayer))
         {
             _gotLowWall = true;
-            //numberOfHits++;
         }
         else
         {
             _gotLowWall = false;
         }
-
-        //}
-        //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.magenta);
-
-        //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out wallHit))
-        //{
-
-        //    targetWallDistance = wallHit.distance;
-        //}
     }
     private void HighWallCheck()
     {
@@ -355,6 +379,30 @@ public class PlayerStateMachine : MonoBehaviour
         else
         {
             _gotHighWall = false;
+        }
+    }
+
+    private void GroundFrontCheck()
+    {
+        RaycastHit groundFront = new RaycastHit();
+        groundFrontTargetOrigin = groundFrontCheck.transform.position;
+        Debug.DrawRay(groundFrontTargetOrigin, Vector3.down, Color.green);
+        if(Physics.Raycast(groundFrontTargetOrigin, Vector3.down, out groundFront, 2, sphereCastMask))
+        {
+            targetVaultPosition = groundFrontTargetOrigin;
+            targetVaultPosition.z = groundFront.point.z;
+        }
+    }
+
+    private void CanVaultCheck()
+    {
+        if(_gotLowWall && !_gotHighWall)
+        {
+             _canVault = true;
+        }
+        else
+        {
+             _canVault = false;
         }
     }
 

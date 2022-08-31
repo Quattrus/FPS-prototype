@@ -15,7 +15,6 @@ public class PlayerRunState : PlayerBaseState
     {
         CheckSwitchStates();
         StaminaControl();
-        Vault();
     }
     public override void ExitState()
     {
@@ -46,11 +45,4 @@ public class PlayerRunState : PlayerBaseState
         Ctx.StaminaController.Sprinting();
     }
 
-    private void Vault()
-    {
-        if(Ctx.GotLowWall && !Ctx.GotHighWall)
-        {
-            Debug.Log("Vault!");
-        }
-    }
 }
