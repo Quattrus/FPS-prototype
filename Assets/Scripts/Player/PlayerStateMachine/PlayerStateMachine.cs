@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -11,6 +12,18 @@ public class PlayerStateMachine : MonoBehaviour
     private Vector3 _playerVelocity;
     private IKBehaviour footIKBehaviour;
     private StaminaController _staminaController; //done
+
+    //aiming
+    private float _xRotation = 0f;
+    [SerializeField] float _xSensitivity = 30f;
+    [SerializeField] float _ySensitivity = 30f;
+    private float _xSensitivityAim;
+    private float _xSensitivityDefault;
+    private float _ySensitivityAim;
+    private float _ySensitivityDefault;
+    [SerializeField] Transform _playerCameraRoot;
+    [SerializeField] Transform _aimTarget;
+    [SerializeField] Transform _bodyHeadAimTarget;
     [SerializeField] LayerMask WallCheckLayerMask;
     [SerializeField] Transform debugLowWallTransform;
     [SerializeField] Transform debugHighWallTransform;
@@ -18,13 +31,16 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] Transform debugNefootTransform;
     private float lowWallDistance;
     private float highWallDistance;
-
-
     //animations
     private Animator _animator; //done
     private int _moveXAnimationParameterID, _moveZAnimationParameterID, _moveXCrouchAnimationParameterID, _moveZCrouchAnimationParameterID, _defaultAirAnimation, _landAnimation;
     [SerializeField] float _animationPlayTransition = 0.15f; //done
     Vector3 _moveDirection = Vector3.zero;
+
+    [Header("Aim Functionality")]
+    [SerializeField] int _aimCamPriority = 10;
+    [SerializeField] CinemachineVirtualCamera _aimCamera;
+    [SerializeField] bool _isAiming;
 
     [Header("Animation Smoothing")]
     private Vector2 _currentAnimationBlendVector, _animationVelocity;
@@ -133,6 +149,7 @@ public class PlayerStateMachine : MonoBehaviour
     public CharacterController CharacterController { get { return _characterController; } set { _characterController = value; } }
     public bool StartVault { get { return _startVault; } set { _startVault = value; } }
     public CapsuleCollider Collider { get { return _collider; } set { _collider = value; } }
+    public bool IsAiming {get{return _isAiming;} set{_isAiming = value;}}
     #endregion
     void Awake()
     {
@@ -162,6 +179,13 @@ public class PlayerStateMachine : MonoBehaviour
         //animator.SetFloat(moveXAnimationParameterID, 1f);
 
 
+        //aiming
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        _xSensitivityAim = _xSensitivity / 2;
+        _ySensitivityAim = _ySensitivity / 2;
+        _xSensitivityDefault = _xSensitivity;
+        _ySensitivityDefault = _ySensitivity;
 
     }
 
@@ -242,9 +266,43 @@ public class PlayerStateMachine : MonoBehaviour
             _animator.SetFloat(_moveXAnimationParameterID, _currentAnimationBlendVector.x);
             _animator.SetFloat(_moveZAnimationParameterID, _currentAnimationBlendVector.y);
 
-
     }
 
+    public void ProcessLook(Vector2 input)
+    {   
+        float mouseX = input.x;
+        float mouseY = input.y;
+        //calculates the camera rotation for looking up and down
+        _xRotation -= (mouseY * Time.deltaTime) * _ySensitivity;
+        _xRotation = Mathf.Clamp(_xRotation, -60f, 60f);
+        //apply rotation to the camera.
+        _playerCameraRoot.transform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
+        //rotate the player to look left and right according to the camera.
+        Vector3 rotationValue = (Vector3.up * (mouseX * Time.deltaTime) * _xSensitivity);
+        transform.Rotate(rotationValue);
+    }
+
+    private void HeadAndBodyAnim()
+    {
+        _aimTarget.position = _bodyHeadAimTarget.position;
+    }
+
+    public void PlayerAimStart()
+    {
+        Debug.Log("Player Aim Started");
+        _aimCamera.Priority += _aimCamPriority;
+        _xSensitivity = _xSensitivityAim;
+        _ySensitivity = _ySensitivityAim;
+        _isAiming = !_isAiming;
+    }
+    public void PlayerAimFinished()
+    {
+        Debug.Log("Player Aim Finished");
+        _aimCamera.Priority -= _aimCamPriority;
+        _xSensitivity = _xSensitivityDefault;
+        _ySensitivity = _ySensitivityDefault;
+        _isAiming = !_isAiming;
+    }
 
     private void CrouchFunctionality()
     {

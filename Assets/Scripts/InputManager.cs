@@ -37,8 +37,8 @@ public class InputManager : MonoBehaviour
         onFoot.CrouchEnd.canceled += ctx => playerStateMachine.Crouch();
         onFoot.SprintStart.started += ctx => playerStateMachine.SprintStart();
         onFoot.SprintFinish.canceled += ctx => playerStateMachine.SprintFinish();
-        onFoot.AimStart.started += ctx => playerLook.PlayerAimStart();
-        onFoot.AimFinish.canceled += ctx => playerLook.PlayerAimFinished();
+        onFoot.AimStart.started += ctx => playerStateMachine.PlayerAimStart();
+        onFoot.AimFinish.canceled += ctx => playerStateMachine.PlayerAimFinished();
         onFoot.Reload.performed += ctx => gun.ReloadGun();
         onFoot.Shoot.started += _ => StartFiring();
         onFoot.Shoot.canceled += _ => StopFiring();
@@ -55,9 +55,9 @@ public class InputManager : MonoBehaviour
         if(!playerStateMachine.IsVaulting)
         {
             playerStateMachine.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
-            playerLook.ProcessLook(onFoot.Look.ReadValue<Vector2>());
             playerStateMachine.IdleCheck(onFoot.Movement.ReadValue<Vector2>());
         }
+        playerStateMachine.ProcessLook(onFoot.Look.ReadValue<Vector2>());
 
 
         

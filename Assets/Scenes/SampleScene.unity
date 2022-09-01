@@ -131,7 +131,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 2
-    m_TransformParent: {fileID: 8466151299645921201}
+    m_TransformParent: {fileID: 1037306709}
     m_Modifications:
     - target: {fileID: 837602936590372208, guid: 2a3ac2874411678419b5c875e72e7d8f,
         type: 3}
@@ -146,17 +146,17 @@ PrefabInstance:
     - target: {fileID: 1151161678597230431, guid: 2a3ac2874411678419b5c875e72e7d8f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.265118
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1151161678597230431, guid: 2a3ac2874411678419b5c875e72e7d8f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.102885
+      value: -0.34
       objectReference: {fileID: 0}
     - target: {fileID: 1151161678597230431, guid: 2a3ac2874411678419b5c875e72e7d8f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -24.781889
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1151161678597230431, guid: 2a3ac2874411678419b5c875e72e7d8f,
         type: 3}
@@ -216,7 +216,7 @@ PrefabInstance:
     - target: {fileID: 7363864469620494430, guid: 2a3ac2874411678419b5c875e72e7d8f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7399918992693038779, guid: 2a3ac2874411678419b5c875e72e7d8f,
         type: 3}
@@ -623,7 +623,7 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 20.78461
+  m_FocalLength: 20.784609
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -3300,6 +3300,7 @@ Transform:
   m_Children:
   - {fileID: 192264483}
   - {fileID: 1595290167}
+  - {fileID: 501061776}
   m_Father: {fileID: 8466151299645921201}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6828,6 +6829,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1910889656}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1919142229 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3539200262733076772, guid: 2a3ac2874411678419b5c875e72e7d8f,
+    type: 3}
+  m_PrefabInstance: {fileID: 14953618}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6ae16edf95b5224e90acc36c9ebbd52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1942912433
 GameObject:
   m_ObjectHideFlags: 0
@@ -11189,7 +11202,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132243583723749238}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ad0e2a41eaac954d983c00890feb2a0, type: 3}
   m_Name: 
@@ -11231,7 +11244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7055ab3eecabf424cbaf6c54636ac878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: {fileID: 0}
+  gun: {fileID: 1919142229}
 --- !u!114 &3539200262398362202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12599,7 +12612,6 @@ Transform:
   - {fileID: 727279838}
   - {fileID: 1037306709}
   - {fileID: 260642339}
-  - {fileID: 501061776}
   - {fileID: 6928295171060575470}
   - {fileID: 1190767607}
   m_Father: {fileID: 0}
@@ -12736,7 +12748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c715e8d2c23ac46a0694e5d9d131e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAmmo: 0
+  maxAmmo: 30
 --- !u!95 &8466151299645921204
 Animator:
   serializedVersion: 4
@@ -12968,6 +12980,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652ac8577d30be249b20efa956e9c5f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _xSensitivity: 2
+  _ySensitivity: 3
+  _playerCameraRoot: {fileID: 1037306709}
+  _aimTarget: {fileID: 993012771}
+  _bodyHeadAimTarget: {fileID: 1595290167}
   WallCheckLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -12976,6 +12993,9 @@ MonoBehaviour:
   groundFrontDebugTransform: {fileID: 300566126}
   debugNefootTransform: {fileID: 327231787}
   _animationPlayTransition: 0.15
+  _aimCamPriority: 10
+  _aimCamera: {fileID: 727279837}
+  _isAiming: 0
   _animationSmoothTime: 0.3
   _isSprinting: 0
   _isIdle: 0
