@@ -284,14 +284,14 @@ public class PlayerStateMachine : MonoBehaviour
         
 
         //Find a way to add the turn animation here.
-        if(rotationValue.y < -3f)
-        {
-            Debug.Log("rotate");
-        }
-        else if(rotationValue.y > 3f)
-        {
-            Debug.Log("rotate right");
-        }
+        // if(rotationValue.y < -3f)
+        // {
+        //     Debug.Log("rotate");
+        // }
+        // else if(rotationValue.y > 3f)
+        // {
+        //     Debug.Log("rotate right");
+        // }
     }
 
     private void HeadAndBodyAnim()
