@@ -220,7 +220,7 @@ Transform:
   m_GameObject: {fileID: 7363864469620494430}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -14.265118, y: -3.102885, z: -24.781889}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.49619, y: 0.49619, z: 0.49619}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5438460183403596543}
@@ -250,16 +250,13 @@ MonoBehaviour:
   reloadTime: 3
   inaccuracyDistance: 5
   rapidFire: 1
-  availableClips: 5
-  currentAmmo: 0
-  isReloading: 0
-  maxAmmo: 12
   automaticRifle: 0
   shotgun: 0
   bulletsPerShot: 1
   laser: {fileID: 4273580798594251584, guid: 96d52b1e8d5f5674f8378ab94b451624, type: 3}
   muzzle: {fileID: 4189755143523321689}
   fadeDuration: 0.1
+  isReloading: 0
 --- !u!1 &7399918992693038779
 GameObject:
   m_ObjectHideFlags: 0

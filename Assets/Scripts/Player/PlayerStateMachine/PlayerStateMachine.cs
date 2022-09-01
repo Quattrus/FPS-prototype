@@ -205,6 +205,7 @@ public class PlayerStateMachine : MonoBehaviour
         LowWallCheck();
         HighWallCheck();
         KneeWallCheck();
+        HeadAndBodyAnim();
     }
 
 
@@ -280,6 +281,17 @@ public class PlayerStateMachine : MonoBehaviour
         //rotate the player to look left and right according to the camera.
         Vector3 rotationValue = (Vector3.up * (mouseX * Time.deltaTime) * _xSensitivity);
         transform.Rotate(rotationValue);
+        
+
+        //Find a way to add the turn animation here.
+        if(rotationValue.y < -3f)
+        {
+            Debug.Log("rotate");
+        }
+        else if(rotationValue.y > 3f)
+        {
+            Debug.Log("rotate right");
+        }
     }
 
     private void HeadAndBodyAnim()
@@ -287,9 +299,9 @@ public class PlayerStateMachine : MonoBehaviour
         _aimTarget.position = _bodyHeadAimTarget.position;
     }
 
+
     public void PlayerAimStart()
     {
-        Debug.Log("Player Aim Started");
         _aimCamera.Priority += _aimCamPriority;
         _xSensitivity = _xSensitivityAim;
         _ySensitivity = _ySensitivityAim;
@@ -297,7 +309,6 @@ public class PlayerStateMachine : MonoBehaviour
     }
     public void PlayerAimFinished()
     {
-        Debug.Log("Player Aim Finished");
         _aimCamera.Priority -= _aimCamPriority;
         _xSensitivity = _xSensitivityDefault;
         _ySensitivity = _ySensitivityDefault;
