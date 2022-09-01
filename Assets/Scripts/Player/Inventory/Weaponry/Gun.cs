@@ -45,8 +45,8 @@ public class Gun : MonoBehaviour
         cam = Camera.main.transform;
         rapidFireWait = new WaitForSeconds(1 / fireRate);
         reloadWait = new WaitForSeconds(reloadTime);
-        inventory = GetComponent<Inventory>();
-        inventory.CurrentAmmo = inventory.MaxAmmo;
+        inventory = Player.GetComponent<Inventory>();
+        
     }
     private void Update()
     {

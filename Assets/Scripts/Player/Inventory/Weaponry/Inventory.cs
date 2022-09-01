@@ -10,6 +10,10 @@ public class Inventory : MonoBehaviour
     [SerializeField] int maxAmmo; //base this on the gun type
     public int MaxAmmo { get { return maxAmmo; } }
 
+    private void Awake()
+    {
+        currentAmmo = maxAmmo;
+    }
     public void AmmoAdded()
     {
         availableClips += 1;
