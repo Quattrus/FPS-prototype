@@ -27,10 +27,9 @@ public class PlayerJumpState : PlayerBaseState
             else if(Ctx.Animator.GetFloat("RightFootCurve") < Ctx.Animator.GetFloat("LeftFootCurve"))
             {
                 Ctx.Animator.SetTrigger("SprintJumpMirrored");
-            }
-            
+            }   
         }
-        
+
         Jump();
     }
     public override void UpdateState()
@@ -43,7 +42,7 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void InitializeSubstate()
     {
-       
+
     }
     public override void CheckSwitchStates()
     {

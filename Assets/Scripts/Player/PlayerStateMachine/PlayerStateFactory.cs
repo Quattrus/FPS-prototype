@@ -35,4 +35,8 @@ public class PlayerStateFactory
     {
         return new PlayerCrouchState(_context, this);
     }
+    public PlayerBaseState Vaulting()
+    {
+        return new PlayerVaultState(_context, this);
+    }
 }

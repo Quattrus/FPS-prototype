@@ -31,7 +31,7 @@ public class PlayerGroundedState : PlayerBaseState
     }
     public override void InitializeSubstate()
     {
-        if(!Ctx.IsIdle)
+        if(!Ctx.IsIdle && !Ctx.StartVault)
         {
             SetSubState(Factory.Walk());
         }
@@ -43,6 +43,11 @@ public class PlayerGroundedState : PlayerBaseState
         {
             SetSubState(Factory.Run());
         }
+        else if(Ctx.StartVault)
+        {
+            SetSubState(Factory.Vaulting());
+        }
+
     }
     public override void CheckSwitchStates()
     {

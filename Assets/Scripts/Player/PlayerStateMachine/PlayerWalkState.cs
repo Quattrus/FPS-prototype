@@ -43,6 +43,10 @@ public class PlayerWalkState : PlayerBaseState
         {
             SwitchState(Factory.Crouching());
         }
+        else if(Ctx.IsVaulting)
+        {
+            SwitchState(Factory.Vaulting());
+        }
     }
 
 }

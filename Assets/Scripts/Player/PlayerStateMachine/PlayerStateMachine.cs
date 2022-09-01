@@ -6,7 +6,8 @@ public class PlayerStateMachine : MonoBehaviour
 {
     #region Variables
     [Header("Initialization")]
-    private CharacterController _characterController;
+    private CharacterController _characterController; //done
+    private CapsuleCollider _collider;
     private Vector3 _playerVelocity;
     private IKBehaviour footIKBehaviour;
     private StaminaController _staminaController; //done
@@ -17,7 +18,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] Transform debugNefootTransform;
     private float lowWallDistance;
     private float highWallDistance;
-    
+
 
     //animations
     private Animator _animator; //done
@@ -62,7 +63,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] float sphereRadius;
     [SerializeField] float maxDistanceToGround;
     private float groundDistance;
-    [SerializeField]  LayerMask sphereCastMask;
+    [SerializeField] LayerMask sphereCastMask;
     private Vector3 sphereCastOrigin;
     [SerializeField] GameObject ground;
 
@@ -72,13 +73,13 @@ public class PlayerStateMachine : MonoBehaviour
     private Vector3 highWallTargetOrigin;
     private Vector3 groundFrontTargetOrigin;
     private Vector3 kneeWallTargetOrigin;
-    [Range(-5,5)]
+    [Range(-5, 5)]
     [SerializeField] float kneeLevelOffset;
     [Range(-5, 5)]
     [SerializeField] float heightOffset = 0.5f;
     [SerializeField] LayerMask wallCastMaskLayer;
     [SerializeField] bool _canVault;
-    [SerializeField] bool _isVaulting = false;
+    [SerializeField] bool _isVaulting = false; //done
     [SerializeField] float wallCastRadius;
     [SerializeField] bool _gotLowWall = false;
     [SerializeField] bool _gotHighWall = false;
@@ -87,24 +88,25 @@ public class PlayerStateMachine : MonoBehaviour
     private float groundFrontDistance;
     private float kneeWallDistance;
     private Vector3 targetVaultPosition;
+    private bool _startVault;
 
 
     #endregion
- 
+
 
     #region Getters and Setters
     //Getters and Setters
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
     public bool Jumped { get { return _jumped; } set { _jumped = value; } }
     public bool IsSprinting { get { return _isSprinting; } set { _isSprinting = value; } }
-    public Animator Animator { get { return _animator;} set { _animator = value; } }
-    public int DefaultAirAnimation { get { return _defaultAirAnimation;} set { _defaultAirAnimation = value; } }
+    public Animator Animator { get { return _animator; } set { _animator = value; } }
+    public int DefaultAirAnimation { get { return _defaultAirAnimation; } set { _defaultAirAnimation = value; } }
     public int LandAnimation { get { return _landAnimation; } set { _landAnimation = value; } }
     public float AnimationPlayTransition { get { return _animationPlayTransition; } set { _animationPlayTransition = value; } }
     public Vector3 PlayerVelocity { get { return _playerVelocity; } set { _playerVelocity = value; } }
     public float PlayerVelocityX { get { return _playerVelocity.x; } set { _playerVelocity.x = value; } }
-    public float PlayerVelocityY { get{ return _playerVelocity.y; } set { _playerVelocity.y = value; } }
-    public float PlayerVelocityZ { get { return _playerVelocity.z; }set { _playerVelocity.z = value; } }
+    public float PlayerVelocityY { get { return _playerVelocity.y; } set { _playerVelocity.y = value; } }
+    public float PlayerVelocityZ { get { return _playerVelocity.z; } set { _playerVelocity.z = value; } }
     public float JumpHeight { get { return _jumpHeight; } set { _jumpHeight = value; } }
     public float Gravity { get { return _gravity; } set { _gravity = value; } }
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
@@ -127,6 +129,10 @@ public class PlayerStateMachine : MonoBehaviour
     public bool GotLowWall { get { return _gotLowWall; } set { _gotLowWall = value; } }
     public bool CanVault { get { return _canVault; } set { _canVault = value; } }
     public Vector3 TargetVaultPosition { get { return targetVaultPosition; } set { targetVaultPosition = value; } }
+    public bool IsVaulting { get { return _isVaulting; } set { _isVaulting = value; } }
+    public CharacterController CharacterController { get { return _characterController; } set { _characterController = value; } }
+    public bool StartVault { get { return _startVault; } set { _startVault = value; } }
+    public CapsuleCollider Collider { get { return _collider; } set { _collider = value; } }
     #endregion
     void Awake()
     {
@@ -134,6 +140,8 @@ public class PlayerStateMachine : MonoBehaviour
         ///These are all movement related.
         /// </summary>
         _characterController = GetComponent<CharacterController>();
+        _collider = GetComponent<CapsuleCollider>();
+        _collider.enabled = false;
         _canSprint = true;
         _speed = _walkSpeed;
         footIKBehaviour = GetComponent<IKBehaviour>();
@@ -172,54 +180,45 @@ public class PlayerStateMachine : MonoBehaviour
         FootIKCheck();
         LowWallCheck();
         HighWallCheck();
-        GroundFrontCheck();
         KneeWallCheck();
-        MoveToward();
-        
-
     }
 
 
     #region Player Movement
     public void Jump()
     {
-        if(_canVault)
+        GroundFrontCheck();
+        if(_canVault && !_jumped)
         {
-
-            _characterController.enabled = false;
-            _isVaulting = true;
-            _canVault = false;
-            _animator.SetTrigger("VaultMove");
-            StartCoroutine(VaultMove());
-            
+            _startVault = true;
+            Vault();
         }
         else
         {
             _jumped = true;
             footIKBehaviour.EnableFeetIK = false;
         }
+
     }
 
-    IEnumerator VaultMove()
+   public void Vault()
     {
-        
+        StartCoroutine(VaultMove());
+        _isVaulting = true;
+        _canVault = false;
+    }
+
+    public IEnumerator VaultMove()
+    {
+        _playerVelocity = Vector3.zero;
         yield return new WaitForSeconds(1);
         _isVaulting = false;
         _characterController.enabled = true;
-    }
-    private void MoveToward()
-    {
-        if(_isVaulting)
-        {
-            transform.Translate(Vector3.forward * Time.deltaTime);
-        }
-        
+        _collider.enabled = false;
     }
 
     public void ProcessMove(Vector2 input)
     {
-        if(!_isVaulting)
-        {
             if (_isSprinting)
             {
                 input.y += Mathf.Lerp(input.y, 1, 1 * Time.deltaTime);
@@ -242,7 +241,6 @@ public class PlayerStateMachine : MonoBehaviour
             _characterController.Move(transform.TransformDirection(_moveDirection) * _speed * Time.deltaTime);
             _animator.SetFloat(_moveXAnimationParameterID, _currentAnimationBlendVector.x);
             _animator.SetFloat(_moveZAnimationParameterID, _currentAnimationBlendVector.y);
-        }
 
 
     }
@@ -382,7 +380,6 @@ public class PlayerStateMachine : MonoBehaviour
             _gotLowWall = false;
         }
         Debug.DrawRay(lowWallTargetOrigin, transform.forward, Color.magenta);
-        Debug.Log(lowWallDistance);
     }
     private void KneeWallCheck()
     {
@@ -430,13 +427,13 @@ public class PlayerStateMachine : MonoBehaviour
                 groundFrontDebugTransform.transform.position = groundFront.point;
                 targetVaultPosition = groundFrontTargetOrigin;
                 targetVaultPosition.z = groundFront.point.z;
-                targetVaultPosition.y = groundFront.point.y;
+                targetVaultPosition.y = groundFront.point.y + 1f;
             }
     }
 
     private void CanVaultCheck()
     {
-        if(lowWallDistance < 0.5 && !_gotHighWall || lowWallDistance < 0.5 && highWallDistance > 1)
+        if(lowWallDistance < 0.4 && _gotLowWall && !_gotHighWall || lowWallDistance < 0.4 && _gotLowWall && highWallDistance > 1)
         {
              _canVault = true;
         }

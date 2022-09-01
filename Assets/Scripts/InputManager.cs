@@ -52,9 +52,13 @@ public class InputManager : MonoBehaviour
     }
     private void Update()
     {
-        playerStateMachine.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
-        playerLook.ProcessLook(onFoot.Look.ReadValue<Vector2>());
-        playerStateMachine.IdleCheck(onFoot.Movement.ReadValue<Vector2>());
+        if(!playerStateMachine.IsVaulting)
+        {
+            playerStateMachine.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
+            playerLook.ProcessLook(onFoot.Look.ReadValue<Vector2>());
+            playerStateMachine.IdleCheck(onFoot.Movement.ReadValue<Vector2>());
+        }
+
 
         
     }
