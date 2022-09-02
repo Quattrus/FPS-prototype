@@ -16,7 +16,6 @@ public class IKBehaviour : MonoBehaviour
     [SerializeField] float pelvisOffset = 0f;
     [Range(0, 1)][SerializeField] float pelvisUpAndDownSpeed = 0.28f;
     [Range(0, 1)][SerializeField] float feetToIKPositionSpeed = 0.5f;
-    private FootstepManager footstepManager;
     private Animator anim;
 
     public bool IKRotationEnable = false;
@@ -24,12 +23,12 @@ public class IKBehaviour : MonoBehaviour
 
     #region Getters and Setters
     public bool EnableFeetIK { get { return enableFeetIK; } set { enableFeetIK = value; } }
+    public float PelvisOffset { get { return pelvisOffset; } set { pelvisOffset = value; } }
     #endregion
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        footstepManager = GetComponent<FootstepManager>();
     }
 
     #region FeetGrounding

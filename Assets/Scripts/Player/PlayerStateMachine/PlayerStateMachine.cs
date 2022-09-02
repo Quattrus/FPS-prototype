@@ -106,6 +106,10 @@ public class PlayerStateMachine : MonoBehaviour
     private Vector3 targetVaultPosition;
     private bool _startVault;
 
+    [Header("ClimbCheck")]
+    [SerializeField] bool _isClimbing;
+    [SerializeField] bool _canClimb;
+
 
     #endregion
 
@@ -192,6 +196,7 @@ public class PlayerStateMachine : MonoBehaviour
     private void FixedUpdate()
     {
         CanVaultCheck();
+        SlopeCheck();
     }
 
     private void Update()
@@ -327,11 +332,13 @@ public class PlayerStateMachine : MonoBehaviour
             if (_isCrouching)
             {
                 _characterController.height = Mathf.Lerp(_characterController.height, 1.31f, crouchLerpValue);
+                footIKBehaviour.PelvisOffset = 0.75f;
                 _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(1), 1f, crouchLerpValue));
             }
             else
             {
                 _characterController.height = Mathf.Lerp(_characterController.height, 1.7f, crouchLerpValue);
+                footIKBehaviour.PelvisOffset = 0.83f;
                 _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(1), 0f, crouchLerpValue));
             }
             if (crouchLerpValue > 1)
@@ -439,7 +446,7 @@ public class PlayerStateMachine : MonoBehaviour
         lowWallTargetOrigin = transform.position;
         
         
-        if (Physics.Raycast(lowWallTargetOrigin, transform.forward, out lowWallHit, 5f, WallCheckLayerMask))
+        if (Physics.Raycast(lowWallTargetOrigin, transform.forward, out lowWallHit, 3f, WallCheckLayerMask))
         {
             debugLowWallTransform.transform.position = lowWallHit.point;
             lowWallDistance = Vector3.Distance(lowWallHit.point, lowWallTargetOrigin);
@@ -456,7 +463,7 @@ public class PlayerStateMachine : MonoBehaviour
         RaycastHit kneeWallHit = new RaycastHit();
         kneeWallTargetOrigin = new Vector3(transform.position.x, transform.position.y + kneeLevelOffset, transform.position.z);
         Debug.DrawRay(kneeWallTargetOrigin, transform.forward, Color.black);
-        if(Physics.Raycast(kneeWallTargetOrigin, transform.forward,out kneeWallHit, 5f, WallCheckLayerMask))
+        if(Physics.Raycast(kneeWallTargetOrigin, transform.forward,out kneeWallHit, 2f, WallCheckLayerMask))
         {
             debugNefootTransform.transform.position = kneeWallHit.point;
             kneeWallDistance = Vector3.Distance(kneeWallHit.point, kneeWallTargetOrigin);
@@ -510,6 +517,18 @@ public class PlayerStateMachine : MonoBehaviour
         else
         {
              _canVault = false;
+        }
+    }
+
+    private void SlopeCheck()
+    {
+        if(_gotNeFoot == true && _gotLowWall == true && _gotHighWall == true)
+        {
+            if(kneeWallDistance < lowWallDistance && lowWallDistance < highWallDistance)
+            {
+                Debug.Log("Slope");
+                //add slope animation here.
+            }
         }
     }
 

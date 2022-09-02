@@ -39,4 +39,8 @@ public class PlayerStateFactory
     {
         return new PlayerVaultState(_context, this);
     }
+    public PlayerBaseState Climbing()
+    {
+        return new PlayerClimbState(_context, this);
+    }
 }
