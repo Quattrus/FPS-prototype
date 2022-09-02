@@ -28,10 +28,12 @@ public class PlayerRunState : PlayerBaseState
     {
         if(!Ctx.IsSprinting && Ctx.IsIdle)
         {
+            Ctx.Animator.SetTrigger("StopRun");
             SwitchState(Factory.Idle());
         }
         else if (!Ctx.IsSprinting && !Ctx.IsIdle)
         {
+            Ctx.Animator.SetTrigger("StopRun");
             SwitchState(Factory.Walk());
         }
         else if(Ctx.IsSprinting && Ctx.PlayerVelocityY < -10f)

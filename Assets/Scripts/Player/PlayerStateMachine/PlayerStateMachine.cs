@@ -247,6 +247,7 @@ public class PlayerStateMachine : MonoBehaviour
             if (_isSprinting)
             {
                 input.y += Mathf.Lerp(input.y, 1, 1 * Time.deltaTime);
+                input.x += Mathf.Lerp(input.x, 1, 1 * Time.deltaTime);
             }
 
             if (!_isFalling && _playerVelocity.y < -2f)
