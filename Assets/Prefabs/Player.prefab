@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 6807045330380443191}
   m_Layer: 3
   m_Name: Geometry
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 6694143402067591252}
   m_Layer: 3
   m_Name: Hips
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -268,6 +268,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 201852874897889206}
+  - component: {fileID: 1476473549}
+  - component: {fileID: 1476473547}
+  - component: {fileID: 1476473548}
   m_Layer: 3
   m_Name: Right_Foot
   m_TagString: Untagged
@@ -291,6 +294,48 @@ Transform:
   m_Father: {fileID: 3947256678665690795}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1476473549
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839306555462534369}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!65 &1476473547
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839306555462534369}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.0056878706, y: 0.053769834, z: 0.0077973474}
+  m_Center: {x: 0.0052162195, y: -0.07013091, z: 0.07849145}
+--- !u!114 &1476473548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839306555462534369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ab90963abd9d546bb650499cd16177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 3468926447083804938}
 --- !u!1 &839917404739725663
 GameObject:
   m_ObjectHideFlags: 0
@@ -2032,6 +2077,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2086658813088946327}
+  - component: {fileID: 2040906563}
+  - component: {fileID: 2040906561}
+  - component: {fileID: 2040906562}
   m_Layer: 3
   m_Name: Left_Foot
   m_TagString: Untagged
@@ -2055,6 +2103,48 @@ Transform:
   m_Father: {fileID: 967390783055588014}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &2040906563
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3894616065512747820}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!65 &2040906561
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3894616065512747820}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.009974452, y: 0.057467453, z: 0.005674602}
+  m_Center: {x: 0.0050486033, y: 0.06260418, z: -0.07656223}
+--- !u!114 &2040906562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3894616065512747820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ab90963abd9d546bb650499cd16177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 3468926447083804938}
 --- !u!1 &3971417306404313922
 GameObject:
   m_ObjectHideFlags: 0
@@ -2405,7 +2495,7 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 20.784609
+  m_FocalLength: 20.78461
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -4819,7 +4909,7 @@ GameObject:
   - component: {fileID: 3653377136720311420}
   m_Layer: 3
   m_Name: Skeleton
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

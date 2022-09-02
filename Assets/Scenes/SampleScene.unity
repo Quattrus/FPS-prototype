@@ -2857,7 +2857,7 @@ GameObject:
   - component: {fileID: 1405885510}
   m_Layer: 0
   m_Name: Slope
-  m_TagString: Untagged
+  m_TagString: Cement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3313,7 +3313,7 @@ GameObject:
   - component: {fileID: 1422851734}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Grass
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -4419,7 +4419,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29190
+  m_Name: pb_Mesh42988
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -4905,7 +4905,7 @@ GameObject:
   - component: {fileID: 1942912434}
   m_Layer: 0
   m_Name: Stairs
-  m_TagString: Untagged
+  m_TagString: Cement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7552,7 +7552,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29344
+  m_Name: pb_Mesh43142
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -8247,6 +8247,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1476473547, guid: d00f49ffb10c5044c90e4ae5fd562170, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040906561, guid: d00f49ffb10c5044c90e4ae5fd562170, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3468926447083804938, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}
       propertyPath: m_Name
@@ -8272,6 +8280,16 @@ PrefabInstance:
       propertyPath: groundFrontDebugTransform
       value: 
       objectReference: {fileID: 300566126}
+    - target: {fileID: 3855747081938776518, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: environmentLayer.m_Bits
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855747081938776521, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3855747081938776525, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}
       propertyPath: m_RootOrder
