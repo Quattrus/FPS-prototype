@@ -70,6 +70,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] float _sprintSpeed = 8f; //done
     [SerializeField] float _walkSpeed = 5f; //done
     [SerializeField] float _crouchSpeed = 2f; //done
+    [SerializeField] float _stairClimbSpeed = 0.75f;
 
     [Header("State Variables")]
     PlayerBaseState _currentState;//Done
@@ -89,10 +90,15 @@ public class PlayerStateMachine : MonoBehaviour
     private Vector3 highWallTargetOrigin;
     private Vector3 groundFrontTargetOrigin;
     private Vector3 kneeWallTargetOrigin;
+    private Vector3 kneeWallBackTargetOrigin;
+    [Range(0, 1)]
+    [SerializeField] float slopeLayerWeightValue = 0.5f;
     [Range(-5, 5)]
     [SerializeField] float kneeLevelOffset;
     [Range(-5, 5)]
     [SerializeField] float heightOffset = 0.5f;
+    [Range(-5, 5)]
+    [SerializeField] float kneeBackLevelOffset;
     [SerializeField] LayerMask wallCastMaskLayer;
     [SerializeField] bool _canVault;
     [SerializeField] bool _isVaulting = false; //done
@@ -100,11 +106,23 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] bool _gotLowWall = false;
     [SerializeField] bool _gotHighWall = false;
     [SerializeField] bool _gotNeFoot = false;
+    [SerializeField] bool _gotNeFootBack = false;
     [SerializeField] GameObject groundFrontCheck;
     private float groundFrontDistance;
     private float kneeWallDistance;
+    private float kneeWallBackDistance;
     private Vector3 targetVaultPosition;
     private bool _startVault;
+    [Range(0, 10)]
+    [SerializeField] float groundFrontCheckDistance = 5f;
+    [Range(0, 10)]
+    [SerializeField] float highWallCheckDistance = 5f;
+    [Range(0, 10)]
+    [SerializeField] float kneeWallCheckDistance = 2f;
+    [Range(0, 10)]
+    [SerializeField] float kneeWallBackCheckDistance = 2f;
+    [Range(0, 10)]
+    [SerializeField] float lowWallCheckDistance = 3f;
 
     [Header("ClimbCheck")]
     [SerializeField] bool _isClimbing;
@@ -197,36 +215,42 @@ public class PlayerStateMachine : MonoBehaviour
     {
         CanVaultCheck();
         SlopeCheck();
+        FootIKCheck();
+        LowWallCheck();
+        HighWallCheck();
+        KneeWallCheck();
+        HeadAndBodyAnim();
+        KneeWallBackCheck();
+        GroundCheck();
+        GroundFrontCheck();
     }
 
     private void Update()
     {
         TerminalVelocity();
         _currentState.UpdateStates();
-        GroundCheck();
         FallCheck();
         CrouchFunctionality();
-        FootIKCheck();
-        LowWallCheck();
-        HighWallCheck();
-        KneeWallCheck();
-        HeadAndBodyAnim();
     }
 
 
     #region Player Movement
     public void Jump()
-    {
-        GroundFrontCheck();
-        if(_canVault && !_jumped)
+    { 
+
+        if (_canVault && !_isIdle)
         {
             _startVault = true;
             Vault();
         }
+        else if(_canVault && _isIdle)
+        {
+            _jumped = true;
+        }
         else
         {
             _jumped = true;
-            footIKBehaviour.EnableFeetIK = false;
+            //footIKBehaviour.EnableFeetIK = false;
         }
 
     }
@@ -392,6 +416,7 @@ public class PlayerStateMachine : MonoBehaviour
         RaycastHit hit;
         if (Physics.SphereCast(sphereCastOrigin, sphereRadius, Vector3.down, out hit, maxDistanceToGround, sphereCastMask, QueryTriggerInteraction.UseGlobal))
         {
+            groundDistance = Vector3.Distance(hit.point, sphereCastOrigin);
             ground = hit.transform.gameObject;
             groundDistance = hit.distance;
             
@@ -446,9 +471,9 @@ public class PlayerStateMachine : MonoBehaviour
         lowWallTargetOrigin = transform.position;
         
         
-        if (Physics.Raycast(lowWallTargetOrigin, transform.forward, out lowWallHit, 3f, WallCheckLayerMask))
+        if (Physics.Raycast(lowWallTargetOrigin, transform.forward, out lowWallHit, lowWallCheckDistance, WallCheckLayerMask))
         {
-            debugLowWallTransform.transform.position = lowWallHit.point;
+            //debugLowWallTransform.transform.position = lowWallHit.point;
             lowWallDistance = Vector3.Distance(lowWallHit.point, lowWallTargetOrigin);
             _gotLowWall = true;
         }
@@ -463,9 +488,9 @@ public class PlayerStateMachine : MonoBehaviour
         RaycastHit kneeWallHit = new RaycastHit();
         kneeWallTargetOrigin = new Vector3(transform.position.x, transform.position.y + kneeLevelOffset, transform.position.z);
         Debug.DrawRay(kneeWallTargetOrigin, transform.forward, Color.black);
-        if(Physics.Raycast(kneeWallTargetOrigin, transform.forward,out kneeWallHit, 2f, WallCheckLayerMask))
+        if(Physics.Raycast(kneeWallTargetOrigin, transform.forward,out kneeWallHit, kneeWallCheckDistance, WallCheckLayerMask))
         {
-            debugNefootTransform.transform.position = kneeWallHit.point;
+           // debugNefootTransform.transform.position = kneeWallHit.point;
             kneeWallDistance = Vector3.Distance(kneeWallHit.point, kneeWallTargetOrigin);
             _gotNeFoot = true;
         }
@@ -474,14 +499,30 @@ public class PlayerStateMachine : MonoBehaviour
             _gotNeFoot = false;
         }
     }
+
+    private void KneeWallBackCheck()
+    {
+        RaycastHit kneeWallBackHit = new RaycastHit();
+        kneeWallBackTargetOrigin = new Vector3(transform.position.x, transform.position.y + kneeBackLevelOffset, transform.position.z);
+        Debug.DrawRay(kneeWallBackTargetOrigin, -transform.forward, Color.black);
+        if(Physics.Raycast(kneeWallBackTargetOrigin, -transform.forward, out kneeWallBackHit, kneeWallBackCheckDistance, WallCheckLayerMask))
+        {
+            kneeWallBackDistance = Vector3.Distance(kneeWallBackHit.point, kneeWallBackTargetOrigin);
+            _gotNeFootBack = true;
+        }
+        else
+        {
+            _gotNeFootBack = false;
+        }
+    }
     private void HighWallCheck()
     {
         RaycastHit highWallHit = new RaycastHit();
         highWallTargetOrigin = new Vector3(transform.position.x, transform.position.y + heightOffset, transform.position.z);
         Debug.DrawRay(highWallTargetOrigin, transform.forward, Color.blue);
-        if(Physics.Raycast(highWallTargetOrigin, transform.forward, out highWallHit, 5f, WallCheckLayerMask))
+        if(Physics.Raycast(highWallTargetOrigin, transform.forward, out highWallHit, highWallCheckDistance, WallCheckLayerMask))
         {
-            debugHighWallTransform.transform.position = highWallHit.point;
+           // debugHighWallTransform.transform.position = highWallHit.point;
             highWallDistance = Vector3.Distance(highWallHit.point, highWallTargetOrigin);
             _gotHighWall = true;
         }
@@ -497,11 +538,11 @@ public class PlayerStateMachine : MonoBehaviour
             RaycastHit groundFront = new RaycastHit();
             groundFrontTargetOrigin = groundFrontCheck.transform.position;
             Debug.DrawRay(groundFrontTargetOrigin, -transform.up, Color.green);
-            if (Physics.Raycast(groundFrontTargetOrigin, -transform.up, out groundFront, 5f, sphereCastMask))
+            if (Physics.Raycast(groundFrontTargetOrigin, -transform.up, out groundFront, groundFrontCheckDistance, sphereCastMask))
             {
 
                 groundFrontDistance = Vector3.Distance(groundFront.point, groundFrontTargetOrigin);
-                groundFrontDebugTransform.transform.position = groundFront.point;
+               //groundFrontDebugTransform.transform.position = groundFront.point;
                 targetVaultPosition = groundFrontTargetOrigin;
                 targetVaultPosition.z = groundFront.point.z;
                 targetVaultPosition.y = groundFront.point.y + 1f;
@@ -522,13 +563,23 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void SlopeCheck()
     {
-        if(_gotNeFoot == true && _gotLowWall == true && _gotHighWall == true)
+
+        if(_gotNeFoot && groundFrontDistance < 1.5f)
         {
-            if(kneeWallDistance < lowWallDistance && lowWallDistance < highWallDistance)
-            {
-                Debug.Log("Slope");
-                //add slope animation here.
-            }
+            _animator.SetLayerWeight(2, Mathf.Lerp(_animator.GetLayerWeight(1), slopeLayerWeightValue, _animationSmoothTime));
+            
+        }
+        else if(!_gotNeFoot || _gotNeFoot && lowWallDistance == kneeWallDistance)
+        {
+            _animator.SetLayerWeight(2, Mathf.Lerp(_animator.GetLayerWeight(1), 0f, _animationSmoothTime));
+        }
+        if(_gotNeFootBack && groundFrontDistance > 1.65f)
+        {
+            _animator.SetLayerWeight(3, Mathf.Lerp(_animator.GetLayerWeight(1), slopeLayerWeightValue, _animationSmoothTime));
+        }
+        else if(!_gotNeFootBack)
+        {
+            _animator.SetLayerWeight(3, Mathf.Lerp(_animator.GetLayerWeight(1), 0f, _animationSmoothTime));
         }
     }
 
