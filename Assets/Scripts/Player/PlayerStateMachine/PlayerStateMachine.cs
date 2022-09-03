@@ -213,8 +213,11 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(!_isCrouching)
+        {
+            SlopeCheck();
+        }
         CanVaultCheck();
-        SlopeCheck();
         FootIKCheck();
         LowWallCheck();
         HighWallCheck();
@@ -314,14 +317,22 @@ public class PlayerStateMachine : MonoBehaviour
         
 
         //Find a way to add the turn animation here.
-        // if(rotationValue.y < -3f)
+        // if(_isIdle && rotationValue.y <= -1f)
         // {
         //     Debug.Log("rotate");
+        //    _animator.SetLayerWeight(4, Mathf.Lerp(_animator.GetLayerWeight(1), 1f, 1f));
+        //    _animator.SetTrigger("TurnLeft");
         // }
-        // else if(rotationValue.y > 3f)
+        // else if(_isIdle && rotationValue.y >= 1f)
         // {
         //     Debug.Log("rotate right");
-        // }
+        //    _animator.SetLayerWeight(4, Mathf.Lerp(_animator.GetLayerWeight(1), 1f, 1f));
+        //    _animator.SetTrigger("TurnRight");
+        //}
+        // else
+        //{
+        //    _animator.SetLayerWeight(4, Mathf.Lerp(_animator.GetLayerWeight(1), 0f, 1f));
+        //}
     }
 
     private void HeadAndBodyAnim()

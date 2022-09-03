@@ -1286,9 +1286,9 @@ GameObject:
   - component: {fileID: 529307252}
   - component: {fileID: 529307251}
   - component: {fileID: 529307250}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (2)
-  m_TagString: Untagged
+  m_TagString: Ladder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -3644,7 +3644,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh88522
+  m_Name: pb_Mesh29396
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -4923,7 +4923,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh88116
+  m_Name: pb_Mesh29228
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -9395,6 +9395,11 @@ PrefabInstance:
       objectReference: {fileID: 300566126}
     - target: {fileID: 3855747081938776517, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855747081938776517, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
       propertyPath: leftStepPlayed
       value: 1
       objectReference: {fileID: 0}
@@ -9476,7 +9481,7 @@ PrefabInstance:
     - target: {fileID: 6313547988986693302, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}
       propertyPath: m_SlopeLimit
-      value: 90
+      value: 45
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

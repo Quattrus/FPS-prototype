@@ -23,15 +23,18 @@ public class FootstepManager : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
+        SelectStepList();
     }
     private void Update()
     {
+        
         PlayFootstep();
+        
     }
 
     private void PlayFootstep()
     {
-
+        
         if (_animator.GetFloat("LeftFootCurve") >= 0.7f && leftStepPlayed == 0)
         {
             leftStepPlayed += 1;
@@ -51,12 +54,6 @@ public class FootstepManager : MonoBehaviour
         {
             rightStepPlayed = 0;
         }
-
-    }
-    private void StepSound()
-    {
-        AudioClip clip = currentList[Random.Range(0, currentList.Count)];
-        source.PlayOneShot(clip);
 
     }
     public void PlayLand()
@@ -101,5 +98,12 @@ public class FootstepManager : MonoBehaviour
             surface = Surface.cement;
         }
         SelectStepList();
+    }
+
+    private void StepSound()
+    {
+        AudioClip clip = currentList[Random.Range(0, currentList.Count)];
+        source.PlayOneShot(clip);
+
     }
 }

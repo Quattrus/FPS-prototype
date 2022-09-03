@@ -183,7 +183,7 @@ ModelImporter:
           rotationOrder: 4
       events: []
       transformMask: []
-      maskType: 1
+      maskType: 3
       maskSource: {fileID: 31900000, guid: cd870fe1259ee794c851fe18ac915be3, type: 2}
       additiveReferencePoseFrame: 0
     isReadable: 0
