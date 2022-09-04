@@ -808,6 +808,78 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "OnClimb",
+            "id": "720ffe08-7b23-4215-97c1-9c690dd5433d",
+            "actions": [
+                {
+                    "name": "ClimbMovement",
+                    "type": "PassThrough",
+                    "id": "4ba45350-bd8e-444e-9279-b7062974414a",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "334579f6-bcf8-4cd7-8552-7f56e4bd353e",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClimbMovement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "950bf90d-591b-49a3-998d-b897e1916fd7",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClimbMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "560fdc8f-b55d-41c0-84a0-737ea0af420c",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClimbMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "7a5da0e7-ef5b-42c4-b15a-f3f29409f4b4",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClimbMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "e7057067-d887-4c42-928b-043902779866",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClimbMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": []

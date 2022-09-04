@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Player;
 
 public class Ladder : Interactable
 {
@@ -8,7 +9,12 @@ public class Ladder : Interactable
 
     protected override void Interact()
     {
-        _player.GetComponent<CharacterController>().enabled = false;
-        _player.GetComponent<PlayerStateMachine>().IsClimbing = true;
+        if (!_player.GetComponent<PlayerStateMachine>().IsClimbing)
+        {
+            _player.GetComponent<CharacterController>().enabled = false;
+            _player.GetComponent<PlayerStateMachine>().Gravity = 0;
+            _player.GetComponent<PlayerStateMachine>().TransitionClimb = true;
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Player;
 
 public class PlayerJumpState : PlayerBaseState
 {
@@ -29,8 +30,8 @@ public class PlayerJumpState : PlayerBaseState
                 Ctx.Animator.SetTrigger("SprintJumpMirrored");
             }   
         }
-
         Jump();
+
     }
     public override void UpdateState()
     {

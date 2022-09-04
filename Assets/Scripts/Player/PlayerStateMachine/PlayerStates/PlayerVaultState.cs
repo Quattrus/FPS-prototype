@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Player;
 
 public class PlayerVaultState : PlayerBaseState
 {
@@ -52,7 +53,8 @@ public class PlayerVaultState : PlayerBaseState
     private void MoveToward()
     {
         Vector3 currentVelocity = new Vector3(Ctx.PlayerVelocityX, Ctx.PlayerVelocityY, Ctx.PlayerVelocityZ);
-        Ctx.Collider.transform.position = Vector3.SmoothDamp(Ctx.Collider.transform.position, Ctx.TargetVaultPosition, ref currentVelocity, 1f);
+        Vector3 targetVaultPosition = new Vector3(Ctx.TargetVaultPosition.x, Ctx.TargetVaultPosition.y + 1, Ctx.TargetVaultPosition.z);
+        Ctx.Collider.transform.position = Vector3.SmoothDamp(Ctx.Collider.transform.position, targetVaultPosition, ref currentVelocity, 1f);
     }
 
 }

@@ -4938,7 +4938,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29228
+  m_Name: pb_Mesh29232
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -9128,6 +9128,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3855747081938776512, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: m_Height
+      value: 1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855747081938776512, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855747081938776512, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: _gravity
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: _jumpHeight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}
       propertyPath: _enableFootIK
@@ -9140,19 +9165,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}
+      propertyPath: _targetVaultOffset
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
       propertyPath: debugNefootTransform
       value: 
       objectReference: {fileID: 327231787}
     - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}
       propertyPath: _slopeLayerWeightValue
-      value: 0.75
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}
       propertyPath: debugHighWallTransform
       value: 
       objectReference: {fileID: 1325266956}
+    - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: _groundFrontCheckDistance
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}
       propertyPath: groundFrontDebugTransform
@@ -9212,6 +9247,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683622986427359071, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683622986966077090, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.495
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683622987703561909, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.495
       objectReference: {fileID: 0}
     - target: {fileID: 8206211259890639929, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}

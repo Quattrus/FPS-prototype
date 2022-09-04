@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Player;
 
-public class PlayerWalkState : PlayerBaseState
+public class PlayerIdleState : PlayerBaseState
 {
-    public PlayerWalkState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
+    public PlayerIdleState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
     {
 
     }
     public override void EnterState()
     {
-        Ctx.Speed = Ctx.WalkSpeed;
-      
+        
     }
     public override void UpdateState()
     {
@@ -27,15 +27,15 @@ public class PlayerWalkState : PlayerBaseState
     }
     public override void CheckSwitchStates()
     {
-        if (Ctx.IsIdle)
+        if(!Ctx.IsIdle)
         {
-            SwitchState(Factory.Idle());
+            SwitchState(Factory.Walk());
         }
-        else if (!Ctx.IsIdle && Ctx.IsSprinting)
+        else if(!Ctx.IsIdle && Ctx.IsSprinting)
         {
             SwitchState(Factory.Run());
         }
-        else if (!Ctx.IsIdle && !Ctx.IsSprinting && !Ctx.Jumped && Ctx.PlayerVelocityY < -10f)
+        else if(Ctx.IsIdle && Ctx.PlayerVelocityY < -10f)
         {
             SwitchState(Factory.Falling());
         }
@@ -43,10 +43,5 @@ public class PlayerWalkState : PlayerBaseState
         {
             SwitchState(Factory.Crouching());
         }
-        else if(Ctx.IsVaulting)
-        {
-            SwitchState(Factory.Vaulting());
-        }
     }
-
 }

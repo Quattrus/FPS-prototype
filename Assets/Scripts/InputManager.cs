@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Player;
 
 public class InputManager : MonoBehaviour
 {
     [Header("Player Inputs")]
     private PlayerInput playerInput;
     private PlayerInput.OnFootActions onFoot;
+    private PlayerInput.OnClimbActions onClimb;
 
     [Header("Player Movements")]
-    private PlayerLook playerLook;
     private PlayerStateMachine playerStateMachine;
 
     [SerializeField] Gun gun;
@@ -18,19 +19,15 @@ public class InputManager : MonoBehaviour
     private Coroutine fireCoroutine;
 
 
-    public PlayerInput.OnFootActions OnFoot
-    {
-        get
-        {
-            return onFoot;
-        }
-    }
+    public PlayerInput.OnFootActions OnFoot { get { return onFoot; } set { onFoot = value; } }
+    public PlayerInput.OnClimbActions OnClimb { get { return onClimb; } set { onClimb = value; } }
+
 
     void Awake()
     {
         playerInput = new PlayerInput();
         onFoot = new PlayerInput().OnFoot;
-        playerLook = GetComponent<PlayerLook>();
+        onClimb = new PlayerInput().OnClimb;
         playerStateMachine = GetComponent<PlayerStateMachine>();
         onFoot.Jump.performed += ctx => playerStateMachine.Jump();
         onFoot.CrouchStart.started += ctx => playerStateMachine.Crouch();
@@ -52,15 +49,19 @@ public class InputManager : MonoBehaviour
     }
     private void Update()
     {
-        if(!playerStateMachine.IsVaulting)
+        if (playerStateMachine.IsClimbing)
+        {
+            playerStateMachine.ProcessClimb(onClimb.ClimbMovement.ReadValue<Vector2>());
+        }
+        if(!playerStateMachine.IsClimbing)
         {
             playerStateMachine.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
             playerStateMachine.IdleCheck(onFoot.Movement.ReadValue<Vector2>());
+            playerStateMachine.ProcessLook(onFoot.Look.ReadValue<Vector2>());
         }
-        playerStateMachine.ProcessLook(onFoot.Look.ReadValue<Vector2>());
 
 
-        
+
     }
 
     private void StartFiring()
@@ -82,10 +83,12 @@ public class InputManager : MonoBehaviour
     private void OnEnable()
     {
         onFoot.Enable();
+        onClimb.Enable();
     }
 
     private void OnDisable()
     {
         onFoot.Disable();
+        onClimb.Disable();
     }
 }

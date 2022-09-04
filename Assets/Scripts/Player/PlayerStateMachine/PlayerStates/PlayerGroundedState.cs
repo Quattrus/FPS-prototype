@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Player;
 public class PlayerGroundedState : PlayerBaseState
 {
     public PlayerGroundedState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
@@ -60,5 +60,10 @@ public class PlayerGroundedState : PlayerBaseState
         {
             SwitchState(Factory.Falling());
         }
+        if(Ctx.IsClimbing)
+        {
+            SwitchState(Factory.Climbing());
+        }
     }
+
 }
