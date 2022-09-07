@@ -60,5 +60,9 @@ public class PlayerGroundedState : PlayerBaseState
         {
             SwitchState(Factory.Falling());
         }
+        if(Ctx.IsClimbing)
+        {
+            SwitchState(Factory.Climbing());
+        }
     }
 }

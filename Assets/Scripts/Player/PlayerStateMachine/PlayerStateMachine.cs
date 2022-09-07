@@ -116,6 +116,9 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] bool _canClimb;
     private Vector3 _highWallHitPoint = Vector3.zero;
     private Transform _ladderBoundsTransformPosition;
+    [SerializeField] bool _climbTransition;
+    [SerializeField] bool _climbExit;
+    private Transform _ladderExitPosition;
 
 
     #endregion
@@ -162,6 +165,9 @@ public class PlayerStateMachine : MonoBehaviour
     public CapsuleCollider Collider { get { return _collider; } set { _collider = value; } }
     public bool IsAiming {get{return _isAiming;} set{_isAiming = value;}}
     public bool IsClimbing { get { return _isClimbing; } set { _isClimbing = value; } }
+    public Transform LadderBoundsTransformPosition { get { return _ladderBoundsTransformPosition; }set { _ladderBoundsTransformPosition = value; } }
+    public bool ClimbTransition { get { return _climbTransition; } set { _climbTransition = value; } }
+    public bool ClimbExit { get { return _climbExit; }set { _climbExit = value; } }
     #endregion
     void Awake()
     {
@@ -221,10 +227,14 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Update()
     {
-        if (_isClimbing)
+        if (_climbTransition)
         {
             StartCoroutine(TransitionClimbMove());
         }
+        //if(_climbExit)
+        //{
+        //    StartCoroutine(TransitionClimbExit());
+        //}
         TerminalVelocity();
         _currentState.UpdateStates();
         FallCheck();
@@ -262,11 +272,22 @@ public class PlayerStateMachine : MonoBehaviour
 
     public IEnumerator TransitionClimbMove()
     {
-        _playerVelocity.y = 0;
-        transform.position = Vector3.SmoothDamp(transform.position, _ladderBoundsTransformPosition.transform.position, ref _playerVelocity, 0.5f);
+        _playerVelocity = Vector3.zero;
+        _collider.enabled = true;
         yield return new WaitForSeconds(1);
+        _climbTransition = false;
+        _collider.enabled = false;
         _characterController.enabled = true;
     }
+    //public IEnumerator TransitionClimbExit()
+    //{
+        
+    //    transform.position = Vector3.SmoothDamp(transform.position, _ladderExitPosition.transform.position, ref _playerVelocity, 0.5f);
+    //    yield return new WaitForSeconds(1);
+    //    _isClimbing = false;
+    //    _characterController.enabled = true;
+    //    _climbExit = false;
+    //}
 
     public IEnumerator VaultMove()
     {
@@ -309,11 +330,11 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void ProcessClimb(Vector2 input)
     {
-        _moveDirection.x = input.x;
-        _moveDirection.y = input.y;
+        //_moveDirection.x = input.x;
+        //_moveDirection.y = input.y;
         _playerVelocity.y = input.y;
         _characterController.Move(_playerVelocity * Time.deltaTime);
-        _characterController.Move(transform.TransformDirection(_moveDirection) * _speed * Time.deltaTime);
+        //_characterController.Move(transform.TransformDirection(_moveDirection) * _speed * Time.deltaTime);
     }
 
     public void ProcessLook(Vector2 input)
@@ -589,6 +610,11 @@ public class PlayerStateMachine : MonoBehaviour
     public void GetLadderBoundsPosition(Transform ladderBoundsPosition)
     {
         _ladderBoundsTransformPosition = ladderBoundsPosition;
+    }
+
+    public void GetLadderExitPosition(Transform ladderExitPosition)
+    {
+        _ladderExitPosition = ladderExitPosition;
     }
 
     private void SlopeCheck()

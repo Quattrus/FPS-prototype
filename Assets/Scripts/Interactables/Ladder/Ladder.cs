@@ -7,6 +7,7 @@ public class Ladder : Interactable
     [SerializeField] GameObject _player;
     [SerializeField] GameObject _ladderBounds;
     [SerializeField] Transform _ladderBoundsPosition;
+    [SerializeField] Transform _ladderExitPosition;
     [SerializeField] string _promptMessage1;
     private string originalPrompt;
 
@@ -26,6 +27,7 @@ public class Ladder : Interactable
         if(!isInteracted)
         {
             _player.GetComponent<CharacterController>().enabled = false;
+            _player.GetComponent<PlayerStateMachine>().ClimbTransition = true;
             _player.GetComponent<PlayerStateMachine>().IsClimbing = true;
             isInteracted = true;
             _ladderBounds.gameObject.SetActive(true);
@@ -44,7 +46,9 @@ public class Ladder : Interactable
 
     public void LadderBoundsCheck()
     {
+        _player.GetComponent<PlayerStateMachine>().ClimbExit = true;
         _player.GetComponent<PlayerStateMachine>().IsClimbing = false;
+        _player.GetComponent<PlayerStateMachine>().GetLadderBoundsPosition(_ladderExitPosition);
         isInteracted = false;
         _ladderBounds.gameObject.SetActive(false);
         promptMessage = originalPrompt;
