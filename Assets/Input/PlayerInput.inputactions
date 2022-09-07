@@ -808,6 +808,56 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "OnClimb",
+            "id": "9a9ffccb-e7db-49de-afe5-9461d6144c97",
+            "actions": [
+                {
+                    "name": "Climb Movement",
+                    "type": "PassThrough",
+                    "id": "93858dc5-1b24-4013-8177-5d348eed0df7",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "471f85bb-c1fa-4ab8-9e60-6a26eab0da31",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Climb Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "cddbfda3-8740-4ac6-a142-79c40e70bd9d",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Climb Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "61e4289b-a52c-4d4f-bb1d-e5246d02d279",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Climb Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": []

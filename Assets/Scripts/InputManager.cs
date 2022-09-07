@@ -8,9 +8,9 @@ public class InputManager : MonoBehaviour
     [Header("Player Inputs")]
     private PlayerInput playerInput;
     private PlayerInput.OnFootActions onFoot;
+    private PlayerInput.OnClimbActions onClimb;
 
     [Header("Player Movements")]
-    private PlayerLook playerLook;
     private PlayerStateMachine playerStateMachine;
 
     [SerializeField] Gun gun;
@@ -30,7 +30,7 @@ public class InputManager : MonoBehaviour
     {
         playerInput = new PlayerInput();
         onFoot = new PlayerInput().OnFoot;
-        playerLook = GetComponent<PlayerLook>();
+        onClimb = new PlayerInput().OnClimb;
         playerStateMachine = GetComponent<PlayerStateMachine>();
         onFoot.Jump.performed += ctx => playerStateMachine.Jump();
         onFoot.CrouchStart.started += ctx => playerStateMachine.Crouch();
@@ -52,10 +52,14 @@ public class InputManager : MonoBehaviour
     }
     private void Update()
     {
-        if(!playerStateMachine.IsVaulting)
+        if(!playerStateMachine.IsVaulting && !playerStateMachine.IsClimbing)
         {
             playerStateMachine.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
             playerStateMachine.IdleCheck(onFoot.Movement.ReadValue<Vector2>());
+        }
+        if(playerStateMachine.IsClimbing)
+        {
+            playerStateMachine.ProcessClimb(onClimb.ClimbMovement.ReadValue<Vector2>());
         }
         playerStateMachine.ProcessLook(onFoot.Look.ReadValue<Vector2>());
 
@@ -81,11 +85,13 @@ public class InputManager : MonoBehaviour
 
     private void OnEnable()
     {
+        onClimb.Enable();
         onFoot.Enable();
     }
 
     private void OnDisable()
     {
+        onClimb.Disable();
         onFoot.Disable();
     }
 }

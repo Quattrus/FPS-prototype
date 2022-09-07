@@ -115,6 +115,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] bool _isClimbing;
     [SerializeField] bool _canClimb;
     private Vector3 _highWallHitPoint = Vector3.zero;
+    private Transform _ladderBoundsTransformPosition;
 
 
     #endregion
@@ -222,7 +223,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (_isClimbing)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, _highWallHitPoint, ref _playerVelocity, 1f);
+            StartCoroutine(TransitionClimbMove());
         }
         TerminalVelocity();
         _currentState.UpdateStates();
@@ -259,6 +260,14 @@ public class PlayerStateMachine : MonoBehaviour
         _canVault = false;
     }
 
+    public IEnumerator TransitionClimbMove()
+    {
+        _playerVelocity.y = 0;
+        transform.position = Vector3.SmoothDamp(transform.position, _ladderBoundsTransformPosition.transform.position, ref _playerVelocity, 0.5f);
+        yield return new WaitForSeconds(1);
+        _characterController.enabled = true;
+    }
+
     public IEnumerator VaultMove()
     {
         _playerVelocity = Vector3.zero;
@@ -282,9 +291,12 @@ public class PlayerStateMachine : MonoBehaviour
             }
 
 
-
+            if(!_isClimbing)
+            {
             _playerVelocity.y += _gravity * Time.deltaTime;
             _characterController.Move(_playerVelocity * Time.deltaTime);
+            }
+
 
             //smoothdamp
             _currentAnimationBlendVector = Vector2.SmoothDamp(_currentAnimationBlendVector, input, ref _animationVelocity, _animationSmoothTime);
@@ -293,7 +305,15 @@ public class PlayerStateMachine : MonoBehaviour
             _characterController.Move(transform.TransformDirection(_moveDirection) * _speed * Time.deltaTime);
             _animator.SetFloat(_moveXAnimationParameterID, _currentAnimationBlendVector.x);
             _animator.SetFloat(_moveZAnimationParameterID, _currentAnimationBlendVector.y);
+    }
 
+    public void ProcessClimb(Vector2 input)
+    {
+        _moveDirection.x = input.x;
+        _moveDirection.y = input.y;
+        _playerVelocity.y = input.y;
+        _characterController.Move(_playerVelocity * Time.deltaTime);
+        _characterController.Move(transform.TransformDirection(_moveDirection) * _speed * Time.deltaTime);
     }
 
     public void ProcessLook(Vector2 input)
@@ -308,7 +328,6 @@ public class PlayerStateMachine : MonoBehaviour
         //rotate the player to look left and right according to the camera.
         Vector3 rotationValue = (Vector3.up * (mouseX * Time.deltaTime) * _xSensitivity);
         transform.Rotate(rotationValue);
-        
 
         //Find a way to add the turn animation here.
         // if(_isIdle && rotationValue.y <= -1f)
@@ -565,6 +584,11 @@ public class PlayerStateMachine : MonoBehaviour
         {
              _canVault = false;
         }
+    }
+
+    public void GetLadderBoundsPosition(Transform ladderBoundsPosition)
+    {
+        _ladderBoundsTransformPosition = ladderBoundsPosition;
     }
 
     private void SlopeCheck()

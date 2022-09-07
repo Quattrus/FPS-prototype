@@ -830,6 +830,56 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""OnClimb"",
+            ""id"": ""9a9ffccb-e7db-49de-afe5-9461d6144c97"",
+            ""actions"": [
+                {
+                    ""name"": ""Climb Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""93858dc5-1b24-4013-8177-5d348eed0df7"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""471f85bb-c1fa-4ab8-9e60-6a26eab0da31"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Climb Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""cddbfda3-8740-4ac6-a142-79c40e70bd9d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Climb Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""61e4289b-a52c-4d4f-bb1d-e5246d02d279"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Climb Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -860,6 +910,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // OnClimb
+        m_OnClimb = asset.FindActionMap("OnClimb", throwIfNotFound: true);
+        m_OnClimb_ClimbMovement = m_OnClimb.FindAction("Climb Movement", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1141,6 +1194,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // OnClimb
+    private readonly InputActionMap m_OnClimb;
+    private IOnClimbActions m_OnClimbActionsCallbackInterface;
+    private readonly InputAction m_OnClimb_ClimbMovement;
+    public struct OnClimbActions
+    {
+        private @PlayerInput m_Wrapper;
+        public OnClimbActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ClimbMovement => m_Wrapper.m_OnClimb_ClimbMovement;
+        public InputActionMap Get() { return m_Wrapper.m_OnClimb; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(OnClimbActions set) { return set.Get(); }
+        public void SetCallbacks(IOnClimbActions instance)
+        {
+            if (m_Wrapper.m_OnClimbActionsCallbackInterface != null)
+            {
+                @ClimbMovement.started -= m_Wrapper.m_OnClimbActionsCallbackInterface.OnClimbMovement;
+                @ClimbMovement.performed -= m_Wrapper.m_OnClimbActionsCallbackInterface.OnClimbMovement;
+                @ClimbMovement.canceled -= m_Wrapper.m_OnClimbActionsCallbackInterface.OnClimbMovement;
+            }
+            m_Wrapper.m_OnClimbActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ClimbMovement.started += instance.OnClimbMovement;
+                @ClimbMovement.performed += instance.OnClimbMovement;
+                @ClimbMovement.canceled += instance.OnClimbMovement;
+            }
+        }
+    }
+    public OnClimbActions @OnClimb => new OnClimbActions(this);
     public interface IOnFootActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -1168,5 +1254,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface IOnClimbActions
+    {
+        void OnClimbMovement(InputAction.CallbackContext context);
     }
 }
