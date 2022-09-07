@@ -9279,6 +9279,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}
+      propertyPath: _gravity
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
       propertyPath: _enableFootIK
       value: 1
       objectReference: {fileID: 0}
@@ -9286,6 +9291,11 @@ PrefabInstance:
         type: 3}
       propertyPath: wallCastRadius
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
+        type: 3}
+      propertyPath: _maxDistanceToGround
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3855747081938776516, guid: d00f49ffb10c5044c90e4ae5fd562170,
         type: 3}

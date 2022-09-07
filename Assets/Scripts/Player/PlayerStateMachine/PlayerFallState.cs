@@ -11,7 +11,7 @@ public class PlayerFallState : PlayerBaseState
     }
     public override void EnterState()
     {
-        Ctx.PlayerVelocityY = Ctx.PlayerVelocityY * Time.deltaTime;
+        
         Ctx.Animator.SetTrigger("DefaultAir");
         Ctx.IsInAir = true;
     }

@@ -223,6 +223,7 @@ public class PlayerStateMachine : MonoBehaviour
         KneeWallBackCheck();
         GroundCheck();
         GroundFrontCheck();
+        Grounding();
     }
 
     private void Update()
@@ -279,16 +280,6 @@ public class PlayerStateMachine : MonoBehaviour
         _collider.enabled = false;
         _characterController.enabled = true;
     }
-    //public IEnumerator TransitionClimbExit()
-    //{
-        
-    //    transform.position = Vector3.SmoothDamp(transform.position, _ladderExitPosition.transform.position, ref _playerVelocity, 0.5f);
-    //    yield return new WaitForSeconds(1);
-    //    _isClimbing = false;
-    //    _characterController.enabled = true;
-    //    _climbExit = false;
-    //}
-
     public IEnumerator VaultMove()
     {
         _playerVelocity = Vector3.zero;
@@ -310,15 +301,6 @@ public class PlayerStateMachine : MonoBehaviour
             {
                 _playerVelocity.y = -2f;
             }
-
-
-            if(!_isClimbing)
-            {
-            _playerVelocity.y += _gravity * Time.deltaTime;
-            _characterController.Move(_playerVelocity * Time.deltaTime);
-            }
-
-
             //smoothdamp
             _currentAnimationBlendVector = Vector2.SmoothDamp(_currentAnimationBlendVector, input, ref _animationVelocity, _animationSmoothTime);
             _moveDirection.x = _currentAnimationBlendVector.x;
@@ -453,6 +435,16 @@ public class PlayerStateMachine : MonoBehaviour
         {
             _isIdle = false;
         }
+    }
+
+    private void Grounding()
+    {
+        if(!_isClimbing)
+        {
+            _playerVelocity.y += _gravity * Time.deltaTime;
+            _characterController.Move(_playerVelocity * Time.deltaTime);
+        }
+
     }
 
     private bool GroundCheck()
