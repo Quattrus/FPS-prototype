@@ -232,10 +232,6 @@ public class PlayerStateMachine : MonoBehaviour
         {
             StartCoroutine(TransitionClimbMove());
         }
-        //if(_climbExit)
-        //{
-        //    StartCoroutine(TransitionClimbExit());
-        //}
         TerminalVelocity();
         _currentState.UpdateStates();
         FallCheck();
@@ -312,11 +308,8 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void ProcessClimb(Vector2 input)
     {
-        //_moveDirection.x = input.x;
-        //_moveDirection.y = input.y;
         _playerVelocity.y = input.y;
         _characterController.Move(_playerVelocity * Time.deltaTime);
-        //_characterController.Move(transform.TransformDirection(_moveDirection) * _speed * Time.deltaTime);
     }
 
     public void ProcessLook(Vector2 input)
@@ -383,13 +376,11 @@ public class PlayerStateMachine : MonoBehaviour
             if (_isCrouching)
             {
                 _characterController.height = Mathf.Lerp(_characterController.height, 1.31f, crouchLerpValue);
-                _footIKBehaviour.PelvisOffset = 0.75f;
                 _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(1), 1f, crouchLerpValue));
             }
             else
             {
                 _characterController.height = Mathf.Lerp(_characterController.height, 1.7f, crouchLerpValue);
-                _footIKBehaviour.PelvisOffset = 0.83f;
                 _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(1), 0f, crouchLerpValue));
             }
             if (crouchLerpValue > 1)

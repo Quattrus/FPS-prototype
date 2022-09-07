@@ -50,7 +50,7 @@ public class Gun : MonoBehaviour
     }
     private void Update()
     {
-       // Aiming();
+        Aiming();
     }
 
     public IEnumerator RapidFire()
@@ -165,19 +165,17 @@ public class Gun : MonoBehaviour
             yield return null;
         }
     }
-
-    //Disabled til I implement aiming again
-    //private void Aiming()
-    //{
-    //    if (Player.GetComponent<PlayerStateMachine>().IsAiming == true)
-    //    {
-    //        inaccuracyDistance = 2f;
-    //    }
-    //    else
-    //    {
-    //        inaccuracyDistance = 5f;
-    //    }
-    //}
+    private void Aiming()
+    {
+        if (Player.GetComponent<PlayerStateMachine>().IsAiming == true)
+        {
+            inaccuracyDistance = 2f;
+        }
+       else
+        {
+            inaccuracyDistance = 5f;
+        }
+    }
 
     private void ShotGun()
     {
