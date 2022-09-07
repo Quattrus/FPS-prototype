@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Player;
 
 public class PlayerFallState : PlayerBaseState
 {
@@ -19,7 +18,6 @@ public class PlayerFallState : PlayerBaseState
     public override void UpdateState()
     {
         CheckSwitchStates();
-        TerminalVelocity();
     }
     public override void ExitState()
     {
@@ -35,14 +33,6 @@ public class PlayerFallState : PlayerBaseState
         if(Ctx.IsGrounded)
         {
             SwitchState(Factory.Grounded());
-        }
-    }
-
-    private void TerminalVelocity()
-    {
-        if(Ctx.PlayerVelocityY <= -200f)
-        {
-            Ctx.PlayerVelocityY = -200f;
         }
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Player;
 
 public class PlayerClimbState : PlayerBaseState
 
@@ -12,8 +11,7 @@ public class PlayerClimbState : PlayerBaseState
     }
     public override void EnterState()
     {
-        Ctx.TransitionClimb = false;
-        Ctx.CharacterController.enabled = true;
+        
     }
     public override void UpdateState()
     {

@@ -830,78 +830,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""OnClimb"",
-            ""id"": ""720ffe08-7b23-4215-97c1-9c690dd5433d"",
-            ""actions"": [
-                {
-                    ""name"": ""ClimbMovement"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""4ba45350-bd8e-444e-9279-b7062974414a"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""334579f6-bcf8-4cd7-8552-7f56e4bd353e"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ClimbMovement"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""950bf90d-591b-49a3-998d-b897e1916fd7"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ClimbMovement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""560fdc8f-b55d-41c0-84a0-737ea0af420c"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ClimbMovement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""7a5da0e7-ef5b-42c4-b15a-f3f29409f4b4"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ClimbMovement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""e7057067-d887-4c42-928b-043902779866"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ClimbMovement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                }
-            ]
         }
     ],
     ""controlSchemes"": []
@@ -932,9 +860,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
-        // OnClimb
-        m_OnClimb = asset.FindActionMap("OnClimb", throwIfNotFound: true);
-        m_OnClimb_ClimbMovement = m_OnClimb.FindAction("ClimbMovement", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1216,39 +1141,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
-
-    // OnClimb
-    private readonly InputActionMap m_OnClimb;
-    private IOnClimbActions m_OnClimbActionsCallbackInterface;
-    private readonly InputAction m_OnClimb_ClimbMovement;
-    public struct OnClimbActions
-    {
-        private @PlayerInput m_Wrapper;
-        public OnClimbActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ClimbMovement => m_Wrapper.m_OnClimb_ClimbMovement;
-        public InputActionMap Get() { return m_Wrapper.m_OnClimb; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(OnClimbActions set) { return set.Get(); }
-        public void SetCallbacks(IOnClimbActions instance)
-        {
-            if (m_Wrapper.m_OnClimbActionsCallbackInterface != null)
-            {
-                @ClimbMovement.started -= m_Wrapper.m_OnClimbActionsCallbackInterface.OnClimbMovement;
-                @ClimbMovement.performed -= m_Wrapper.m_OnClimbActionsCallbackInterface.OnClimbMovement;
-                @ClimbMovement.canceled -= m_Wrapper.m_OnClimbActionsCallbackInterface.OnClimbMovement;
-            }
-            m_Wrapper.m_OnClimbActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @ClimbMovement.started += instance.OnClimbMovement;
-                @ClimbMovement.performed += instance.OnClimbMovement;
-                @ClimbMovement.canceled += instance.OnClimbMovement;
-            }
-        }
-    }
-    public OnClimbActions @OnClimb => new OnClimbActions(this);
     public interface IOnFootActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -1276,9 +1168,5 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
-    }
-    public interface IOnClimbActions
-    {
-        void OnClimbMovement(InputAction.CallbackContext context);
     }
 }
