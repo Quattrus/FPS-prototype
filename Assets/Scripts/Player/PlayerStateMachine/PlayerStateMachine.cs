@@ -583,7 +583,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             _animator.SetLayerWeight(3, Mathf.Lerp(_animator.GetLayerWeight(1), _slopeLayerWeightValue, _animationSmoothTime));
         }
-        else if(!_gotNeFootBack)
+        else if(!_gotNeFootBack || _groundFrontDistance == _initialGroundDistance)
         {
             _animator.SetLayerWeight(3, Mathf.Lerp(_animator.GetLayerWeight(1), 0f, _animationSmoothTime));
         }
