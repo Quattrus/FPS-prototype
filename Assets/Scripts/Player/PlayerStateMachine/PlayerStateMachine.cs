@@ -15,7 +15,6 @@ namespace Player
         private IKBehaviour _footIKBehaviour;
         private StaminaController _staminaController; //done
         private float _initialGravity;
-        private Vector3 _targetLadderPos = Vector3.zero;
         #region Player Look
         private float _xRotation = 0f;
         [SerializeField] float _xSensitivity = 30f;
@@ -120,14 +119,8 @@ namespace Player
         [Header("ClimbCheck")]
         [SerializeField] bool _isClimbing;
         [SerializeField] bool _transitionClimb;
-        [SerializeField] bool _onLadder;
-        [SerializeField] bool _transitionClimbExitCheck;
         [SerializeField] bool _canClimb;
         private Vector3 _highWallHitPoint = Vector3.zero;
-        private Transform _ladderClimbTopStart;
-        private Transform _ladderClimbBottomStart;
-        private Transform _ladderClimbBottomExit;
-        private Transform _ladderClimbTopExit;
 
 
 
@@ -136,10 +129,6 @@ namespace Player
 
         #region Getters and Setters
         //Getters and Setters
-        public Transform LadderClimbTopStart { get { return _ladderClimbTopStart; } set { _ladderClimbTopStart = value; } }
-        public Transform LadderClimbTopExit { get { return _ladderClimbTopExit; } set { _ladderClimbTopExit = value; } }
-        public Transform LadderClimbBottomExit { get { return _ladderClimbBottomExit; } set { _ladderClimbBottomExit = value; } }
-        public Transform LadderClimbBottomStart { get { return _ladderClimbBottomStart; } set { _ladderClimbBottomStart = value; } }
         public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
         public bool Jumped { get { return _jumped; } set { _jumped = value; } }
         public bool IsSprinting { get { return _isSprinting; } set { _isSprinting = value; } }
@@ -180,7 +169,6 @@ namespace Player
         public bool IsAiming { get { return _isAiming; } set { _isAiming = value; } }
         public bool IsClimbing { get { return _isClimbing; } set { _isClimbing = value; } }
         public bool TransitionClimb { get { return _transitionClimb; } set { _transitionClimb = value; } }
-        public bool TransitionClimbExitCheck { get { return _transitionClimbExitCheck; } set { _transitionClimbExitCheck = value; } }
         #endregion
         void Awake()
         {
@@ -245,13 +233,10 @@ namespace Player
             {
                 StartCoroutine(TransitionClimbMove());
             }
-            if(_transitionClimbExitCheck)
-            {
-                StartCoroutine(TransitionClimbExit());
-            }
             _currentState.UpdateStates();
             FallCheck();
             CrouchFunctionality();
+            Debug.Log(_playerVelocity.y);
         }
 
 
@@ -389,28 +374,12 @@ namespace Player
                 }
             }
         }
-        public void LadderClimbPosition(Transform ladderPos)
-        {
-            {
-                _targetLadderPos = ladderPos.position;
-            }
-             
-        }
-
         public IEnumerator TransitionClimbMove()
         {
             _playerVelocity.y = 0;
-            transform.position = Vector3.SmoothDamp(transform.position, _targetLadderPos, ref _playerVelocity, 0.5f);
-            yield return new WaitForSeconds(2);
+            transform.position = Vector3.SmoothDamp(transform.position, _highWallHitPoint, ref _playerVelocity, 1f);
+            yield return new WaitForSeconds(3);
             _isClimbing = true;
-        }
-
-        IEnumerator TransitionClimbExit()
-        {
-            _playerVelocity.y = 0;
-            transform.position = Vector3.SmoothDamp(transform.position, _targetLadderPos, ref _playerVelocity, 0.5f);
-            yield return new WaitForSeconds(2);
-            _isClimbing = false;
         }
         #endregion
 
