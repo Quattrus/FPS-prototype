@@ -13,7 +13,7 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void EnterState()
     {
-        Ctx.EnableFootIK = false;
+       // Ctx.EnableFootIK = false;
         if(!Ctx.IsSprinting)
         {
             Ctx.Animator.SetTrigger("DefaultJump");

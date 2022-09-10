@@ -51,7 +51,7 @@ public class PlayerVaultState : PlayerBaseState
 
     private void MoveToward()
     {
-        Vector3 currentVelocity = new Vector3(Ctx.PlayerVelocityX, Ctx.PlayerVelocityY, Ctx.PlayerVelocityZ);
+        Vector3 currentVelocity = new Vector3(Ctx.PlayerVelocityX, 0, Ctx.PlayerVelocityZ);
         Ctx.Collider.transform.position = Vector3.SmoothDamp(Ctx.Collider.transform.position, Ctx.TargetVaultPosition, ref currentVelocity, 1f);
     }
 
