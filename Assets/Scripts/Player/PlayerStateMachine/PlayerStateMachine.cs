@@ -11,6 +11,7 @@ public class PlayerStateMachine : MonoBehaviour
     private CapsuleCollider _collider;
     private Vector3 _playerVelocity;
     private IKBehaviour _footIKBehaviour;
+    private Inventory _inventory;
     private StaminaController _staminaController; //done
     #region Player Look
     private float _xRotation = 0f;
@@ -40,6 +41,9 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera _aimCamera;
     [SerializeField] bool _isAiming;
     [SerializeField] GameObject _chestBone;
+
+    [Header("Weapons")]
+    [SerializeField] bool _isArmed;
 
     [Header("Animation Smoothing")]
     private Vector2 _currentAnimationBlendVector, _animationVelocity;
@@ -163,12 +167,14 @@ public class PlayerStateMachine : MonoBehaviour
     public Transform LadderBoundsTransformPosition { get { return _ladderBoundsTransformPosition; }set { _ladderBoundsTransformPosition = value; } }
     public bool ClimbTransition { get { return _climbTransition; } set { _climbTransition = value; } }
     public bool ClimbExit { get { return _climbExit; }set { _climbExit = value; } }
+    public bool IsArmed { get { return _isArmed; } set { _isArmed = value; } }
     #endregion
     void Awake()
     {
         ///<summary>
         ///These are all movement related.
         /// </summary>
+        _inventory = GetComponent<Inventory>();
         _characterController = GetComponent<CharacterController>();
         _collider = GetComponent<CapsuleCollider>();
         _collider.enabled = false;
@@ -223,18 +229,20 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Update()
     {
+
+        if (_inventory.GunEquipped)
+        {
+            _isArmed = true;
+        }
         if (_climbTransition)
         {
             StartCoroutine(TransitionClimbMove());
         }
-        //if(_climbExit)
-        //{
-        //    StartCoroutine(TransitionClimbExit());
-        //}
         TerminalVelocity();
         _currentState.UpdateStates();
         FallCheck();
         CrouchFunctionality();
+
     }
 
 

@@ -43,4 +43,8 @@ public class PlayerStateFactory
     {
         return new PlayerClimbState(_context, this);
     }
+    public PlayerBaseState Armed()
+    {
+        return new PlayerArmedState(_context, this);
+    }
 }

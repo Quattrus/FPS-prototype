@@ -9,6 +9,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private GameObject Player;
     private Transform cam;
     private Inventory inventory;
+    private PlayerStateMachine playerStateMachine;
 
     [Header("General Stats")]
     [SerializeField] float range = 50f;
@@ -23,10 +24,10 @@ public class Gun : MonoBehaviour
     private WaitForSeconds rapidFireWait;
 
     [Header("Automatic Rifle")]
-    [SerializeField] bool automaticRifle;
+    [SerializeField] private bool automaticRifle;
 
     [Header("Shotgun")]
-    [SerializeField] bool shotgun;
+    [SerializeField] private bool shotgun;
     [SerializeField] int bulletsPerShot = 6;
 
     [Header("Laser")]
@@ -38,7 +39,7 @@ public class Gun : MonoBehaviour
     private bool manualReload = false;
     public bool isReloading = false;
 
-    private enum GunType { shotgun, automaticRifle}
+    private enum GunType { shotgun, automaticRifle, notEquipped}
     private GunType gunType;
     
 
@@ -49,6 +50,7 @@ public class Gun : MonoBehaviour
         rapidFireWait = new WaitForSeconds(1 / fireRate);
         reloadWait = new WaitForSeconds(reloadTime);
         inventory = Player.GetComponent<Inventory>();
+        playerStateMachine = GetComponent<PlayerStateMachine>();
         
     }
     private void Update()
@@ -221,15 +223,15 @@ public class Gun : MonoBehaviour
 
     public void SwitchGuns(int weaponType)
     {
-        if (weaponType == 1)
-        {
-            gunType = GunType.automaticRifle;
-        }
-        if(weaponType == 2)
-        {
-            gunType = GunType.shotgun;
-        }
-        GunTypeCheck();
+    if (weaponType == 1)
+    {
+        gunType = GunType.automaticRifle;
+    }
+    if (weaponType == 2)
+    {
+        gunType = GunType.shotgun;
+    }
+     GunTypeCheck();
     }
 
     private void GunTypeCheck()
@@ -243,6 +245,9 @@ public class Gun : MonoBehaviour
             case GunType.shotgun:
                 shotgun = true;
                 automaticRifle = false;
+                break;
+            case GunType.notEquipped:
+                shotgun = false; automaticRifle = false;
                 break;
         }
     }

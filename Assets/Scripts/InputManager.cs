@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
     private PlayerStateMachine playerStateMachine;
 
     [SerializeField] Gun gun;
+    private Inventory inventory;
 
     private Coroutine fireCoroutine;
 
@@ -28,14 +29,13 @@ public class InputManager : MonoBehaviour
 
     void Awake()
     {
+        inventory = GetComponent<Inventory>();
         playerInput = new PlayerInput();
         onFoot = new PlayerInput().OnFoot;
         onClimb = new PlayerInput().OnClimb;
         playerStateMachine = GetComponent<PlayerStateMachine>();
         onFoot.Jump.performed += ctx => playerStateMachine.Jump();
         onFoot.FlashLight.performed += ctx => gun.Flashlight();
-        onFoot.MainWeapon.performed += ctx => gun.SwitchGuns(1);
-        onFoot.SecondaryWeapon.performed += ctx => gun.SwitchGuns(2);
         onFoot.CrouchStart.started += ctx => playerStateMachine.Crouch();
         onFoot.CrouchEnd.canceled += ctx => playerStateMachine.Crouch();
         onFoot.SprintStart.started += ctx => playerStateMachine.SprintStart();
@@ -45,14 +45,11 @@ public class InputManager : MonoBehaviour
         onFoot.Reload.performed += ctx => gun.ReloadGun();
         onFoot.Shoot.started += _ => StartFiring();
         onFoot.Shoot.canceled += _ => StopFiring();
+        onFoot.MainWeapon.performed += ctx => gun.SwitchGuns(1);
+        onFoot.SecondaryWeapon.performed += ctx => gun.SwitchGuns(2);
 
     }
 
-    //Tell the PlayerMotor.cs to move using the value given from our movement action.
-    void FixedUpdate()
-    {
-
-    }
     private void Update()
     {
         if(!playerStateMachine.IsVaulting && !playerStateMachine.IsClimbing)
@@ -72,7 +69,7 @@ public class InputManager : MonoBehaviour
 
     private void StartFiring()
     {
-        if(gun.gameObject != null)
+        if(inventory.GunEquipped)
         {
             fireCoroutine = StartCoroutine(gun.RapidFire());
         }
@@ -80,7 +77,7 @@ public class InputManager : MonoBehaviour
     }
     private void StopFiring()
     {
-        if(fireCoroutine != null)
+        if(fireCoroutine != null && inventory.GunEquipped)
         {
             StopCoroutine(fireCoroutine);
         }
