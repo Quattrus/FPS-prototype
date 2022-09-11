@@ -33,6 +33,9 @@ public class InputManager : MonoBehaviour
         onClimb = new PlayerInput().OnClimb;
         playerStateMachine = GetComponent<PlayerStateMachine>();
         onFoot.Jump.performed += ctx => playerStateMachine.Jump();
+        onFoot.FlashLight.performed += ctx => gun.Flashlight();
+        onFoot.MainWeapon.performed += ctx => gun.SwitchGuns(1);
+        onFoot.SecondaryWeapon.performed += ctx => gun.SwitchGuns(2);
         onFoot.CrouchStart.started += ctx => playerStateMachine.Crouch();
         onFoot.CrouchEnd.canceled += ctx => playerStateMachine.Crouch();
         onFoot.SprintStart.started += ctx => playerStateMachine.SprintStart();

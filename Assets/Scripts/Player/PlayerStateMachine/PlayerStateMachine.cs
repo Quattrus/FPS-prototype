@@ -25,12 +25,6 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] Transform _bodyHeadAimTarget;
     #endregion
     [SerializeField] LayerMask _wallCheckLayerMask;
-    #region Debug Transforms
-    [SerializeField] Transform _debugLowWallTransform; 
-    [SerializeField] Transform debugHighWallTransform; 
-    [SerializeField] Transform groundFrontDebugTransform; 
-    [SerializeField] Transform debugNefootTransform;
-    #endregion
     private float _lowWallDistance;
     private float _highWallDistance;
     #region Animation Variables
@@ -45,6 +39,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] int _aimCamPriority = 10;
     [SerializeField] CinemachineVirtualCamera _aimCamera;
     [SerializeField] bool _isAiming;
+    [SerializeField] GameObject _chestBone;
 
     [Header("Animation Smoothing")]
     private Vector2 _currentAnimationBlendVector, _animationVelocity;
@@ -328,6 +323,7 @@ public class PlayerStateMachine : MonoBehaviour
         _xRotation = Mathf.Clamp(_xRotation, -60f, 60f);
         //apply rotation to the camera.
         _playerCameraRoot.transform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
+        _chestBone.transform.localRotation = _playerCameraRoot.transform.localRotation;
         //rotate the player to look left and right according to the camera.
         Vector3 rotationValue = (Vector3.up * (mouseX * Time.deltaTime) * _xSensitivity);
         transform.Rotate(rotationValue);
@@ -371,6 +367,8 @@ public class PlayerStateMachine : MonoBehaviour
         _ySensitivity = _ySensitivityDefault;
         _isAiming = !_isAiming;
     }
+
+
 
     private void CrouchFunctionality()
     {
@@ -510,7 +508,6 @@ public class PlayerStateMachine : MonoBehaviour
         
         if (Physics.Raycast(_lowWallTargetOrigin, transform.forward, out lowWallHit, _lowWallCheckDistance, _wallCheckLayerMask))
         {
-            //debugLowWallTransform.transform.position = lowWallHit.point;
             _lowWallDistance = Vector3.Distance(lowWallHit.point, _lowWallTargetOrigin);
             _gotLowWall = true;
         }
@@ -527,7 +524,6 @@ public class PlayerStateMachine : MonoBehaviour
         Debug.DrawRay(_kneeWallTargetOrigin, transform.forward, Color.black);
         if(Physics.Raycast(_kneeWallTargetOrigin, transform.forward,out kneeWallHit, _kneeWallCheckDistance, _wallCheckLayerMask))
         {
-           // debugNefootTransform.transform.position = kneeWallHit.point;
             _kneeWallDistance = Vector3.Distance(kneeWallHit.point, _kneeWallTargetOrigin);
             _gotNeFoot = true;
         }
@@ -559,7 +555,6 @@ public class PlayerStateMachine : MonoBehaviour
         Debug.DrawRay(_highWallTargetOrigin, transform.forward, Color.blue);
         if(Physics.Raycast(_highWallTargetOrigin, transform.forward, out highWallHit, _highWallCheckDistance, _wallCheckLayerMask))
         {
-            // debugHighWallTransform.transform.position = highWallHit.point;
             _highWallHitPoint = highWallHit.point;
             _highWallDistance = Vector3.Distance(highWallHit.point, _highWallTargetOrigin);
             _gotHighWall = true;
@@ -580,7 +575,6 @@ public class PlayerStateMachine : MonoBehaviour
             {
 
                 _groundFrontDistance = Vector3.Distance(groundFront.point, _groundFrontTargetOrigin);
-               //groundFrontDebugTransform.transform.position = groundFront.point;
                 _targetVaultPosition = _groundFrontTargetOrigin;
                 _targetVaultPosition.z = groundFront.point.z;
                 _targetVaultPosition.y = groundFront.point.y + 1f;

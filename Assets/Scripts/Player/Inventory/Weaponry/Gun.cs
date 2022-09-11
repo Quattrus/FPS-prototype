@@ -37,6 +37,9 @@ public class Gun : MonoBehaviour
     [Header("Reloading")]
     private bool manualReload = false;
     public bool isReloading = false;
+
+    private enum GunType { shotgun, automaticRifle}
+    private GunType gunType;
     
 
 
@@ -50,7 +53,7 @@ public class Gun : MonoBehaviour
     }
     private void Update()
     {
-       // Aiming();
+       Aiming();
     }
 
     public IEnumerator RapidFire()
@@ -166,18 +169,17 @@ public class Gun : MonoBehaviour
         }
     }
 
-    //Disabled til I implement aiming again
-    //private void Aiming()
-    //{
-    //    if (Player.GetComponent<PlayerStateMachine>().IsAiming == true)
-    //    {
-    //        inaccuracyDistance = 2f;
-    //    }
-    //    else
-    //    {
-    //        inaccuracyDistance = 5f;
-    //    }
-    //}
+    private void Aiming()
+    {
+        if (Player.GetComponent<PlayerStateMachine>().IsAiming == true)
+        {
+            inaccuracyDistance = 2f;
+        }
+        else
+        {
+            inaccuracyDistance = 5f;
+        }
+    }
 
     private void ShotGun()
     {
@@ -209,6 +211,39 @@ public class Gun : MonoBehaviour
             {
                 CreateLaser(cam.position + shootingDir * range);
             }
+        }
+    }
+
+    public void Flashlight()
+    {
+        //place flashlight code here
+    }
+
+    public void SwitchGuns(int weaponType)
+    {
+        if (weaponType == 1)
+        {
+            gunType = GunType.automaticRifle;
+        }
+        if(weaponType == 2)
+        {
+            gunType = GunType.shotgun;
+        }
+        GunTypeCheck();
+    }
+
+    private void GunTypeCheck()
+    {
+        switch (gunType)
+        {
+            case GunType.automaticRifle:
+                automaticRifle = true;
+                shotgun = false;
+                break;
+            case GunType.shotgun:
+                shotgun = true;
+                automaticRifle = false;
+                break;
         }
     }
 }

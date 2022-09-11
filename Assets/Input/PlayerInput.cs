@@ -134,6 +134,33 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FlashLight"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d7e14cb-927f-4fc3-bccc-7bdada6680be"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MainWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""fed8ed8c-40dc-4ddb-b7dd-1f6f12e209ee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""4b944dd5-2dcb-4db7-9f94-1b474d549399"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -310,6 +337,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""CrouchEnd"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f298eb1-a1e5-4c5e-988a-da4baf17b791"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlashLight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a29a93fb-092f-4e4a-8ddc-8c108a1d70e5"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MainWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""06fcd8f7-1b47-4ba4-8f86-addca6adc15e"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryWeapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -898,6 +958,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_OnFoot_AimStart = m_OnFoot.FindAction("AimStart", throwIfNotFound: true);
         m_OnFoot_AimFinish = m_OnFoot.FindAction("AimFinish", throwIfNotFound: true);
         m_OnFoot_Reload = m_OnFoot.FindAction("Reload", throwIfNotFound: true);
+        m_OnFoot_FlashLight = m_OnFoot.FindAction("FlashLight", throwIfNotFound: true);
+        m_OnFoot_MainWeapon = m_OnFoot.FindAction("MainWeapon", throwIfNotFound: true);
+        m_OnFoot_SecondaryWeapon = m_OnFoot.FindAction("SecondaryWeapon", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -984,6 +1047,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_OnFoot_AimStart;
     private readonly InputAction m_OnFoot_AimFinish;
     private readonly InputAction m_OnFoot_Reload;
+    private readonly InputAction m_OnFoot_FlashLight;
+    private readonly InputAction m_OnFoot_MainWeapon;
+    private readonly InputAction m_OnFoot_SecondaryWeapon;
     public struct OnFootActions
     {
         private @PlayerInput m_Wrapper;
@@ -1000,6 +1066,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @AimStart => m_Wrapper.m_OnFoot_AimStart;
         public InputAction @AimFinish => m_Wrapper.m_OnFoot_AimFinish;
         public InputAction @Reload => m_Wrapper.m_OnFoot_Reload;
+        public InputAction @FlashLight => m_Wrapper.m_OnFoot_FlashLight;
+        public InputAction @MainWeapon => m_Wrapper.m_OnFoot_MainWeapon;
+        public InputAction @SecondaryWeapon => m_Wrapper.m_OnFoot_SecondaryWeapon;
         public InputActionMap Get() { return m_Wrapper.m_OnFoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1045,6 +1114,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Reload.started -= m_Wrapper.m_OnFootActionsCallbackInterface.OnReload;
                 @Reload.performed -= m_Wrapper.m_OnFootActionsCallbackInterface.OnReload;
                 @Reload.canceled -= m_Wrapper.m_OnFootActionsCallbackInterface.OnReload;
+                @FlashLight.started -= m_Wrapper.m_OnFootActionsCallbackInterface.OnFlashLight;
+                @FlashLight.performed -= m_Wrapper.m_OnFootActionsCallbackInterface.OnFlashLight;
+                @FlashLight.canceled -= m_Wrapper.m_OnFootActionsCallbackInterface.OnFlashLight;
+                @MainWeapon.started -= m_Wrapper.m_OnFootActionsCallbackInterface.OnMainWeapon;
+                @MainWeapon.performed -= m_Wrapper.m_OnFootActionsCallbackInterface.OnMainWeapon;
+                @MainWeapon.canceled -= m_Wrapper.m_OnFootActionsCallbackInterface.OnMainWeapon;
+                @SecondaryWeapon.started -= m_Wrapper.m_OnFootActionsCallbackInterface.OnSecondaryWeapon;
+                @SecondaryWeapon.performed -= m_Wrapper.m_OnFootActionsCallbackInterface.OnSecondaryWeapon;
+                @SecondaryWeapon.canceled -= m_Wrapper.m_OnFootActionsCallbackInterface.OnSecondaryWeapon;
             }
             m_Wrapper.m_OnFootActionsCallbackInterface = instance;
             if (instance != null)
@@ -1085,6 +1163,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Reload.started += instance.OnReload;
                 @Reload.performed += instance.OnReload;
                 @Reload.canceled += instance.OnReload;
+                @FlashLight.started += instance.OnFlashLight;
+                @FlashLight.performed += instance.OnFlashLight;
+                @FlashLight.canceled += instance.OnFlashLight;
+                @MainWeapon.started += instance.OnMainWeapon;
+                @MainWeapon.performed += instance.OnMainWeapon;
+                @MainWeapon.canceled += instance.OnMainWeapon;
+                @SecondaryWeapon.started += instance.OnSecondaryWeapon;
+                @SecondaryWeapon.performed += instance.OnSecondaryWeapon;
+                @SecondaryWeapon.canceled += instance.OnSecondaryWeapon;
             }
         }
     }
@@ -1241,6 +1328,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnAimStart(InputAction.CallbackContext context);
         void OnAimFinish(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnFlashLight(InputAction.CallbackContext context);
+        void OnMainWeapon(InputAction.CallbackContext context);
+        void OnSecondaryWeapon(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
