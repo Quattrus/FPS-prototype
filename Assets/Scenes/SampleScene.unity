@@ -15090,6 +15090,7 @@ GameObject:
   - component: {fileID: 8466151299645921210}
   - component: {fileID: 8466151299645921211}
   - component: {fileID: 8466151299645921212}
+  - component: {fileID: 8466151299645921213}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -15579,7 +15580,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   _animationPlayTransition: 0.15
-  _meleeMode: 1
+  _meleeMode: 0
   _meleeWheel: {fileID: 622136629}
   _aimCamPriority: 10
   _aimCamera: {fileID: 727279837}
@@ -15735,6 +15736,23 @@ CapsuleCollider:
   m_Height: 1.65
   m_Direction: 1
   m_Center: {x: 0, y: 0.12, z: -0.04}
+--- !u!114 &8466151299645921213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132243583723749238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16e60c770b24be245b22f267598ddcf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealth: 100
+  maxHealth: 100
+  healingValue: 0
+  healthBarUI: {fileID: 767799685}
+  healthSliderCanvasGroup: {fileID: 584506274}
 --- !u!4 &8518817371077933271
 Transform:
   m_ObjectHideFlags: 0

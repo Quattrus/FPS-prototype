@@ -668,6 +668,7 @@ public class PlayerStateMachine : MonoBehaviour
     public void StrikeAnimations(int strikeType)
     {
         Debug.Log(strikeType);
+        //Implement attack animations here.
             
     }
 }

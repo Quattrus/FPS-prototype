@@ -16,7 +16,7 @@ public class StaminaController : MonoBehaviour
     [Range(0, 50)][SerializeField] float staminaDrain = 1f;
     [Range(0, 50)][SerializeField] float staminaRegen = 0.5f;
 
-    [Header("Staina UI Elements")]
+    [Header("Stamina UI Elements")]
     [SerializeField] private Image staminaProgressUI = null;
     [SerializeField] private CanvasGroup sliderCanvasGroup = null;
 
