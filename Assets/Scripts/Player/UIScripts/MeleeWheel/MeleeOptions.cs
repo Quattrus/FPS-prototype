@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 
 public class MeleeOptions : MonoBehaviour
@@ -14,8 +15,10 @@ public class MeleeOptions : MonoBehaviour
     [SerializeField] float angleOffset;
     [SerializeField] float angleMin, angleMax;
     [SerializeField] int assignedIndex = 0;
-    [SerializeField] Button button;
+    [SerializeField] Button meleeButton;
     private CanvasGroup canvasGroup;
+    
+    
 
 
 
@@ -26,6 +29,8 @@ public class MeleeOptions : MonoBehaviour
     public float AngleMax { get { return angleMax; } set { angleMax = value; } }
     public int AssignedIndex { get { return assignedIndex; } set { assignedIndex = value; } }
     public bool Active { get { return active; } set { active = value; } }
+
+    public Button MeleeButton { get { return meleeButton; } set { meleeButton = value; } }
     #endregion
 
     private void Awake()
@@ -41,7 +46,7 @@ public class MeleeOptions : MonoBehaviour
         {
             Debug.LogError("Radial Menu: Rect Transform for radial element " + gameObject.name + " could not be found. Please ensure this is an object parented to a canvas.");
         }
-        if(button == null)
+        if(meleeButton == null)
         {
             Debug.LogError("Radial Menu: No button attached to " + gameObject.name + "!");
         }
@@ -57,9 +62,9 @@ public class MeleeOptions : MonoBehaviour
         else
         {
             EventTrigger trigger;
-            if(button.GetComponent<EventTrigger>() == null)
+            if(meleeButton.GetComponent<EventTrigger>() == null)
             {
-                trigger = button.gameObject.AddComponent<EventTrigger>();
+                trigger = meleeButton.gameObject.AddComponent<EventTrigger>();
                 trigger.triggers = new System.Collections.Generic.List<EventTrigger.Entry>();
             }
             else
@@ -90,7 +95,7 @@ public class MeleeOptions : MonoBehaviour
     public void HighlightThisElement(PointerEventData pointerEvent)
     {
 
-        ExecuteEvents.Execute(button.gameObject, pointerEvent, ExecuteEvents.selectHandler);
+        ExecuteEvents.Execute(meleeButton.gameObject, pointerEvent, ExecuteEvents.selectHandler);
         active = true;
         SetParentMenuLabel(label);
 
@@ -98,7 +103,7 @@ public class MeleeOptions : MonoBehaviour
     public void UnHighlightThisElement(PointerEventData pointerEvent)
     {
 
-        ExecuteEvents.Execute(button.gameObject, pointerEvent, ExecuteEvents.deselectHandler);
+        ExecuteEvents.Execute(meleeButton.gameObject, pointerEvent, ExecuteEvents.deselectHandler);
         active = false;
 
         if (!parentRM.UseLazySelection)

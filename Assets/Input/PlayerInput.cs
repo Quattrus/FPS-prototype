@@ -953,6 +953,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Strike"",
+                    ""type"": ""Button"",
+                    ""id"": ""2520ba8e-49a9-4815-ada1-d012de90e422"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -964,6 +973,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MeleeSelection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""713fc009-39a4-48c6-bc0c-b423580e9051"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Strike"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1007,6 +1027,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // OnMelee
         m_OnMelee = asset.FindActionMap("OnMelee", throwIfNotFound: true);
         m_OnMelee_MeleeSelection = m_OnMelee.FindAction("MeleeSelection", throwIfNotFound: true);
+        m_OnMelee_Strike = m_OnMelee.FindAction("Strike", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1350,11 +1371,13 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_OnMelee;
     private IOnMeleeActions m_OnMeleeActionsCallbackInterface;
     private readonly InputAction m_OnMelee_MeleeSelection;
+    private readonly InputAction m_OnMelee_Strike;
     public struct OnMeleeActions
     {
         private @PlayerInput m_Wrapper;
         public OnMeleeActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @MeleeSelection => m_Wrapper.m_OnMelee_MeleeSelection;
+        public InputAction @Strike => m_Wrapper.m_OnMelee_Strike;
         public InputActionMap Get() { return m_Wrapper.m_OnMelee; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1367,6 +1390,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @MeleeSelection.started -= m_Wrapper.m_OnMeleeActionsCallbackInterface.OnMeleeSelection;
                 @MeleeSelection.performed -= m_Wrapper.m_OnMeleeActionsCallbackInterface.OnMeleeSelection;
                 @MeleeSelection.canceled -= m_Wrapper.m_OnMeleeActionsCallbackInterface.OnMeleeSelection;
+                @Strike.started -= m_Wrapper.m_OnMeleeActionsCallbackInterface.OnStrike;
+                @Strike.performed -= m_Wrapper.m_OnMeleeActionsCallbackInterface.OnStrike;
+                @Strike.canceled -= m_Wrapper.m_OnMeleeActionsCallbackInterface.OnStrike;
             }
             m_Wrapper.m_OnMeleeActionsCallbackInterface = instance;
             if (instance != null)
@@ -1374,6 +1400,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @MeleeSelection.started += instance.OnMeleeSelection;
                 @MeleeSelection.performed += instance.OnMeleeSelection;
                 @MeleeSelection.canceled += instance.OnMeleeSelection;
+                @Strike.started += instance.OnStrike;
+                @Strike.performed += instance.OnStrike;
+                @Strike.canceled += instance.OnStrike;
             }
         }
     }
@@ -1416,5 +1445,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IOnMeleeActions
     {
         void OnMeleeSelection(InputAction.CallbackContext context);
+        void OnStrike(InputAction.CallbackContext context);
     }
 }

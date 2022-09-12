@@ -22,6 +22,8 @@ public class RadialWheelBase : MonoBehaviour
     private PointerEventData pointer;
     private float inputX;
     private float inputY;
+    private PlayerInput playerInput;
+    private PlayerInput.OnMeleeActions onMelee;
 
 
     #region Getters and Setters
@@ -33,6 +35,8 @@ public class RadialWheelBase : MonoBehaviour
     {
         pointer = new PointerEventData(EventSystem.current);
         rectTransform = GetComponent<RectTransform>();
+        playerInput = new PlayerInput();
+        onMelee = new PlayerInput().OnMelee;
         if (rectTransform == null)
         {
             Debug.LogError("Radial Menu: Rect Transform for radial menu " + gameObject.name + " could not be found. Please ensure this is an object parented to a canvas.");
@@ -66,9 +70,9 @@ public class RadialWheelBase : MonoBehaviour
     private void Update()
     {
         float rawAngle;
-        rawAngle = Mathf.Atan2(inputY, inputX) * Mathf.Rad2Deg;
+        rawAngle = Mathf.Atan2(inputX, inputY) * Mathf.Rad2Deg;
 
-        if(inputX != 0 && inputY != 0)
+        if(inputX != 0 || inputY != 0)
         {
             currentAngle = NormalizeAngle(-rawAngle + 90 - globalOffset + (angleOffset / 2f));
         }
@@ -108,5 +112,10 @@ public class RadialWheelBase : MonoBehaviour
             angle += 360f;
         }
         return angle;
+    }
+
+    public void SelectMeleeStrike()
+    {
+        ExecuteEvents.Execute(meleeOptions[index].MeleeButton.gameObject, pointer, ExecuteEvents.submitHandler);
     }
 }

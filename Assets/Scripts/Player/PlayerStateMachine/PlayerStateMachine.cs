@@ -35,6 +35,8 @@ public class PlayerStateMachine : MonoBehaviour
     #endregion
     Vector3 _moveDirection = Vector3.zero;
     [SerializeField] bool _meleeMode = false;
+    [SerializeField] GameObject _meleeWheel;
+
 
 
     [Header("Aim Functionality")]
@@ -184,6 +186,7 @@ public class PlayerStateMachine : MonoBehaviour
         _speed = _walkSpeed;
         _footIKBehaviour = GetComponent<IKBehaviour>();
         _staminaController = GetComponent<StaminaController>();
+        _meleeWheel.gameObject.SetActive(false);
         _initialGroundDistance = _groundDistance;
         
 
@@ -245,6 +248,18 @@ public class PlayerStateMachine : MonoBehaviour
         FallCheck();
         CrouchFunctionality();
 
+        if(_meleeMode)
+        {
+            _meleeWheel.gameObject.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else if(!_meleeMode)
+        {
+            _meleeWheel.gameObject.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
 
@@ -636,6 +651,9 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
 
+
+
+
     #endregion
 
     #region Debugging
@@ -646,4 +664,10 @@ public class PlayerStateMachine : MonoBehaviour
         Gizmos.DrawWireSphere(_groundCastOrigin + Vector3.down * _groundDistance, _groundCastRadius);
     }
     #endregion
+
+    public void StrikeAnimations(int strikeType)
+    {
+        Debug.Log(strikeType);
+            
+    }
 }

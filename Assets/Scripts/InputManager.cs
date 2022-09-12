@@ -52,6 +52,7 @@ public class InputManager : MonoBehaviour
         onFoot.Shoot.canceled += _ => StopFiring();
         onFoot.MainWeapon.performed += ctx => gun.SwitchGuns(1);
         onFoot.SecondaryWeapon.performed += ctx => gun.SwitchGuns(2);
+        onMelee.Strike.performed += ctx => radialWheelBase.gameObject.GetComponent<RadialWheelBase>().SelectMeleeStrike();
 
     }
 
