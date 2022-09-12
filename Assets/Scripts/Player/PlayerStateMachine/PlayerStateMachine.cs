@@ -235,6 +235,8 @@ public class PlayerStateMachine : MonoBehaviour
     private void Update()
     {
 
+        Debug.Log(_playerVelocity.y);
+
         if (_inventory.GunEquipped)
         {
             _isArmed = true;
@@ -506,7 +508,7 @@ public class PlayerStateMachine : MonoBehaviour
         }
         else
         {
-            _isFalling = _playerVelocity.y < -2f;
+            _isFalling = _playerVelocity.y <= -2f;
         }
           
         return _isFalling;
