@@ -940,6 +940,34 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""OnMelee"",
+            ""id"": ""13e48321-7f66-451f-9053-de009c1d4ea5"",
+            ""actions"": [
+                {
+                    ""name"": ""MeleeSelection"",
+                    ""type"": ""Value"",
+                    ""id"": ""959d0fb4-8679-4ffe-9f4d-a8c0c5280682"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f0297787-b468-4117-adf7-11a70ee359c9"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeSelection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -976,6 +1004,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // OnClimb
         m_OnClimb = asset.FindActionMap("OnClimb", throwIfNotFound: true);
         m_OnClimb_ClimbMovement = m_OnClimb.FindAction("Climb Movement", throwIfNotFound: true);
+        // OnMelee
+        m_OnMelee = asset.FindActionMap("OnMelee", throwIfNotFound: true);
+        m_OnMelee_MeleeSelection = m_OnMelee.FindAction("MeleeSelection", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1314,6 +1345,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public OnClimbActions @OnClimb => new OnClimbActions(this);
+
+    // OnMelee
+    private readonly InputActionMap m_OnMelee;
+    private IOnMeleeActions m_OnMeleeActionsCallbackInterface;
+    private readonly InputAction m_OnMelee_MeleeSelection;
+    public struct OnMeleeActions
+    {
+        private @PlayerInput m_Wrapper;
+        public OnMeleeActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MeleeSelection => m_Wrapper.m_OnMelee_MeleeSelection;
+        public InputActionMap Get() { return m_Wrapper.m_OnMelee; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(OnMeleeActions set) { return set.Get(); }
+        public void SetCallbacks(IOnMeleeActions instance)
+        {
+            if (m_Wrapper.m_OnMeleeActionsCallbackInterface != null)
+            {
+                @MeleeSelection.started -= m_Wrapper.m_OnMeleeActionsCallbackInterface.OnMeleeSelection;
+                @MeleeSelection.performed -= m_Wrapper.m_OnMeleeActionsCallbackInterface.OnMeleeSelection;
+                @MeleeSelection.canceled -= m_Wrapper.m_OnMeleeActionsCallbackInterface.OnMeleeSelection;
+            }
+            m_Wrapper.m_OnMeleeActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @MeleeSelection.started += instance.OnMeleeSelection;
+                @MeleeSelection.performed += instance.OnMeleeSelection;
+                @MeleeSelection.canceled += instance.OnMeleeSelection;
+            }
+        }
+    }
+    public OnMeleeActions @OnMelee => new OnMeleeActions(this);
     public interface IOnFootActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -1348,5 +1412,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IOnClimbActions
     {
         void OnClimbMovement(InputAction.CallbackContext context);
+    }
+    public interface IOnMeleeActions
+    {
+        void OnMeleeSelection(InputAction.CallbackContext context);
     }
 }

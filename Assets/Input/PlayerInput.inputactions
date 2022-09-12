@@ -918,6 +918,34 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "OnMelee",
+            "id": "13e48321-7f66-451f-9053-de009c1d4ea5",
+            "actions": [
+                {
+                    "name": "MeleeSelection",
+                    "type": "Value",
+                    "id": "959d0fb4-8679-4ffe-9f4d-a8c0c5280682",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f0297787-b468-4117-adf7-11a70ee359c9",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MeleeSelection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

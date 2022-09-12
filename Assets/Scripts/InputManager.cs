@@ -9,9 +9,13 @@ public class InputManager : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerInput.OnFootActions onFoot;
     private PlayerInput.OnClimbActions onClimb;
+    private PlayerInput.OnMeleeActions onMelee;
 
     [Header("Player Movements")]
     private PlayerStateMachine playerStateMachine;
+
+    [Header("Combat")]
+    [SerializeField] GameObject radialWheelBase;
 
     [SerializeField] Gun gun;
     private Inventory inventory;
@@ -33,6 +37,7 @@ public class InputManager : MonoBehaviour
         playerInput = new PlayerInput();
         onFoot = new PlayerInput().OnFoot;
         onClimb = new PlayerInput().OnClimb;
+        onMelee = new PlayerInput().OnMelee;
         playerStateMachine = GetComponent<PlayerStateMachine>();
         onFoot.Jump.performed += ctx => playerStateMachine.Jump();
         onFoot.FlashLight.performed += ctx => gun.Flashlight();
@@ -61,10 +66,15 @@ public class InputManager : MonoBehaviour
         {
             playerStateMachine.ProcessClimb(onClimb.ClimbMovement.ReadValue<Vector2>());
         }
-        playerStateMachine.ProcessLook(onFoot.Look.ReadValue<Vector2>());
+        if(playerStateMachine.MeleeMode)
+        {
+            radialWheelBase.gameObject.GetComponent<RadialWheelBase>().MeleeSelection(onMelee.MeleeSelection.ReadValue<Vector2>());
+        }
+        else if(!playerStateMachine.MeleeMode)
+        {
+            playerStateMachine.ProcessLook(onFoot.Look.ReadValue<Vector2>());
+        }
 
-
-        
     }
 
     private void StartFiring()
@@ -87,11 +97,13 @@ public class InputManager : MonoBehaviour
     {
         onClimb.Enable();
         onFoot.Enable();
+        onMelee.Enable();
     }
 
     private void OnDisable()
     {
         onClimb.Disable();
         onFoot.Disable();
+        onMelee.Disable();
     }
 }

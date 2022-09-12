@@ -34,6 +34,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] float _animationPlayTransition = 0.15f; //done
     #endregion
     Vector3 _moveDirection = Vector3.zero;
+    [SerializeField] bool _meleeMode = false;
 
 
     [Header("Aim Functionality")]
@@ -168,6 +169,7 @@ public class PlayerStateMachine : MonoBehaviour
     public bool ClimbTransition { get { return _climbTransition; } set { _climbTransition = value; } }
     public bool ClimbExit { get { return _climbExit; }set { _climbExit = value; } }
     public bool IsArmed { get { return _isArmed; } set { _isArmed = value; } }
+    public bool MeleeMode { get { return _meleeMode; } set { _meleeMode = value; } }
     #endregion
     void Awake()
     {
