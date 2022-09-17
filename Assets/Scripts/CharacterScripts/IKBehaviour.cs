@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class IKBehaviour : MonoBehaviour
 {
+#region Feet Positions and Rotations Variables
     private Vector3 rightFootPosition, leftFootPosition, leftFootIKPosition, rightFootIKPosition;
     private Quaternion leftFootIKRotation, rightFootIKRotation;
     private float lastPelvisPositionY, lastRightFootPositionY, lastLeftFootPositionY;
+    #endregion
 
+     #region FeetGrounding Variables
     [Header("Feet Grounder")]
     [SerializeField] bool enableFeetIK = true;
     [Range(-1, 2)][SerializeField] float heightFromGroundRaycast = 1.14f;
@@ -17,7 +20,8 @@ public class IKBehaviour : MonoBehaviour
     [Range(0, 1)][SerializeField] float pelvisUpAndDownSpeed = 0.28f;
     [Range(0, 1)][SerializeField] float feetToIKPositionSpeed = 0.5f;
     private Animator anim;
-
+    #endregion
+    
     public bool IKRotationEnable = false;
     public bool showSolverDebug = true;
 

@@ -16,14 +16,6 @@ public class HealthController : MonoBehaviour
     [SerializeField] Image healthBarUI = null;
     [SerializeField] CanvasGroup healthSliderCanvasGroup = null;
 
-    private PlayerStateMachine playerStateMachine;
-
-
-    private void Awake()
-    {
-        playerStateMachine = GetComponent<PlayerStateMachine>();
-    }
-
     private void Update()
     {
         healthBarUI.fillAmount = playerHealth / maxHealth;

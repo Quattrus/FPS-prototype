@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class AmmoBox : Interactable
 {
-    [SerializeField] GameObject player;
-
+    #region handles adding ammo value and destroy ammo game object 
     protected override void Interact()
     {
-        player.gameObject.GetComponent<Inventory>().AmmoAdded();
+        Inventory.Instance.AmmoAdded();
         Destroy(gameObject);
     }
+    #endregion
 }

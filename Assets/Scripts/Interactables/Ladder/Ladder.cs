@@ -26,17 +26,17 @@ public class Ladder : Interactable
 
         if(!isInteracted)
         {
-            _player.GetComponent<CharacterController>().enabled = false;
-            _player.GetComponent<PlayerStateMachine>().ClimbTransition = true;
-            _player.GetComponent<PlayerStateMachine>().IsClimbing = true;
+            PlayerStateMachine.Instance.enabled = false;
+            PlayerStateMachine.Instance.ClimbTransition = true;
+            PlayerStateMachine.Instance.IsClimbing = true;
             isInteracted = true;
             _ladderBounds.gameObject.SetActive(true);
-            _player.GetComponent<PlayerStateMachine>().GetLadderBoundsPosition(_ladderBoundsPosition);
+            PlayerStateMachine.Instance.GetLadderBoundsPosition(_ladderBoundsPosition);
             promptMessage = _promptMessage1;
         }
         else if(isInteracted)
         {
-            _player.GetComponent<PlayerStateMachine>().IsClimbing = false;
+            PlayerStateMachine.Instance.IsClimbing = false;
             isInteracted = false;
             _ladderBounds.gameObject.SetActive(false);
             promptMessage = originalPrompt;
@@ -46,9 +46,9 @@ public class Ladder : Interactable
 
     public void LadderBoundsCheck()
     {
-        _player.GetComponent<PlayerStateMachine>().ClimbExit = true;
-        _player.GetComponent<PlayerStateMachine>().IsClimbing = false;
-        _player.GetComponent<PlayerStateMachine>().GetLadderBoundsPosition(_ladderExitPosition);
+        PlayerStateMachine.Instance.ClimbExit = true;
+        PlayerStateMachine.Instance.IsClimbing = false;
+        PlayerStateMachine.Instance.GetLadderBoundsPosition(_ladderExitPosition);
         isInteracted = false;
         _ladderBounds.gameObject.SetActive(false);
         promptMessage = originalPrompt;

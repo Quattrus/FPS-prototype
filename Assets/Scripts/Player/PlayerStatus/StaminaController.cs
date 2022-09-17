@@ -20,17 +20,9 @@ public class StaminaController : MonoBehaviour
     [SerializeField] private Image staminaProgressUI = null;
     [SerializeField] private CanvasGroup sliderCanvasGroup = null;
 
-    private PlayerStateMachine playerStateMachine;
-
-
-    private void Awake()
-    {
-        playerStateMachine = GetComponent<PlayerStateMachine>();
-    }
-
     private void Update()
     {
-        if(!playerStateMachine.IsSprinting)
+        if(!PlayerStateMachine.Instance.IsSprinting)
         {
             if(playerStamina <= maxStamina - 0.01f)
             {
@@ -50,7 +42,7 @@ public class StaminaController : MonoBehaviour
         if(playerStamina <= 0)
         {
             hasRegenerated = false;
-            playerStateMachine.IsSprinting = false;
+            PlayerStateMachine.Instance.IsSprinting = false;
         }
     }
 

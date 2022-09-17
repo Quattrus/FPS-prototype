@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
 public class RadialWheelBase : MonoBehaviour
 {
@@ -22,8 +21,6 @@ public class RadialWheelBase : MonoBehaviour
     private PointerEventData pointer;
     private float inputX;
     private float inputY;
-    private PlayerInput playerInput;
-    private PlayerInput.OnMeleeActions onMelee;
 
 
     #region Getters and Setters
@@ -35,8 +32,6 @@ public class RadialWheelBase : MonoBehaviour
     {
         pointer = new PointerEventData(EventSystem.current);
         rectTransform = GetComponent<RectTransform>();
-        playerInput = new PlayerInput();
-        onMelee = new PlayerInput().OnMelee;
         if (rectTransform == null)
         {
             Debug.LogError("Radial Menu: Rect Transform for radial menu " + gameObject.name + " could not be found. Please ensure this is an object parented to a canvas.");
@@ -86,10 +81,6 @@ public class RadialWheelBase : MonoBehaviour
             SelectButton(index);
         }
     }
-
-
-
-
 
     private void SelectButton(int i)
     {

@@ -4,23 +4,31 @@ using UnityEngine;
 
 public class FootstepManager : MonoBehaviour
 {
+
+    public static FootstepManager Instance { get; private set; }
+    private AudioSource source;
+    #region AudioClip Lists
     [SerializeField] List<AudioClip> grassSteps = new List<AudioClip>();
     [SerializeField] List<AudioClip> waterSteps = new List<AudioClip>();
     [SerializeField] List<AudioClip> caveSteps = new List<AudioClip>();
     [SerializeField] List<AudioClip> cementSteps = new List<AudioClip>();
-    private Animator _animator;
-
-
+    private List<AudioClip> currentList;
+    #endregion
+    
+    #region Surface types
     private enum Surface { grass, water, cave, cement };
     private Surface surface;
+    #endregion
 
-    private List<AudioClip> currentList;
+    #region Animator and animator curves
     [SerializeField] int leftStepPlayed = 0;
     [SerializeField] int rightStepPlayed = 0;
-    private AudioSource source;
+    private Animator _animator;
+    #endregion
 
     private void Start()
     {
+        Instance = this;
         source = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         SelectStepList();
@@ -32,6 +40,7 @@ public class FootstepManager : MonoBehaviour
         
     }
 
+    #region Animator footstep checking
     private void PlayFootstep()
     {
         
@@ -56,11 +65,10 @@ public class FootstepManager : MonoBehaviour
         }
 
     }
-    public void PlayLand()
-    {
-        StepSound();
-    }
+    #endregion
 
+
+    #region Selects the type of audioclip to play
     private void SelectStepList()
     {
         switch (surface)
@@ -79,6 +87,9 @@ public class FootstepManager : MonoBehaviour
                 break;
         }
     }
+    #endregion
+
+    #region Choose surface based on controllerColliderHit
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.transform.tag == "Grass")
@@ -100,10 +111,18 @@ public class FootstepManager : MonoBehaviour
         SelectStepList();
     }
 
+    #endregion
+
+    #region Play Step AudioClip and Land AudioClip
     private void StepSound()
     {
         AudioClip clip = currentList[Random.Range(0, currentList.Count)];
         source.PlayOneShot(clip);
 
     }
+    public void PlayLand()
+    {
+        StepSound();
+    }
+    #endregion
 }

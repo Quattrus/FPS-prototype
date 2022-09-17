@@ -6,10 +6,8 @@ public class Gun : MonoBehaviour
 {
 
     [Header("Initialization Variables")]
-    [SerializeField] private GameObject Player;
     private Transform cam;
     private Inventory inventory;
-    private PlayerStateMachine playerStateMachine;
 
     [Header("General Stats")]
     [SerializeField] float range = 50f;
@@ -49,9 +47,7 @@ public class Gun : MonoBehaviour
         cam = Camera.main.transform;
         rapidFireWait = new WaitForSeconds(1 / fireRate);
         reloadWait = new WaitForSeconds(reloadTime);
-        inventory = Player.GetComponent<Inventory>();
-        playerStateMachine = GetComponent<PlayerStateMachine>();
-        
+        inventory = Inventory.Instance;
     }
     private void Update()
     {
@@ -173,7 +169,7 @@ public class Gun : MonoBehaviour
 
     private void Aiming()
     {
-        if (Player.GetComponent<PlayerStateMachine>().IsAiming == true)
+        if (PlayerStateMachine.Instance.IsAiming == true)
         {
             inaccuracyDistance = 2f;
         }

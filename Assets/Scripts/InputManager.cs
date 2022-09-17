@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance { get; private set; }
     [Header("Player Inputs")]
     private PlayerInput playerInput;
     private PlayerInput.OnFootActions onFoot;
@@ -33,6 +34,7 @@ public class InputManager : MonoBehaviour
 
     void Awake()
     {
+        Instance = this;
         inventory = GetComponent<Inventory>();
         playerInput = new PlayerInput();
         onFoot = new PlayerInput().OnFoot;

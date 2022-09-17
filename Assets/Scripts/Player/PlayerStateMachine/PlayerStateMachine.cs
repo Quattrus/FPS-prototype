@@ -5,14 +5,23 @@ using Cinemachine;
 
 public class PlayerStateMachine : MonoBehaviour
 {
+    public static PlayerStateMachine Instance { get; private set; }
     #region Variables
-    [Header("Initialization")]
+
+    #region Initialization Variables
     private CharacterController _characterController; //done
     private CapsuleCollider _collider;
     private Vector3 _playerVelocity;
     private IKBehaviour _footIKBehaviour;
     private Inventory _inventory;
     private StaminaController _staminaController; //done
+    [SerializeField] Transform _playerCameraRoot;
+    [SerializeField] Transform _aimTarget;
+    [SerializeField] Transform _bodyHeadAimTarget;
+    [SerializeField] CinemachineVirtualCamera _aimCamera;
+    #endregion
+
+
     #region Player Look
     private float _xRotation = 0f;
     [SerializeField] float _xSensitivity = 30f;
@@ -21,18 +30,21 @@ public class PlayerStateMachine : MonoBehaviour
     private float _xSensitivityDefault;
     private float _ySensitivityAim;
     private float _ySensitivityDefault;
-    [SerializeField] Transform _playerCameraRoot;
-    [SerializeField] Transform _aimTarget;
-    [SerializeField] Transform _bodyHeadAimTarget;
     #endregion
+
+
     [SerializeField] LayerMask _wallCheckLayerMask;
     private float _lowWallDistance;
     private float _highWallDistance;
+
+
     #region Animation Variables
     private Animator _animator; //done
     private int _moveXAnimationParameterID, _moveZAnimationParameterID, _moveXCrouchAnimationParameterID, _moveZCrouchAnimationParameterID, _defaultAirAnimation, _landAnimation;
     [SerializeField] float _animationPlayTransition = 0.15f; //done
     #endregion
+
+
     Vector3 _moveDirection = Vector3.zero;
     [SerializeField] bool _meleeMode = false;
     [SerializeField] GameObject _meleeWheel;
@@ -41,7 +53,6 @@ public class PlayerStateMachine : MonoBehaviour
 
     [Header("Aim Functionality")]
     [SerializeField] int _aimCamPriority = 10;
-    [SerializeField] CinemachineVirtualCamera _aimCamera;
     [SerializeField] bool _isAiming;
     [SerializeField] GameObject _chestBone;
 
@@ -175,6 +186,7 @@ public class PlayerStateMachine : MonoBehaviour
     #endregion
     void Awake()
     {
+        Instance = this;
         ///<summary>
         ///These are all movement related.
         /// </summary>
@@ -234,9 +246,6 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Update()
     {
-
-        Debug.Log(_playerVelocity.y);
-
         if (_inventory.GunEquipped)
         {
             _isArmed = true;

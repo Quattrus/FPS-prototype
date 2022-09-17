@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public static Inventory Instance { get; private set; }
     [Header("Ammo")]
     private int availableClips = 5;
    
@@ -16,6 +17,7 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         currentAmmo = maxAmmo;
     }
     public void AmmoAdded()

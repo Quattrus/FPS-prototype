@@ -6,13 +6,9 @@ public class PlayerInteract : MonoBehaviour
     private PlayerUI playerUI;
     private InputManager inputManager;
 
-
     [SerializeField]private float distance = 3f;
     [SerializeField] LayerMask rayCastMask;
 
-
-
- 
     void Start()
     {
         playerUI = GetComponent<PlayerUI>();
